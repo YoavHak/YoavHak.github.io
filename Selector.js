@@ -1,4 +1,5 @@
 // JavaScript source code
+
 var levelTable = document.getElementById("levelTable");
 
 const backgroundMusic = document.getElementById('backgroundMusic');
@@ -25,6 +26,10 @@ backgroundMusic.load();
 
 playerImage.style.transformOrigin = "center 25%";
 
+if (levelsBeaten){
+    console.log(levelsBeaten, "exists")
+}
+console.log(levelsBeaten, "nope")
 
 for (var i = 0; i < 5; i++) {
     var tr = document.createElement("tr");
