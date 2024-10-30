@@ -53,7 +53,7 @@ var elt;
 
 var gameStarted = false;
 
-var levelsBeaten = 0;
+let levelsBeaten = 0;
 
 // Use the function to get the value of 'index'
 const levelNum = getQueryParameter('index');
@@ -269,6 +269,9 @@ if (true){
                 map.push(410);
             }
         }
+    }
+    else if (parseInt(levelNum) > 25){
+        window.location.href = `../nothing_to_see_here/chter.html`;
     }
     else {
         player.style.top = "308px";

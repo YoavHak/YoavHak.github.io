@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easter Egg Found</title>
+    <style>
+        /* Centering and basic styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(45deg, #0d0d0d, #1a1a1a);
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Animated background */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(120deg, #ff6a00, #ffeb3b, #00e0ff, #ff1493, #00ff88);
+            background-size: 400% 400%;
+            animation: animateBG 40s ease-in-out infinite;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* Container for the message */
+        .message-container {
+            text-align: center;
+            max-width: 80%;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.3);
+            animation: fadeIn 2s ease-in-out;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        /* Main title styling with 3D effect */
+        .message-container h1 {
+            font-size: 3em;
+            color: #ffeb3b;
+            text-shadow: 0px 0px 20px rgba(255, 235, 59, 0.7);
+            margin: 0 0 20px;
+            animation: glow 1.5s ease-in-out infinite alternate, rotate3DTitle 6s infinite;
+            transform-origin: center;
+        }
+
+        /* Main title styling with 3D effect */
+        .message-container h2 {
+            font-size: 2em;
+            color: #9e9224;
+            text-shadow: 0px 0px 20px rgba(255, 235, 59, 0.7);
+            margin: 20px 0 20px;
+            animation: glow 1.5s ease-in-out infinite alternate, rotate3DTitle 6s infinite;
+            transform-origin: center;
+        }
+
+        /* Message text with 3D and flicker effects */
+        .message-container p {
+            font-size: 1.5em;
+            line-height: 1.4;
+            color: #00e0ff;
+            text-shadow: 0px 0px 15px rgba(0, 224, 255, 0.7);
+            animation: textFlicker 3s ease-in-out infinite, rotate3DText 6s infinite;
+            margin: 0 0 2px;
+            transform-origin: center;
+        }
+
+        /* Keyframes for animations */
+        @keyframes animateBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0px 0px 20px rgba(255, 235, 59, 0.7); }
+            to { text-shadow: 0px 0px 40px rgba(255, 235, 59, 1); }
+        }
+
+        @keyframes textFlicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+            70% { opacity: 0.95; }
+        }
+    </style>
+</head>
+<body>
+    <div class="message-container">
+        <h1>Congratulations!</h1>
+        <p>You've uncovered a hidden Easter Egg within my website—known as <strong><h2>THE LIMIT BREAKER EGG</h2></strong></p>
+        <p>By changing the level index in the game URL to a number</p>
+        <p>beyond the arbitrary limit I have set for it, you have rightfully</p>
+        <p>earned this marvelous prize.</p>
+        <br>
+        <p>But why stop here?</p>
+        <br>
+        <p>in the depths of the function world, a second great secret awaits discovery.</p>
+        <p>Think you've got what it takes to find it?</p>
+    </div>
+</body>
+</html>
