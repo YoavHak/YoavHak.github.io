@@ -4,12 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index Page</title>
+    <!-- Link to Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        /* Import a modern Google font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+
+        /* Resetting default margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Body styling */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #ff6b6b, #f06595, #845ef7, #51cf66);
+            background-size: 300% 300%;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            animation: gradient 15s ease infinite;
+            overflow: hidden;
+        }
+
+        /* Background gradient animation */
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Main header */
+        h1 {
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Paragraph styling */
+        p {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+
+        /* Link as a button */
+        a {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #4e54c8;
+            background-color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Link hover effect */
+        a:hover {
+            background-color: #e3e3ff;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            p {
+                font-size: 1.2rem;
+            }
+            a {
+                font-size: 1rem;
+                padding: 12px 25px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Index Page</h1>
-    <p>
-        Click below to go to the Functions page:
-        <a href="Functions.html">Open Functions.html</a>
-    </p>
+    <div>
+        <h1>Welcome to the Index Page</h1>
+        <p>Click below to play the Functions Game:</p>
+        <a href="Functions.html">Functions Game</a>
+    </div>
 </body>
 </html>

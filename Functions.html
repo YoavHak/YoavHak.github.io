@@ -1,43 +1,173 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Function Game</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/0.15.0/math.min.js"></script>
-    <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
+    <style>
+        /* Body Styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background-color: #2b2b2b;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+        
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js"></script>
-    <script>
-        var MQ = MathQuill.getInterface(2);
-    </script>
-    <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.8;
+            z-index: -2;
+        }
+        /* Math Symbols Animation */
+        .math-symbol {
+            position: absolute;
+            font-size: 42px;
+            color: rgba(255, 255, 255, 7);
+            animation: floatSymbols 8s ease-in-out infinite;
+            transform-origin: center;
+            z-index: -3;
+        }
+
+        /* Unique animation settings for each symbol */
+        .math-symbol:nth-child(1) { animation-duration: 7s; animation-delay: 0s;  --move-distance: -180px; --rotation-value: 16deg}
+        .math-symbol:nth-child(2) { animation-duration: 8.5s; animation-delay: 1s;  --move-distance: 220px;  --rotation-value: 12deg}
+        .math-symbol:nth-child(3) { animation-duration: 6.5s; animation-delay: 0.5s;  --move-distance: 150px;  --rotation-value: -25deg}
+        .math-symbol:nth-child(4) { animation-duration: 9s; animation-delay: 1.5s; --move-distance: -250px;  --rotation-value: -30deg}
+        .math-symbol:nth-child(5) { animation-duration: 7.5s; animation-delay: 0.75s; --move-distance: 200px;  --rotation-value: -10deg}
+        .math-symbol:nth-child(6) { animation-duration: 8s; animation-delay: 1.25s; --move-distance: -230px; --rotation-value: 4deg }
+        .math-symbol:nth-child(7) { animation-duration: 7.25s; animation-delay: 0.25s; --move-distance: 190px; --rotation-value: 13deg }
+        .math-symbol:nth-child(8) { animation-duration: 8.75s; animation-delay: 1.75s; --move-distance: 210px;  --rotation-value: -5deg}
+
+        /* Keyframes with varied movement */
+        @keyframes floatSymbols {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            50% {
+                /* Different translateY values for each symbol */
+                transform: translateY(calc(var(--move-distance, -200px))) rotate(calc(var(--rotation-value, 15deg))); 
+                opacity: 1;
+            }
+            100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        }
+
+
+        /* Initial Game Menu Styling */
+        #gameMenu {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+            z-index: 1;
+        }
+
+        #playButton {
+            margin-top: 20px;
+            padding: 20px 40px;
+            font-size: 36px;
+            color: #ffeb3b;
+            background-color: #ff6a00;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #playButton:hover {
+            transform: scale(1.1);
+            background-color: #ff8c00;
+        }
+
+        /* Level Selector Styling */
+        #levelSelector {
+            display: none; /* Hide initially */
+            z-index: 1;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #levelTable {
+            border: 10px solid #ff6a00;
+            width: 80%;
+            height: 80%;
+            border-radius: 12px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        #levelTable td {
+            border: 5px solid #ff6a00;
+            font-size: 36px;
+            text-align: center;
+            padding: 20px;
+            color: #ffeb3b;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+            background-color: rgb(32, 17, 17);
+        }
+
+        #levelTable td:hover {
+            background-color: #ff6a00;
+            color: #2b2b2b;
+            transform: scale(1.1);
+            z-index:2;
+        }
+
+
+        /* Additional CSS for math symbols and background styles */
+        /* (same as before) */
+
+    </style>
 </head>
 <body>
-    <div id="levelSelector" style="visibility: visible;">
-        <table id="levelTable" style=" border: 10px solid #ff6a00; margin-left: auto; margin-right: auto; width: 1000px; height: 1000px; overflow:hidden;">
-        </table>
-    </div>
-    <div id="outLevel" style="position: fixed; left: 0px; top: 0px; width: 1650px; height: 700px; visibility: hidden;">
-        <div id="level" style="position: fixed; left: 0px; top: 0px; width:1650px; height: 700px;">
-            <div id="Graph" style="position: fixed; left: -440px; top: -1090px; width:3000px; height: 3000px;"></div>
-    
-            <img id="Door" src="Images/Door.png" style="position:fixed; left:2030px; top:508px; width:131px; height:294px;" />
-            <img id="player" src="Images/player.png" style="position:fixed; left:-122px; top:308px; width:100px; height:292px;" />
-            <canvas id="myCanvas" width="2750px" height="1800px" style="border:0px solid #000000; position: fixed; left: 0px; top: 0px;">
-            </canvas>
-        </div>
-        <h1 style="position: fixed; left: 10px; top: -5px; font-size:50px; background-color: white ;">y =</h1>
-        <h1 id="Deaths" style="position: fixed; left: 10px; top: 80px; font-size:40px; background-color: white ;">Deaths: 0</h1>
-        <p><span id="input" type="text" style="position: fixed; left: 100px; top: 43px; width: auto; height: auto; font-size: 32px; background-color: white" ></span></p>
+    <!-- Background Music -->
+    <audio id="backgroundMusic" src="Sounds/Lobby.mp3" loop></audio>
 
+    <!-- Initial Game Menu -->
+    <div id="gameMenu">
+        <h1>The Function Game</h1>
+        <button id="playButton">Play</button>
     </div>
 
+    <!-- Level Selector -->
+    <div id="levelSelector">
+        <table id="levelTable"></table>
 
-    <script src="Functions.js" type="text/javascript"></script>
+        <!-- Placeholder elements for animated math symbols -->
+        <div class="math-symbol" style="top: 44%; left: 15%; font-size: 50px;">&int;</div>
+        <div class="math-symbol" style="top: 57%; left: 80%; font-size: 36px;">&sum;</div>
+        <div class="math-symbol" style="top: 39%; left: 40%; font-size: 72px;">&pi;</div>
+        <div class="math-symbol" style="top: 45%; left: 20%; font-size: 48px;">&radic;</div>
+        <div class="math-symbol" style="top: 31%; left: 65%; font-size: 42px;">&theta;</div>
+        <div class="math-symbol" style="top: 37%; left: 30%; font-size: 58px;">&infin;</div>
+        <div class="math-symbol" style="top: 55%; left: 75%; font-size: 64px;">&sigma;</div>
+        <div class="math-symbol" style="top: 32%; left: 85%; font-size: 40px;">&Delta;</div>
+
+        
+        
+        <img id="player" src="Images/player.png" style="position:fixed; left:-122px; top:208px; width:70px; height:204px;" />
+    </div>
+
+    <script src="Selector.js"></script>
 </body>
 </html>
