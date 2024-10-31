@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Easter Egg</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+        .container {
+            position: relative;
+            animation: slidein 1s ease-in-out alternate;
+        }
+        h1 {
+            font-size: 4em;
+            margin: 0;
+            color: #ff5733;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+        h2 {
+            font-size: 2em;
+            color: #9e9224;
+            text-shadow: 0px 0px 20px rgba(255, 235, 59, 0.7);
+            margin: 20px 0 20px;
+            animation: glow 1.5s ease-in-out infinite alternate, rotate3DTitle 6s infinite;
+            transform-origin: center;
+        }
+        p {
+            font-size: 1.5em;
+        }
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff5733, 0 0 20px #ff5733, 0 0 30px #ff5733, 0 0 40px #ff5733, 0 0 50px #ff5733, 0 0 60px #ff5733, 0 0 70px #ff5733;
+            }
+            to {
+                text-shadow: 0 0 20px #ff5733, 0 0 30px #ff5733, 0 0 40px #ff5733, 0 0 50px #ff5733, 0 0 60px #ff5733, 0 0 70px #ff5733, 0 0 80px #ff5733;
+            }
+        }
+        @keyframes slidein {
+            from {
+                transform: translateY(500px);
+            }
+            to {
+                transform: translateY(0px);
+            }
+        }
+        .returnButton {
+            margin-top: 20px;
+            padding: 20px 40px;
+            font-size: 30px;
+            color: #ffeb3b;
+            background-color: #ff6a00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            animation: glow 1.5s ease-in-out infinite alternate, rotate3DTitle 6s infinite;
+        }
+        .returnButton:hover {
+            background-color: #ff6a00;
+            color: #ffeb3b;
+            transform: scale(1.1);
+            z-index: 2;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <h1>Congratulations!</h1>
+        <p>You've uncovered a hidden Easter Egg within my website—known as <h2>THE UNSTOPPABLE EGG</h2></p>
+        <p>By not giving up on your goal and beating the level with over 100 deaths</p>
+        <p>you have rightfully earned this marvelous prize.</p>
+        <p>But why stop here?</p>
+        <p id="other">In the depths of the function world, 2 other great secrets lie undiscovered.</p>
+        <p id="think">Think you've got what it takes to find them?</p>
+        <button id="return" class="returnButton">
+            GO BACK
+        </button>
+    </div>
+    <script>
+        var secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
+        var txt = document.getElementById("other");
+        var txt2 = document.getElementById("think");
+        var maxEggs = localStorage.getItem('maxEggs');
+
+
+
+        if (!secretsFound.includes("UNSTOPPABLE")){
+            
+            secretsFound.push("UNSTOPPABLE");
+            localStorage.setItem('secretsFound', JSON.stringify(secretsFound));
+        }
+        if (secretsFound.length == maxEggs){
+            txt.innerHTML = "oh wait- nevermind I guess you already found the other easter eggs..."
+            txt2.innerHTML = "well I guess we're done here, BYE!"
+        }
+        else{
+
+            txt.innerHTML = "In the depths of the function world, " + (maxEggs - secretsFound.length) + " other great ";
+            txt2.innerHTML = "Think you've got what it takes to find ";
+            if (maxEggs - secretsFound.length == 1){
+                txt.innerHTML += "secret lies undiscovered.";
+                txt2.innerHTML += "it?";
+            }
+            else{
+                txt2.innerHTML += "them?";
+                txt.innerHTML += "secrets lie undiscovered.";
+            }
+        }
+
+
+        
+        var returnButton = document.getElementById("return");
+        returnButton.onclick = function() {
+            window.location.href = "../Functions.html";
+        };
+
+        setTimeout(() => {
+        }, 10000);
+    </script>
+</body>
+</html>

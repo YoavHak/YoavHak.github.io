@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Easter Egg Found</title>
+    <title>Easter Egg Found 2/3</title>
     <style>
         /* Centering and basic styling */
         body {
@@ -98,6 +98,25 @@
             50% { opacity: 0.85; }
             70% { opacity: 0.95; }
         }
+
+        .returnButton {
+            margin-top: 20px;
+            padding: 20px 40px;
+            font-size: 30px;
+            color: #ffeb3b;
+            background-color: #ff6a00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            animation: glow 1.5s ease-in-out infinite alternate, rotate3DTitle 6s infinite;
+        }
+        .returnButton:hover {
+            background-color: #ff6a00;
+            color: #ffeb3b;
+            transform: scale(1.1);
+            z-index: 2;
+            
+        }
     </style>
 </head>
 <body>
@@ -110,8 +129,52 @@
         <br>
         <p>But why stop here?</p>
         <br>
-        <p>in the depths of the function world, a second great secret awaits discovery.</p>
-        <p>Think you've got what it takes to find it?</p>
+        <p id="other">In the depths of the function world, 2 other great secrets lie undiscovered.</p>
+        <p id="think">Think you've got what it takes to find it?</p>
+        <button id="return" class="returnButton">
+            GO BACK
+        </button>
     </div>
+    <script>
+        var secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
+        var txt = document.getElementById("other");
+        var txt2 = document.getElementById("think");
+        var maxEggs = localStorage.getItem('maxEggs');
+
+        console.log(secretsFound);
+        console.log(maxEggs);
+
+        if (!secretsFound.includes("LIMIT BREAKER")){
+            
+            secretsFound.push("LIMIT BREAKER");
+            localStorage.setItem('secretsFound', JSON.stringify(secretsFound));
+        }
+
+
+        if (secretsFound.length == maxEggs){
+            txt.innerHTML = "oh wait- nevermind I guess you already found the other easter eggs..."
+            txt2.innerHTML = "well I guess we're done here, BYE!"
+        }
+        else{
+
+            txt.innerHTML = "In the depths of the function world, " + (maxEggs - secretsFound.length) + " other great ";
+            txt2.innerHTML = "Think you've got what it takes to find ";
+            if (maxEggs - secretsFound.length == 1){
+                txt.innerHTML += "secret lies undiscovered.";
+                txt2.innerHTML += "it?";
+            }
+            else{
+                txt2.innerHTML += "them?";
+                txt.innerHTML += "secrets lie undiscovered.";
+            }
+        }
+
+
+
+        var returnButton = document.getElementById("return");
+        returnButton.onclick = function() {
+            window.location.href = "../Functions.html";
+        };
+    </script>
 </body>
 </html>

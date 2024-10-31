@@ -14,9 +14,59 @@ var playerImage = document.getElementById("player");
 
 var float_rotation = 50;
 
+var float_interval;
+
+var levelsBeaten = localStorage.getItem('levelsBeaten');
+
+
+const muteButton = document.getElementById('muteButton');
+const muteIcon = document.getElementById('muteIcon');
+let isMuted = false;
+
+muteButton.addEventListener('click', () => {
+    changeMuteState();
+});
+
+if (levelsBeaten) {
+    levelsBeaten = parseInt(levelsBeaten);
+}
+else {
+    levelsBeaten = 0;
+}
+console.log(levelsBeaten);
+
+if (levelsBeaten > 0){
+    
+    changeMuteState();
+    changeScene();
+}
+
+var secretsFound = localStorage.getItem('secretsFound');
+
+if (secretsFound) {
+    secretsFound = JSON.parse(secretsFound);
+}
+else{
+    secretsFound = [];
+}
+console.log(secretsFound);
+localStorage.setItem('secretsFound', JSON.stringify(secretsFound));
+
+var maxEggs = localStorage.getItem('maxEggs');
+if (maxEggs) {
+    maxEggs = parseInt(maxEggs);
+}
+else {
+    maxEggs = 3;
+}
+localStorage.setItem("maxEggs", maxEggs);
+
+
+
 for (var i = 1; i< 26; i++){
     var sound = document.createElement("audio");
     sound.setAttribute("src", "Sounds/Hover.mp3");
+    sound.volume = 0.5;
     hoverSounds.push(sound);
 }
 
@@ -26,28 +76,52 @@ backgroundMusic.load();
 
 playerImage.style.transformOrigin = "center 25%";
 
-if (typeof levelsBeaten !== 'undefined') {
-    console.log("yeah", levelsBeaten);
-}
-console.log(typeof levelsBeaten, "nope");
+document.getElementById("resetButton").onclick = function() {
+    
+    localStorage.setItem('levelsBeaten', 0);
+    localStorage.setItem('secretsFound', JSON.stringify([]));
+    location.reload();
+    console.log("0");
+};
+
 
 for (var i = 0; i < 5; i++) {
     var tr = document.createElement("tr");
     for (var j = 0; j < 5; j++) {
         var td = document.createElement("td");
-        td.style = 'border: 5px solid #ff6a00; font-size: 36px; text-align: center; padding: 20px; color: #ffeb3b; cursor: pointer;';
         
+
         let index = (i * 5 + j + 1);
         td.innerHTML = index;
 
+        
+        td.style.backgroundSize = "cover";
+        td.style.backgroundPosition = "center";
+        if (td.innerHTML > levelsBeaten + 1){
+            td.style.opacity = "0.5";
+        }
+
         // Animate cell on click and redirect
         td.onclick = function () {
-            this.style.backgroundColor = '#ff6a00';
-            this.style.color = '#2b2b2b';
-            window.location.href = `Levels/Level.html?index=${this.innerHTML}`;
+            if (this.innerHTML <= levelsBeaten + 1) {
+                this.style.backgroundColor = '#ff6a00';
+                this.style.color = '#2b2b2b';
+                clearInterval(float_interval);
+                window.location.href = `Levels/Level.html?index=${this.innerHTML}`;
+            }
+            else if (!isMuted) {
+                
+                var sound = document.createElement("audio");
+                sound.setAttribute("src", "Sounds/Locked.mp3");
+                sound.volume = 0.1;
+                sound.play();
+            }
         };
         td.onmouseover = function () {
-            hoverSounds[parseInt(this.innerHTML) - 1 ].play();
+            if (!isMuted){
+
+                hoverSounds[parseInt(this.innerHTML) - 1 ].play();
+            }
         };
         tr.appendChild(td);
     }
@@ -57,16 +131,17 @@ for (var i = 0; i < 5; i++) {
 
 // Play button click event
 document.getElementById('playButton').addEventListener('click', () => {
-    document.getElementById('gameMenu').style.display = 'none'; // Hide the menu
-    document.getElementById('levelSelector').style.display = 'flex'; // Show the level selector
-    document.body.style.backgroundImage = "url('Images/Space.jpg')";
+    changeScene();
     backgroundMusic.play();
-
-    setTimeout(() => {
-        var float_interval = setInterval(FloatLeft, 1);
-    }, 60000);
 });
 
+function changeScene() {
+    document.getElementById('gameMenu').style.display = 'none'; // Hide the menu
+    document.getElementById('levelSelector').style.display = 'flex'; // Show the level selector
+    setTimeout(() => {
+        float_interval = setInterval(FloatLeft, 1);
+    }, 60000);
+}
 
 function FloatLeft(){
     float_rotation += 0.1;
@@ -75,16 +150,36 @@ function FloatLeft(){
     playerImage.style.transform = 'rotate(' + float_rotation + 'deg)';
 
     if (parseFloat(player.style.left) == 1225){
-        var sound = document.createElement("audio");
-
-        sound.setAttribute("src", "Sounds/AmongUsType.mp3");
-        sound.play();
+        if (!isMuted){
+            var sound = document.createElement("audio");
+    
+            sound.setAttribute("src", "Sounds/AmongUsType.mp3");
+            sound.play();
+        }
 
         // Show the first message and type out the text
         typeText("imposterText", "Garry Graph was not The Imposter.", 50);
-        //1 Easter Egg remains.
-        setTimeout(() => {fadeText("easterEggText", "1 Easter Egg remains.")
+
+
+        setTimeout(() => {
+            switch (maxEggs - secretsFound.length) {
+                case 0:
+                    fadeText("easterEggText", "You have now found every Easter Egg.");
+                    break;
+                case 1:
+                    fadeText("easterEggText", "1 Easter Egg remains.");
+                    break;
+                default:
+                    fadeText("easterEggText", (maxEggs - secretsFound.length) + " Easter Eggs remaining.");
+              }
         }, 2500);
+
+        secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
+        if (!secretsFound.includes("PATIENCE")){
+            
+            secretsFound.push("PATIENCE");
+            localStorage.setItem('secretsFound', JSON.stringify(secretsFound));
+        }
     }
 }
 
@@ -101,17 +196,24 @@ function typeText(elementId, text, delay, callback) {
             index++;
         } else {
             clearInterval(interval);
-            if (callback) callback(); // Call the next function if provided
         }
     }, delay);
 }
 
-function fadeText(elementId, callback) {
+function fadeText(elementId, text) {
     const element = document.getElementById(elementId);
+    element.innerHTML = text;
     element.style.opacity = 1; // Make the text visible
 
-    // Delay to wait for the bounce animation to finish, then trigger the callback
-    setTimeout(() => {
-        if (callback) callback();
-    }, 1000); // Duration of the bounce animation
+}
+
+function changeMuteState(){
+    isMuted = !isMuted;
+    if (isMuted) {
+        backgroundMusic.muted = true;
+        muteIcon.src = 'Images/sound-off.png'; // Image for muted state
+    } else {
+        backgroundMusic.muted = false;
+        muteIcon.src = 'Images/sound-on.png'; // Image for unmuted state
+    }
 }

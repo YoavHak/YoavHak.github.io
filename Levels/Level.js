@@ -53,7 +53,8 @@ var elt;
 
 var gameStarted = false;
 
-let levelsBeaten = 0;
+var secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
+
 
 // Use the function to get the value of 'index'
 const levelNum = getQueryParameter('index');
@@ -69,6 +70,12 @@ if (levelNum !== null) {
 if (true){
 
     index = levelNum;
+
+    if (parseInt(localStorage.getItem('levelsBeaten')) + 1 < parseInt(levelNum)){
+        window.location.href = `../Functions.html`;
+    }
+
+
     map = [];
     deathMap = [];
     for (var i = 1; i <= canvas.width; i++) {
@@ -77,6 +84,8 @@ if (true){
         temp.push(0);
         deathMap.push(temp);
     }
+
+
 
     if (levelNum == "1") {
         player.style.top = "308px";
@@ -271,7 +280,7 @@ if (true){
         }
     }
     else if (parseInt(levelNum) > 25){
-        window.location.href = `../nothing_to_see_here/chter.html`;
+        window.location.href = `../nothing_to_see_here/25+.html`;
     }
     else {
         player.style.top = "308px";
@@ -644,11 +653,11 @@ function Play() {
 
             player.style.transform = 'rotate(' + Math.atan(funcIncline) * 180 / Math.PI + 'deg)';
         }
-        else if (inRange(legsHeight, map[playerLeftX])) {
+        else if (inRange(legsHeight, map[playerLeftX - 20])) {
             //walk on base
             //console.log("walk base");
 
-            moveY += baseIncline - vel + (map[playerLeftX] - legsHeight);
+            moveY += baseIncline - vel + (map[playerLeftX -20] - legsHeight);
             vel = 0;
 
             player.style.transform = 'rotate(' + Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
@@ -682,16 +691,20 @@ function Play() {
             if (legsHeight > parseFloat(door.style.top) && legsHeight < parseFloat(door.style.top) + door.height) {
                 Wins++;
 
-                if (index > levelsBeaten){
-                    levelsBeaten = index;
-                    console.log(levelsBeaten);
-                }
 
                 DrawFunc();
                 player.style.left = '-102px';
                 player.style.top = '308px';
                 player.style.transform = 'rotate(0deg)';
 
+                if (levelNum > parseInt(localStorage.getItem('levelsBeaten'))) {
+                    localStorage.setItem('levelsBeaten', levelNum);
+                }
+
+                secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
+                if (Deaths > 100 && !secretsFound.includes("UNSTOPPABLE")){
+                    window.location.href = `../nothing_to_see_here/ded.html`;
+                }
                 window.location.href = `../Functions.html`;
             }
             else if (playerLeftX > 2300){
