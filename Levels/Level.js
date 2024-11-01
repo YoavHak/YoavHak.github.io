@@ -55,12 +55,13 @@ var gameStarted = false;
 
 var secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
 
+var returnButton = document.getElementById("returnButton");
+
 
 // Use the function to get the value of 'index'
 const levelNum = getQueryParameter('index');
 
 if (levelNum !== null) {
-    console.log(`Received index: ${levelNum}`);
     // You can now use the index variable as needed
 }
 
@@ -71,267 +72,270 @@ if (true){
 
     index = levelNum;
 
-    if (parseInt(localStorage.getItem('levelsBeaten')) + 1 < parseInt(levelNum)){
+    if (parseInt(localStorage.getItem('levelsBeaten')) + 1 < parseInt(levelNum) && parseInt(levelNum) <= 25){
         window.location.href = `../Functions.html`;
     }
+    else{
 
-
-    map = [];
-    deathMap = [];
-    for (var i = 1; i <= canvas.width; i++) {
-        var temp = [];
-        temp.push(0);
-        temp.push(0);
-        deathMap.push(temp);
-    }
-
-
-
-    if (levelNum == "1") {
-        player.style.top = "308px";
-        door.style.top = "650px";
-        for (var i = 1; i <= canvas.width; i++) {
-            if (i > 910 && i < 1215) {
-                map.push(2000);
-            }
-            else {
-                map.push(880);
-            }
-        }
-    }
-    else if (levelNum == "2") {
-
-        player.style.top = "308px";
-        door.style.top = "170px";
-        for (var i = 1; i <= canvas.width; i++) {
-            if (i <= 763) {
-                map.push(712);
-            }
-            else if (i < 1363) {
-                map.push(2000);
-            }
-            else {
-                map.push(412);
-            }
-        }
-    }
-    else if (levelNum == "3") {
-
-        player.style.top = "178px";
-        door.style.top = "470px";
-        for (var i = 1; i <= canvas.width; i++) {
-            if (i < 763) {
-                map.push(412);
-            }
-            else if (i < 1213) {
-                map.push(2000);
-            }
-            else {
-                map.push(712);
-            }
-        }
-
-    }
-    else if (levelNum == "4") {
+        map = [];
         deathMap = [];
-        player.style.top = "308px";
-        door.style.top = "428px";
         for (var i = 1; i <= canvas.width; i++) {
-
-            if (i == 913) {
-                var temp = [];
-                temp.push(1);
-                temp.push(500);
-                deathMap.push(temp);
-            }
-            else {
-                var temp = [];
-                temp.push(0);
-                temp.push(0);
-                deathMap.push(temp);
-            }
-
-            if (i <= 763) {
-                map.push(742);
-            }
-            else if (i < 1213) {
-
-                map.push(2000);
-            }
-            else {
-                map.push(697);
-            }
+            var temp = [];
+            temp.push(0);
+            temp.push(0);
+            deathMap.push(temp);
         }
-    }
-    else if (levelNum == "5") {
-        deathMap = [];
-        player.style.top = "308px";
-        door.style.top = "458px";
-        for (var i = 1; i <= canvas.width; i++) {
-
-            if (i == 688) {
-                var temp = [1, 450];
-                deathMap.push(temp);
-            }
-            else if (i == 940) {
-                var temp = [562, 2000];
-                deathMap.push(temp);
-            }
-            else if (i == 1129) {
-                var temp = [1, 364];
-                deathMap.push(temp);
-            }
-            else {
-                var temp = [0, 0];
-                deathMap.push(temp);
-            }
-
-
-
-            if (i <= 463) {
-                map.push(412);
-            }
-            else if (i < 1213) {
-
-                map.push(2000);
-            }
-            else {
-                map.push(712);
-            }
-        }
-    }
-    else if (levelNum == "6") {
-        deathMap = [];
-        player.style.top = "308px";
-        door.style.top = "608px";
-        for (var i = 1; i <= canvas.width; i++) {
-
-            if (i == 673) {
-                var temp = [1, 412];
-                deathMap.push(temp);
-            }
-            else if (i == 703) {
-                var temp = [592, 2000];
-                deathMap.push(temp);
-            }
-            else if (i == 762) {
-                var temp = [1, 397];
-                deathMap.push(temp);
-            }
-            else if (i == 763) {
-                var temp = [562, 2000];
-                deathMap.push(temp);
-            }
-            else if (i == 853) {
-                var temp = [622, 2000];
-                deathMap.push(temp);
-            }
-            else {
-                var temp = [0, 0];
-                deathMap.push(temp);
-            }
-
-
-
-
-            map.push(862);
-        }
-    }
-    else if (levelNum == "7") {
-        deathMap = [];
-        player.style.top = "178px";
-        door.style.top = "150px";
-        for (var i = 1; i <= canvas.width; i++) {
-            
-            if (i == 852) {
-                var temp = [600, 2000];
-                deathMap.push(temp);
-            }
-            else if (i == 1062) {
-                var temp = [1, 450];
-                deathMap.push(temp);
-            }
-            else if (i == 1061) {
-                var temp = [717, 2000];
-                deathMap.push(temp);
-            }
-            else if (i == 1272) {
-                var temp = [600, 2000];
-                deathMap.push(temp);
-            }
-            else {
-                var temp = [0, 0];
-                deathMap.push(temp);
-            }
-
-
-
-
-            if (i <= 725) {
-                map.push(410);
-            }
-            else if (i < 1397) {
-
-                map.push(2000);
-            }
-            else {
-                map.push(410);
-            }
-        }
-    }
-    else if (parseInt(levelNum) > 25){
-        window.location.href = `../nothing_to_see_here/25+.html`;
-    }
-    else {
-        player.style.top = "308px";
-        door.style.top = "650px";
-        for (var i = 1; i <= canvas.width; i++) {
-            if (i > 910 && i < 1215) {
-                map.push(2000);
-            }
-            else {
-                map.push(880);
-            }
-        }
-    }
     
-    elt = document.getElementById('Graph');
-    //elt.style.width 
-    calculator = Desmos.GraphingCalculator(elt, {
-        expressions: false,
-        keypad: false,
-        settingsMenu: false,
-        zoomButtons: false,
-        projectorMode: false,
-        lockViewport: true
-    });
-    canvas.width = calculator.graphpaperBounds.pixelCoordinates.width;
-    canvas.height = calculator.graphpaperBounds.pixelCoordinates.height;
-    n = canvas.width;
-
-    Wins = 0;
-    Deaths = 0;
-    play = setInterval("Play()", gamespeed);
     
-    calculator.setExpression({
-        id: 'line',
-        latex: 'y=',
-    });
     
-    DrawFunc();
-
-
-
-    document.onkeydown = function (e) {
-        if (e.keyCode == "27" && gameStarted) {
-            pause = !pause;
+        if (levelNum == "1") {
+            player.style.top = "308px";
+            door.style.top = "650px";
+            for (var i = 1; i <= canvas.width; i++) {
+                if (i > 910 && i < 1215) {
+                    map.push(2000);
+                }
+                else {
+                    map.push(880);
+                }
+            }
         }
-        if (e.keyCode == "13" && !gameStarted) {
-            pause = false;
-            gameStarted = true;
-            start_message.style.visibility = "hidden";
+        else if (levelNum == "2") {
+    
+            player.style.top = "308px";
+            door.style.top = "170px";
+            for (var i = 1; i <= canvas.width; i++) {
+                if (i <= 763) {
+                    map.push(712);
+                }
+                else if (i < 1363) {
+                    map.push(2000);
+                }
+                else {
+                    map.push(412);
+                }
+            }
         }
-    };
+        else if (levelNum == "3") {
+    
+            player.style.top = "178px";
+            door.style.top = "470px";
+            for (var i = 1; i <= canvas.width; i++) {
+                if (i < 763) {
+                    map.push(412);
+                }
+                else if (i < 1213) {
+                    map.push(2000);
+                }
+                else {
+                    map.push(712);
+                }
+            }
+    
+        }
+        else if (levelNum == "4") {
+            deathMap = [];
+            player.style.top = "308px";
+            door.style.top = "428px";
+            for (var i = 1; i <= canvas.width; i++) {
+    
+                if (i == 913) {
+                    var temp = [];
+                    temp.push(1);
+                    temp.push(500);
+                    deathMap.push(temp);
+                }
+                else {
+                    var temp = [];
+                    temp.push(0);
+                    temp.push(0);
+                    deathMap.push(temp);
+                }
+    
+                if (i <= 763) {
+                    map.push(742);
+                }
+                else if (i < 1213) {
+    
+                    map.push(2000);
+                }
+                else {
+                    map.push(697);
+                }
+            }
+        }
+        else if (levelNum == "5") {
+            deathMap = [];
+            player.style.top = "308px";
+            door.style.top = "458px";
+            for (var i = 1; i <= canvas.width; i++) {
+    
+                if (i == 688) {
+                    var temp = [1, 450];
+                    deathMap.push(temp);
+                }
+                else if (i == 940) {
+                    var temp = [562, 2000];
+                    deathMap.push(temp);
+                }
+                else if (i == 1129) {
+                    var temp = [1, 364];
+                    deathMap.push(temp);
+                }
+                else {
+                    var temp = [0, 0];
+                    deathMap.push(temp);
+                }
+    
+    
+    
+                if (i <= 463) {
+                    map.push(412);
+                }
+                else if (i < 1213) {
+    
+                    map.push(2000);
+                }
+                else {
+                    map.push(712);
+                }
+            }
+        }
+        else if (levelNum == "6") {
+            deathMap = [];
+            player.style.top = "308px";
+            door.style.top = "608px";
+            for (var i = 1; i <= canvas.width; i++) {
+    
+                if (i == 673) {
+                    var temp = [1, 412];
+                    deathMap.push(temp);
+                }
+                else if (i == 703) {
+                    var temp = [592, 2000];
+                    deathMap.push(temp);
+                }
+                else if (i == 762) {
+                    var temp = [1, 397];
+                    deathMap.push(temp);
+                }
+                else if (i == 763) {
+                    var temp = [562, 2000];
+                    deathMap.push(temp);
+                }
+                else if (i == 853) {
+                    var temp = [622, 2000];
+                    deathMap.push(temp);
+                }
+                else {
+                    var temp = [0, 0];
+                    deathMap.push(temp);
+                }
+    
+    
+    
+    
+                map.push(862);
+            }
+        }
+        else if (levelNum == "7") {
+            deathMap = [];
+            player.style.top = "178px";
+            door.style.top = "150px";
+            for (var i = 1; i <= canvas.width; i++) {
+                
+                if (i == 852) {
+                    var temp = [600, 2000];
+                    deathMap.push(temp);
+                }
+                else if (i == 1062) {
+                    var temp = [1, 450];
+                    deathMap.push(temp);
+                }
+                else if (i == 1061) {
+                    var temp = [717, 2000];
+                    deathMap.push(temp);
+                }
+                else if (i == 1272) {
+                    var temp = [600, 2000];
+                    deathMap.push(temp);
+                }
+                else {
+                    var temp = [0, 0];
+                    deathMap.push(temp);
+                }
+    
+    
+    
+    
+                if (i <= 725) {
+                    map.push(410);
+                }
+                else if (i < 1397) {
+    
+                    map.push(2000);
+                }
+                else {
+                    map.push(410);
+                }
+            }
+        }
+        else if (parseInt(levelNum) > 25){
+            window.location.href = `../nothing_to_see_here/25+.html`;
+        }
+        else {
+            player.style.top = "308px";
+            door.style.top = "650px";
+            for (var i = 1; i <= canvas.width; i++) {
+                if (i > 910 && i < 1215) {
+                    map.push(2000);
+                }
+                else {
+                    map.push(880);
+                }
+            }
+        }
+        
+        elt = document.getElementById('Graph');
+        //elt.style.width 
+        calculator = Desmos.GraphingCalculator(elt, {
+            expressions: false,
+            keypad: false,
+            settingsMenu: false,
+            zoomButtons: false,
+            projectorMode: false,
+            lockViewport: true
+        });
+        canvas.width = calculator.graphpaperBounds.pixelCoordinates.width;
+        canvas.height = calculator.graphpaperBounds.pixelCoordinates.height;
+        n = canvas.width;
+    
+        Wins = 0;
+        Deaths = 0;
+        play = setInterval("Play()", gamespeed);
+        
+        calculator.setExpression({
+            id: 'line',
+            latex: 'y=',
+        });
+        
+        DrawFunc();
+    
+        returnButton.onclick = function () {
+            window.location.href = `../Functions.html`;
+        };
+    
+        document.onkeydown = function (e) {
+            if (e.keyCode == "27" && gameStarted) {
+                pause = !pause;
+            }
+            if (e.keyCode == "13" && !gameStarted) {
+                pause = false;
+                gameStarted = true;
+                start_message.style.visibility = "hidden";
+            }
+        };
+    }
 }
 
 
@@ -618,7 +622,12 @@ function Play() {
         
         DrawFunc();
         
-        //console.log(enteredMath + " --> " + expr2)
+        //console.log(enteredMath + " --> " + expr2);
+
+        if (expr2 == String.raw`\int_{ }^{ }\sqrt{∞}\\piθσ\sum_{ }^{ }Δ` || expr2 == String.raw`\int_{ }^{ }\sqrt{\infty}\\pi\theta\sigma\sum_{ }^{ }\Delta`){
+            
+            window.location.href = `../nothing_to_see_here/puzz.html`;
+        }
     }
     if (!pause) {
 
@@ -705,7 +714,9 @@ function Play() {
                 if (Deaths > 100 && !secretsFound.includes("UNSTOPPABLE")){
                     window.location.href = `../nothing_to_see_here/ded.html`;
                 }
-                window.location.href = `../Functions.html`;
+                else{
+                    window.location.href = `../Functions.html`;
+                }
             }
             else if (playerLeftX > 2300){
                 Deaths++;

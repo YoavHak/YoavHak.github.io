@@ -33,7 +33,6 @@ if (levelsBeaten) {
 else {
     levelsBeaten = 0;
 }
-console.log(levelsBeaten);
 
 if (levelsBeaten > 0){
     
@@ -49,7 +48,6 @@ if (secretsFound) {
 else{
     secretsFound = [];
 }
-console.log(secretsFound);
 localStorage.setItem('secretsFound', JSON.stringify(secretsFound));
 
 var maxEggs = localStorage.getItem('maxEggs');
@@ -57,7 +55,7 @@ if (maxEggs) {
     maxEggs = parseInt(maxEggs);
 }
 else {
-    maxEggs = 3;
+    maxEggs = 4;
 }
 localStorage.setItem("maxEggs", maxEggs);
 
@@ -81,7 +79,6 @@ document.getElementById("resetButton").onclick = function() {
     localStorage.setItem('levelsBeaten', 0);
     localStorage.setItem('secretsFound', JSON.stringify([]));
     location.reload();
-    console.log("0");
 };
 
 
@@ -214,6 +211,9 @@ function changeMuteState(){
         muteIcon.src = 'Images/sound-off.png'; // Image for muted state
     } else {
         backgroundMusic.muted = false;
+        if (backgroundMusic.duration == 0 || backgroundMusic.paused){
+            backgroundMusic.play();
+        }
         muteIcon.src = 'Images/sound-on.png'; // Image for unmuted state
     }
 }
