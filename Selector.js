@@ -50,14 +50,10 @@ else{
 }
 localStorage.setItem('secretsFound', JSON.stringify(secretsFound));
 
-var maxEggs = localStorage.getItem('maxEggs');
-if (maxEggs) {
-    maxEggs = parseInt(maxEggs);
-}
-else {
-    maxEggs = 4;
-}
+var maxEggs = 4;
 localStorage.setItem("maxEggs", maxEggs);
+
+
 
 
 
