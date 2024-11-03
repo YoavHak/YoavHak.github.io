@@ -377,20 +377,6 @@ document.addEventListener('mouseup', () => {
 // Prevent text selection during drag
 levelDiv.addEventListener('dragstart', (e) => e.preventDefault());
 
-//Add scroll event for zooming
-levelDiv.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    
-    // Zoom in/out based on the scroll direction
-    const zoomDirection = e.deltaY > 0 ? -1 : 1;
-    
-    // Update the scale factor
-    scale += zoomDirection * zoomSensitivity;
-    scale = Math.min(Math.max(0.1, scale), 5);  // Limit zoom between 0.1 and 5
-
-    updateTransform();
-});
-
 // Function to update the transform property
 function updateTransform() {
     var scaledOffsetX = offsetX/scale;
