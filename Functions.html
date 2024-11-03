@@ -122,15 +122,15 @@
             font-size: 36px;
             text-align: center;
             padding: 20px;
-            color: #ffeb3b;
+            color: #ffffff;
             transition: transform 0.2s ease;
             cursor: pointer;
             background-color: rgb(32, 17, 17);
         }
 
         #levelTable td:hover {
-            background-color: #ff6a00;
-            color: #2b2b2b;
+            border: 5px solid #ff6a00;
+            color: #ffffff;
             transform: scale(1.1);
             z-index:2;
         }
@@ -165,10 +165,87 @@
             text-align: center;
         }
 
-        .resetButton {
+
+        /* Progress Viewer Styling */
+        #progressViewer {
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 400px; /* set a fixed width */
+            height: 533px; /* set a fixed height */
+            background-color: rgba(255, 165, 0, 0.9); /* Transparent orange */
+            border: 5px solid #ff8c00; /* Darker orange border */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0px 0px 20px rgba(255, 165, 0, 0.5); /* Shadow effect */
             position: fixed;
-            margin-top: 650px;
-            margin-right: 80px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centering */
+            z-index: 2; /* Ensure it's above other elements */
+        }
+
+        /* Progress content styling */
+        #progressContent {
+            text-align: center; /* Center-align text */
+        }
+
+        #progressList {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0; /* Remove padding */
+        }
+
+        #progressList li {
+            margin: 10px 0; /* Add space between list items */
+            font-size: 18px; /* Size of text */
+            color: black; /* Change text color to black for readability */
+        }
+
+        /* Add some decoration with background pattern */
+        #progressViewer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 15px; /* Match rounded corners */
+            z-index: -1; /* Place it behind the container */
+        }
+
+
+        .progressBarContainer {
+        width: 270px; /* Width of the progress bar */
+        background-color: rgba(255, 255, 255, 0.3); /* Light background */
+        border-radius: 10px; /* Rounded corners */
+        height: 30px; /* Height of the bar container */
+        }
+
+        /* Progress Bar Styling */
+        .progressBar {
+            height: 100%; /* Fill the container height */
+            background-color: blue; /* Color of the progress bar */
+            border-radius: 10px; /* Match corners */
+            transition: width 0.5s ease; /* Smooth transition for animation */
+        }
+
+        /* Progress Percentage Styling */
+        .progressPercentage {
+            font-size: 20px; /* Size of the percentage text */
+            color: black; /* Text color */
+            text-align: center; /* Center-align the text */
+        }
+
+        
+
+        .button {
+            position: fixed;
+            margin-top: 700px;
+        }
+
+        .resetButton {
+            float: left;
             padding: 20px 40px;
             font-size: 30px;
             color: #ffeb3b;
@@ -190,9 +267,9 @@
 
         /* Mute Button */
         .muteButton {
-            position: fixed;
-            margin-top: 650px;
-            margin-left: 180px;
+            float: left;
+            margin-left: 10px;
+            margin-top: 10px;
             width: 50px;
             height: 50px;
             background-color: #ff6a00;
@@ -213,6 +290,55 @@
         .muteButton:hover {
             transform: scale(1.1);
         }
+
+        .progressButton {
+            margin-left: 10px;
+            float: left;
+            padding: 20px 40px;
+            font-size: 30px;
+            color: #ffeb3b;
+            background-color: #ff6a00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: rgb(46, 160, 21);
+        }
+
+        .progressButton:hover {
+            background-color: #ff6a00;
+            color: #ffeb3b;
+            transform: scale(1.1);
+            z-index: 2;
+            
+        }
+
+        /* Styling for Exit Button */
+        .exitButton {
+            position: absolute;    /* Position relative to the closest positioned parent (progressViewer) */
+            top: 10px;            /* Distance from the top */
+            right: 10px;          /* Distance from the right */
+            background-color: rgba(255, 165, 0, 0.8); /* Transparent orange background */
+            border: none;         /* No border */
+            border-radius: 50%;   /* Circular shape */
+            width: 50px;          /* Width of the button */
+            height: 50px;         /* Height of the button */
+            display: flex;        /* Flexbox for centering content */
+            justify-content: center; /* Center horizontally */
+            align-items: center;  /* Center vertically */
+            cursor: pointer;      /* Cursor pointer on hover */
+            transition: transform 0.2s; /* Smooth scale transition on hover */
+        }
+
+        .exitButton:hover {
+            transform: scale(1.2);
+        }
+
+        .exitButton img {
+            width: 24px;           /* Icon size */
+            height: 24px;         /* Icon size */
+        }
+
 
 
 
@@ -367,6 +493,13 @@
             z-index:-5;
             animation:move-twink-back 200s linear infinite;
         }
+
+         
+        .disabled { 
+            pointer-events: none; /* Prevents interaction */ 
+            opacity: 0.5; /* Makes it look disabled */ 
+        } 
+
         @keyframes move-twink-back {
             from {background-position:0 0;}
             to {background-position:-10000px 5000px;}
@@ -420,18 +553,57 @@
             <p id="easterEggText" class="otherMessage">1 Easter Egg remains.</p>
         </div>
 
+        <div class="button">
 
-        <!-- Reset Button -->
-        <button id="resetButton" class="resetButton">
-            Reset
-        </button>
+            <!-- Reset Button -->
+            <button id="resetButton" class="resetButton">
+                Reset
+            </button>
+    
+            <!-- Mute Button -->
+            <button id="muteButton" class="muteButton">
+                <img id="muteIcon" src="Images/sound-on.png" alt="Mute Icon">
+            </button>
+    
+            <!-- Progress Button -->
+            <button id="progressButton" class="progressButton">
+                Progress
+            </button>
+        </div>
+    </div>
 
-        <!-- Mute Button -->
-        <button id="muteButton" class="muteButton">
-            <img id="muteIcon" src="Images/sound-on.png" alt="Mute Icon">
-        </button>
+    <!-- Progress Viewer -->
+    <div id="progressViewer" >
+        <h2>Progress Viewer</h2>
+        <div id="progressContent">
+            <h3>Levels:</h3>
+            <div class="progressBarContainer">
+                <div class="progressBar" id="levelsProgressBar" style="width: 0%;"></div>
+            </div>
+            <p class="progressPercentage" id="levelsProgressPercentage">0%</p>
+            
+            <h3>Easter Eggs:</h3>
+            <div class="progressBarContainer">
+                <div class="progressBar" id="eggsProgressBar" style="width: 0%;"></div>
+            </div>
+            <p class="progressPercentage" id="eggsProgressPercentage">0%</p>
+            
+            <h3>Total:</h3>
+            <div class="progressBarContainer">
+                <div class="progressBar" id="totalProgressBar" style="width: 0%;"></div>
+            </div>
+            <p class="progressPercentage" id="totalProgressPercentage">0%</p>
+
+
+            
+            <!-- Exit Button -->
+            <button id="progressExitButton" class="exitButton">
+                <img id="exitIcon" src="Images/Exit.png">
+            </button>
+        </div>
 
     </div>
+
     <script src="Selector.js"></script>
 </body>
 </html>

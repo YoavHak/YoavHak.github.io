@@ -1,6 +1,16 @@
 // JavaScript source code
 
+var selectorDiv = document.getElementById("levelSelector");
+
 var levelTable = document.getElementById("levelTable");
+
+var progressViewer = document.getElementById("progressViewer");
+
+var levelsProgressPercentage = document.getElementById("levelsProgressPercentage");
+
+var eggsProgressPercentage = document.getElementById("eggsProgressPercentage");
+
+var totalProgressPercentage = document.getElementById("totalProgressPercentage");
 
 const backgroundMusic = document.getElementById('backgroundMusic');
 
@@ -18,6 +28,9 @@ var float_interval;
 
 var levelsBeaten = localStorage.getItem('levelsBeaten');
 
+var LEVEL_NUM = 25;
+
+var MAX_EGGS = 4;
 
 const muteButton = document.getElementById('muteButton');
 const muteIcon = document.getElementById('muteIcon');
@@ -50,8 +63,7 @@ else{
 }
 localStorage.setItem('secretsFound', JSON.stringify(secretsFound));
 
-var maxEggs = 4;
-localStorage.setItem("maxEggs", maxEggs);
+localStorage.setItem("maxEggs", MAX_EGGS);
 
 
 
@@ -76,6 +88,32 @@ document.getElementById("resetButton").onclick = function() {
     localStorage.setItem('secretsFound', JSON.stringify([]));
     location.reload();
 };
+
+document.getElementById("progressButton").onclick = function() {
+    selectorDiv.classList.add("disabled");
+    progressViewer.style.visibility = "visible";
+
+    levelsBeaten = parseInt(localStorage.getItem('levelsBeaten'));
+    secretsFound = JSON.parse(localStorage.getItem('secretsFound'))
+
+    var temp_LPP = levelsBeaten / LEVEL_NUM;
+    var temp_EPP = secretsFound.length / MAX_EGGS;
+
+    levelsProgressPercentage.innerHTML = Math.round(100 * temp_LPP) + "%";
+    eggsProgressPercentage.innerHTML = Math.round(100 * temp_EPP) + "%";
+    totalProgressPercentage.innerHTML = Math.round(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS)) + "%";
+
+    document.getElementById("levelsProgressBar").style.width = levelsProgressPercentage.innerHTML;
+    document.getElementById("eggsProgressBar").style.width = eggsProgressPercentage.innerHTML;
+    document.getElementById("totalProgressBar").style.width = totalProgressPercentage.innerHTML;
+
+};
+
+document.getElementById("progressExitButton").onclick = function() {
+    selectorDiv.classList.remove("disabled");
+    progressViewer.style.visibility = "hidden";
+};
+
 
 
 for (var i = 0; i < 5; i++) {
@@ -151,11 +189,11 @@ function FloatLeft(){
         }
 
         // Show the first message and type out the text
-        typeText("imposterText", "Garry Graph was not The Imposter.", 50);
+        typeText("imposterText", "Garry Graph was not The Imposter.", 42);
 
 
         setTimeout(() => {
-            switch (maxEggs - secretsFound.length) {
+            switch (MAX_EGGS - secretsFound.length) {
                 case 0:
                     fadeText("easterEggText", "You have now found every Easter Egg.");
                     break;
@@ -163,7 +201,7 @@ function FloatLeft(){
                     fadeText("easterEggText", "1 Easter Egg remains.");
                     break;
                 default:
-                    fadeText("easterEggText", (maxEggs - secretsFound.length) + " Easter Eggs remaining.");
+                    fadeText("easterEggText", (MAX_EGGS - secretsFound.length) + " Easter Eggs remaining.");
               }
         }, 2500);
 
