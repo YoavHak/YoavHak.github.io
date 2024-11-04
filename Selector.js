@@ -26,7 +26,7 @@ var float_rotation = 50;
 
 var float_interval;
 
-var levelsBeaten = localStorage.getItem('levelsBeaten');
+var levelsBeaten = parseInt(localStorage.getItem('levelsBeaten'));
 
 var LEVEL_NUM = 25;
 
@@ -45,6 +45,7 @@ if (levelsBeaten) {
 }
 else {
     levelsBeaten = 0;
+    localStorage.setItem("levelsBeaten", levelsBeaten);
 }
 
 if (levelsBeaten > 0){

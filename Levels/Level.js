@@ -675,7 +675,6 @@ function Play() {
             vel += (ACC / 65.378);
         }
 
-        console.log(legsHeight, deathMap[playerLeftX]);
 
         player.style.top = parseFloat(player.style.top) + moveY + 'px';
         player.style.left = parseFloat(player.style.left) + right + 'px';
