@@ -239,7 +239,10 @@
 
         
 
-        .button {
+
+
+
+        .settingsButtons {
             position: fixed;
             margin-top: 700px;
         }
@@ -343,6 +346,61 @@
             width: 24px;           /* Icon size */
             height: 24px;         /* Icon size */
         }
+
+
+        #confirmReset {
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center-aligns content vertically */
+            align-items: center;
+            width: 900px;
+            height: 300px;
+            background-color: rgba(255, 165, 0, 0.9);
+            border: 5px solid #ff8c00;
+            border-radius: 15px;
+            box-shadow: 0px 0px 20px rgba(255, 165, 0, 0.5);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #confirmReset h1 {
+            margin: 0;
+            padding-bottom: 20px; /* Adds space below the text */
+        }
+
+        #confirmResetButtons {
+            display: flex;
+            justify-content: center; /* Center-aligns buttons horizontally */
+            align-items: center; /* Center-aligns buttons vertically */
+            gap: 20px; /* Adds space between the buttons */
+            margin-top: 20px; /* Adds some spacing above the buttons */
+        }
+
+        #confirmResetButtons button {
+            padding: 20px 40px;
+            font-size: 30px;
+            color: #ffeb3b;
+            background-color: #ff6a00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .confirmResetButton:hover {
+            background-color: #ff6a00;
+            color: #ffeb3b;
+            transform: scale(1.1);
+            z-index: 2;
+        }
+
+
+
 
 
 
@@ -558,7 +616,7 @@
             <p id="easterEggText" class="otherMessage">1 Easter Egg remains.</p>
         </div>
 
-        <div class="button">
+        <div class="settingsButtons">
  
             <!-- Reset Button -->
             <button id="resetButton" class="resetButton">
@@ -613,6 +671,23 @@
             </button>
         </div>
 
+    </div>
+
+    <!-- Confirm Reset Viewer -->
+    <div id="confirmReset">
+        
+        <h1>Are you sure you want to reset all of your progress?</h1>
+        
+        <div id="confirmResetButtons">
+            <!-- Yes Button -->
+            <button id="yesReset">
+                Yes
+            </button>
+            <!-- No Button -->
+            <button id="noReset">
+                No
+            </button>
+        </div>
     </div>
 
     <script src="Selector.js"></script>

@@ -6,6 +6,8 @@ var levelTable = document.getElementById("levelTable");
 
 var progressViewer = document.getElementById("progressViewer");
 
+var confirmReset = document.getElementById("confirmReset");
+
 var levelsProgressPercentage = document.getElementById("levelsProgressPercentage");
 
 var eggsProgressPercentage = document.getElementById("eggsProgressPercentage");
@@ -107,11 +109,21 @@ backgroundMusic.load();
 playerImage.style.transformOrigin = "center 25%";
 
 document.getElementById("resetButton").onclick = function() {
-    
+    selectorDiv.classList.add("disabled");
+    confirmReset.style.visibility = "visible";
+};
+
+document.getElementById("yesReset").onclick = function() {
     localStorage.setItem('levelsBeaten', 0);
     localStorage.setItem('secretsFound', JSON.stringify([]));
     location.reload();
 };
+
+document.getElementById("noReset").onclick = function() {
+    selectorDiv.classList.remove("disabled");
+    confirmReset.style.visibility = "hidden";
+};
+
 
 document.getElementById("progressButton").onclick = function() {
     selectorDiv.classList.add("disabled");
