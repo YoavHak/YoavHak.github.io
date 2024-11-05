@@ -28,13 +28,15 @@ var float_interval;
 
 var levelsBeaten = parseInt(localStorage.getItem('levelsBeaten'));
 
-var LEVEL_NUM = 25;
+var LEVEL_NUM = 7;
 
 var MAX_EGGS = 4;
 
 let soundIsMuted = false;
 
 let musicIsMuted = false;
+
+localStorage.setItem("LEVEL_NUM", LEVEL_NUM);
 
 const muteSoundsButton = document.getElementById('muteSoundsButton');
 const muteSoundsIcon = document.getElementById('muteSoundsIcon');
@@ -50,6 +52,10 @@ muteMusicButton.addEventListener('click', () => {
     changeMuteMusicState();
 });
 
+var comingSoonText = document.getElementById("comingSoonText");
+comingSoonText.innerHTML = "LEVEL " + (LEVEL_NUM + 1) + " COMING SOON...";
+
+
 if (levelsBeaten) {
     levelsBeaten = parseInt(levelsBeaten);
 }
@@ -63,7 +69,13 @@ if (levelsBeaten > 0){
     changeMuteSoundsState();
     changeMuteMusicState();
     changeScene();
+
+    if (levelsBeaten > LEVEL_NUM){
+        levelsBeaten = LEVEL_NUM;
+        localStorage.setItem("levelsBeaten", levelsBeaten);
+    }
 }
+
 
 var secretsFound = localStorage.getItem('secretsFound');
 
@@ -140,13 +152,13 @@ for (var i = 0; i < 5; i++) {
         
         td.style.backgroundSize = "cover";
         td.style.backgroundPosition = "center";
-        if (td.innerHTML > levelsBeaten + 1){
+        if (td.innerHTML > levelsBeaten + 1 || td.innerHTML == LEVEL_NUM + 1){
             td.style.opacity = "0.5";
         }
 
         // Animate cell on click and redirect
         td.onclick = function () {
-            if (this.innerHTML <= levelsBeaten + 1) {
+            if (this.innerHTML <= levelsBeaten + 1 && this.innerHTML != LEVEL_NUM + 1) {
                 this.style.backgroundColor = '#ff6a00';
                 this.style.color = '#2b2b2b';
                 clearInterval(float_interval);

@@ -59,6 +59,7 @@ var returnButton = document.getElementById("returnButton");
 
 var GLOBAL_OFFSET_Y = parseInt(canvas.style.top);
 
+var LEVEL_NUM = parseInt(localStorage.getItem("LEVEL_NUM"));
 
 // Use the function to get the value of 'index'
 const levelNum = getQueryParameter('index');
@@ -74,7 +75,7 @@ if (true){
 
     index = levelNum;
 
-    if (parseInt(localStorage.getItem('levelsBeaten')) + 1 < parseInt(levelNum) && parseInt(levelNum) <= 25){
+    if (parseInt(localStorage.getItem('levelsBeaten')) + 1 < parseInt(levelNum) && parseInt(levelNum) < LEVEL_NUM){
         window.location.href = `../Functions.html`;
     }
     else{
@@ -643,7 +644,7 @@ function Play() {
             
             player.style.transform = 'rotate(' + Math.atan(Math.min(funcIncline, baseIncline)) * 180 / Math.PI + 'deg)';
         }
-        else if (inRange(legsHeight, funcMap[playerLeftX]) && legsHeight < 1000 - GLOBAL_OFFSET_Y) {
+        else if (inRange(legsHeight, funcMap[playerLeftX])) {
             //walk on function
             //console.log("walk func");
             moveY += funcIncline - vel;
