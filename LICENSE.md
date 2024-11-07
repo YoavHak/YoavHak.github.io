@@ -1,3 +1,5 @@
+MIT License
+
 Copyright (c) 2024 Yoav Haklai
 
 Permission is hereby granted, free of charge, to use and play the website for personal, non-commercial purposes, subject to the following conditions:
