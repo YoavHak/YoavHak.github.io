@@ -30,7 +30,7 @@ var float_interval;
 
 var levelsBeaten = parseInt(localStorage.getItem('levelsBeaten'));
 
-var LEVEL_NUM = 7;
+var LEVEL_NUM = 8;
 
 var MAX_EGGS = 4;
 

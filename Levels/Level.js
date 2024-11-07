@@ -209,6 +209,43 @@ if (true){
             door.style.top = "608px";
             for (var i = 1; i <= canvas.width; i++) {
     
+                if (i == 972) {
+                    var temp = [1, 487-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1002) {
+                    var temp = [667-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1062) {
+                    var temp = [1, 472-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1063) {
+                    var temp = [637-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1153) {
+                    var temp = [697-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else {
+                    var temp = [0, 0];
+                    deathMap.push(temp);
+                }
+    
+    
+    
+    
+                map.push(862-GLOBAL_OFFSET_Y);
+            }
+        }
+        else if (levelNum == "7") {
+            deathMap = [];
+            player.style.top = "308px";
+            door.style.top = "608px";
+            for (var i = 1; i <= canvas.width; i++) {
+    
                 if (i == 673) {
                     var temp = [1, 412-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
@@ -240,7 +277,7 @@ if (true){
                 map.push(862-GLOBAL_OFFSET_Y);
             }
         }
-        else if (levelNum == "7") {
+        else if (levelNum == "8") {
             deathMap = [];
             player.style.top = "178px";
             door.style.top = "150px";
@@ -457,8 +494,11 @@ Number.prototype.factorial = function () {
 
 function DrawFunc() {
 
+
+    
+
     start = false;
-    var xPixel, yPixel, percentX, percentY, mathX, mathY, mathCoords = calculator.graphpaperBounds.mathCoordinates;
+    var xPixel, yPixel, mathX, mathY;
 
     funcMap = [];
 
@@ -466,12 +506,10 @@ function DrawFunc() {
     n = calculator.graphpaperBounds.pixelCoordinates.width * 2;
     ctx.beginPath();
     for (var i = 0; i < n; i++) {
-        //percentX = i / (n - 1);
-        //mathX = percentX * mathCoords.width  + mathCoords.left;
         mathX = calculator.pixelsToMath({x: (i-parseInt(elt.style.left)), y: 0}).x
 
         mathY = evaluateMathExpr(mathX);
-        //percentY = mathY / mathCoords.height;
+
 
         xPixel = i;
         yPixel = calculator.mathToPixels({ x: mathX, y: mathY }).y + parseInt(elt.style.top) 
@@ -484,6 +522,14 @@ function DrawFunc() {
                 funcMap[Math.floor(xPixel)] = yPixel - GLOBAL_OFFSET_Y;
             }
         }
+
+        // ctx.fillStyle = "white";
+        // ctx.fillRect(i, funcMap[i], 6, 6);
+
+        // ctx.fillStyle = "orange";
+        // ctx.fillRect(i, funcMap[i], 6, 6);
+
+        // ctx.fillStyle = "black";
 
     }
 
@@ -559,12 +605,18 @@ function IsColliding(IncRad) {
 function FilterExpression(exp){
     var newExpr = "";
     for (var i = 0; i < exp.length; i++) {
-        if ((exp[i] == 'x' || exp[i] == 's' || exp[i] == '(') && i > 0 && ((exp[i - 1] >= 0 && exp[i - 1] <= 9) || exp[i - 1] == 'x')) {
+        if ((exp[i] == 'x' || exp[i] == 's' || exp[i] == '(') && i > 0 && ((parseInt(exp[i - 1]) >= 0 && parseInt(exp[i - 1]) <= 9) || exp[i - 1] == 'x')) {
 
             newExpr += '*';
         }
-        newExpr += exp[i];
+        if (exp[i] == 'X'){
+            newExpr += 'x'
+        }
+        else if (exp[i] != ' '){
+            newExpr += exp[i];
+        }
     }
+    
     return newExpr;
 }
 
@@ -577,6 +629,8 @@ function FilterExpression2(exp){
         }
         newExpr += exp[i];
     }
+
+
     return newExpr + exp[exp.length-1];
 }
 
@@ -591,6 +645,7 @@ function Play() {
     expr = FilterExpression(MQtoAM(String(enteredMath)));
     var expr2 = FilterExpression2(enteredMath);
 
+    //console.log("expr: " + expr, "expr2: " + expr2)
     
     input.style.width = (expr.length * 17) + 'px';
     if (expr.length < 11) {
@@ -620,6 +675,8 @@ function Play() {
             window.location.href = `../nothing_to_see_here/puzz.html`;
         }
     }
+
+
     if (!pause) {
 
         var playerLeftX = parseFloat(player.style.left) + 50;
@@ -679,6 +736,7 @@ function Play() {
 
         player.style.top = parseFloat(player.style.top) + moveY + 'px';
         player.style.left = parseFloat(player.style.left) + right + 'px';
+        
         if (legsHeight > 1400 - GLOBAL_OFFSET_Y || legsHeight < -150 - GLOBAL_OFFSET_Y) {
             player.style.left = '-102px';
             player.style.top = '308px';
