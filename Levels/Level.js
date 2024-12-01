@@ -148,9 +148,11 @@ if (true){
             for (var i = 1; i <= canvas.width; i++) {
     
                 if (i == 913) {
-                    var temp = [];
-                    temp.push(1);
-                    temp.push(500-GLOBAL_OFFSET_Y);
+                    var temp = [1, 570-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 914) {
+                    var temp = [728-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else {
