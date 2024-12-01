@@ -18,6 +18,7 @@ var canvas = document.getElementById("myCanvas"),
     ;
 
 
+
 var input = document.getElementById("input");
 
 
@@ -64,9 +65,14 @@ var LEVEL_NUM = parseInt(localStorage.getItem("LEVEL_NUM"));
 // Use the function to get the value of 'index'
 const levelNum = getQueryParameter('index');
 
+
 if (levelNum !== null) {
     // You can now use the index variable as needed
 }
+
+
+
+
 
 
 
@@ -319,6 +325,133 @@ if (true){
                 }
             }
         }
+        else if (levelNum == "9") {
+            deathMap = [];
+            player.style.top = "308px";
+            door.style.top = "608px";
+            for (var i = 1; i <= canvas.width; i++) {
+    
+                if (i == 673) {
+                    var temp = [1, 412-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 703) {
+                    var temp = [592-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 762) {
+                    var temp = [1, 397-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 763) {
+                    var temp = [562-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 853) {
+                    var temp = [622-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+
+                
+                else if (i == 1423) {
+                    var temp = [1, 412-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1453) {
+                    var temp = [592-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1512) {
+                    var temp = [1, 397-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1513) {
+                    var temp = [562-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1603) {
+                    var temp = [622-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+
+
+                else {
+                    var temp = [0, 0];
+                    deathMap.push(temp);
+                }
+    
+    
+    
+    
+                map.push(862-GLOBAL_OFFSET_Y);
+            }
+        }
+        else if (levelNum == "10") {
+            deathMap = [];
+            player.style.top = "308px";
+            door.style.top = "308px";
+            for (var i = 1; i <= canvas.width; i++) {
+    
+                if (i == 462) {
+                    var temp = [780-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 612) {
+                    var temp = [1, 502-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 762) {
+                    var temp = [610-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 912) {
+                    var temp = [1, 415-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1062) {
+                    var temp = [563-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1212) {
+                    var temp = [1, 382-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1362) {
+                    var temp = [490-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1512) {
+                    var temp = [1, 220-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1662) {
+                    var temp = [300-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 2037) {
+                    var temp = [562-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 2112) {
+                    var temp = [1, 310-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else {
+                    var temp = [0, 0];
+                    deathMap.push(temp);
+                }
+    
+    
+    
+    
+                if (i <= 373) {
+                    map.push(862-GLOBAL_OFFSET_Y);
+                }
+                else {
+                    map.push(1000-GLOBAL_OFFSET_Y);
+                }
+            }
+        }
         else if (parseInt(levelNum) > 25){
             window.location.href = `../nothing_to_see_here/25+.html`;
         }
@@ -482,18 +615,17 @@ function drawText(txt, x, y) {
 }
 
 function inRange(num1, num2) {
-    return (num1 < num2 + 10 && num1 > num2 - 10);
+    return (num1 < num2 + 5 && num1 > num2 - 5);
 }
 
 "use strict"; // To avoid this-wrapping overhead (optional)
 
 Number.prototype.factorial = function () {
-    return this > 0 ? this * (this-1).factorial() : 1;
+    return this > 0 ? this * (this - 1).factorial() : 1;
 }
 
 
 function DrawFunc() {
-
 
     
 
@@ -523,13 +655,14 @@ function DrawFunc() {
             }
         }
 
-        // ctx.fillStyle = "white";
-        // ctx.fillRect(i, funcMap[i], 6, 6);
 
-        // ctx.fillStyle = "orange";
-        // ctx.fillRect(i, funcMap[i], 6, 6);
+        //  ctx.fillStyle = "white";
+        //  ctx.fillRect(i, funcMap[i], 6, 6);
 
-        // ctx.fillStyle = "black";
+        //  ctx.fillStyle = "orange";
+        //  ctx.fillRect(i, funcMap[i], 6, 6);
+
+        //  ctx.fillStyle = "black";
 
     }
 
@@ -615,7 +748,11 @@ function FilterExpression(exp){
         else if (exp[i] != ' '){
             newExpr += exp[i];
         }
+
+        //if (i + 3 < exp.length && exp.substring(i, i+3) == "log") {
+        //}
     }
+
     
     return newExpr;
 }
@@ -667,8 +804,8 @@ function Play() {
         });
         
         DrawFunc();
-        
-        //console.log(enteredMath + " --> " + expr2);
+
+        //console.log(expr)
 
         if (expr2 == String.raw`\int_{ }^{ }\sqrt{∞}\\piθσ\sum_{ }^{ }Δ` || expr2 == String.raw`\int_{ }^{ }\sqrt{\infty}\\pi\theta\sigma\sum_{ }^{ }\Delta`){
             
@@ -877,11 +1014,18 @@ function MQtoAM(tex, display) {
 }
 
 function evaluateMathExpr(mathX) {
+
     scope.x = mathX;
     try {
         return tree.eval();
     }
     catch (err) {
+        try {
+            return evaluatex(FilterExpression2(enteredMath))({ x: mathX, X: mathX });
+
+        } catch (e) {
+
+        }
     }
 }
 
@@ -890,3 +1034,6 @@ function getQueryParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
 }
+
+
+
