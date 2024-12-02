@@ -617,7 +617,7 @@ function drawText(txt, x, y) {
 }
 
 function inRange(num1, num2) {
-    return (num1 < num2 + 5 && num1 > num2 - 5);
+    return (num1 < num2 + 10 && num1 > num2 - 10);
 }
 
 "use strict"; // To avoid this-wrapping overhead (optional)
