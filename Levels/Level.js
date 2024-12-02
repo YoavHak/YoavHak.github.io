@@ -737,10 +737,46 @@ function IsColliding(IncRad) {
     return false;
 }
 
+function transformLogExpression(expression) {
+    // Regular expression to match logs with nested parentheses in the base or argument
+    const logPattern = /log_\(([^()]+|\((?:[^)(]+|\([^)(]*\))*\))\)\(([^()]+)\)|log_([^\W_]+)\(([^()]+)\)|log\(([^()]+)\)|log([^\W_]+)|ln\(([^()]+)\)/g;
+
+    function replaceLogs(match, baseWithParens, argWithParens, baseSimple, argSimple, logWithParens, simpleLog, lnArgument) {
+        if (baseWithParens && argWithParens) {
+            // Case: log_((base))(argument) or log_(base)(argument)
+            const base = transformLogExpression(baseWithParens);
+            const argument = transformLogExpression(argWithParens);
+            return `log(${argument}, ${base})`;
+        } else if (baseSimple && argSimple) {
+            // Case: log_base(argument)
+            const base = transformLogExpression(baseSimple);
+            const argument = transformLogExpression(argSimple);
+            return `log(${argument}, ${base})`;
+        } else if (logWithParens) {
+            // Case: log(argument) with default base 10
+            const argument = transformLogExpression(logWithParens);
+            return `log(${argument}, 10)`;
+        } else if (simpleLog) {
+            // Case: logX with default base 10
+            const argument = transformLogExpression(simpleLog);
+            return `log(${argument}, 10)`;
+        } else if (lnArgument) {
+            // Case: ln(argument) -> log(argument, e)
+            const argument = transformLogExpression(lnArgument);
+            return `log(${argument}, e)`;
+        }
+        return match; // Return unchanged if it doesn't match
+    }
+
+    return expression.replace(logPattern, replaceLogs);
+}
+
+
 function FilterExpression(exp){
     var newExpr = "";
     for (var i = 0; i < exp.length; i++) {
-        if ((exp[i] == 'x' || exp[i] == 's' || exp[i] == '(') && i > 0 && ((parseInt(exp[i - 1]) >= 0 && parseInt(exp[i - 1]) <= 9) || exp[i - 1] == 'x')) {
+
+        if (i > 0 && (exp[i] == 'x' || exp[i] == 's' || exp[i] == '(') && ((parseInt(exp[i - 1]) >= 0 && parseInt(exp[i - 1]) <= 9) || exp[i - 1] == 'x')) {
 
             newExpr += '*';
         }
@@ -751,10 +787,8 @@ function FilterExpression(exp){
             newExpr += exp[i];
         }
 
-        //if (i + 3 < exp.length && exp.substring(i, i+3) == "log") {
-        //}
     }
-
+    newExpr = transformLogExpression(newExpr);
     
     return newExpr;
 }
@@ -807,7 +841,7 @@ function Play() {
         
         DrawFunc();
 
-        //console.log(expr)
+        console.log(expr)
 
         if (expr2 == String.raw`\int_{ }^{ }\sqrt{∞}\\piθσ\sum_{ }^{ }Δ` || expr2 == String.raw`\int_{ }^{ }\sqrt{\infty}\\pi\theta\sigma\sum_{ }^{ }\Delta`){
             
