@@ -841,7 +841,7 @@ function Play() {
         
         DrawFunc();
 
-        console.log(expr)
+        //console.log(expr)
 
         if (expr2 == String.raw`\int_{ }^{ }\sqrt{∞}\\piθσ\sum_{ }^{ }Δ` || expr2 == String.raw`\int_{ }^{ }\sqrt{\infty}\\pi\theta\sigma\sum_{ }^{ }\Delta`){
             
@@ -853,6 +853,7 @@ function Play() {
     if (!pause) {
 
         var playerLeftX = parseFloat(player.style.left) + 50;
+        var playerRightX = parseFloat(player.style.left) + parseFloat(player.style.width);
         var legsHeight = parseFloat(player.style.top) + parseFloat(player.style.height) / 2 - GLOBAL_OFFSET_Y;
         var moveY = vel, baseIncline = 0, funcIncline = funcMap[playerLeftX + 1] - funcMap[playerLeftX];
         
@@ -880,7 +881,7 @@ function Play() {
             moveY += funcIncline - vel;
             vel = 0;
 
-
+            playerRightX -= Math.atan(funcIncline) * 180 / Math.PI;
             player.style.transform = 'rotate(' + Math.atan(funcIncline) * 180 / Math.PI + 'deg)';
         }
         else if (inRange(legsHeight, map[playerLeftX - 20])) {
@@ -890,6 +891,7 @@ function Play() {
             moveY += baseIncline - vel + (map[playerLeftX -20] - legsHeight);
             vel = 0;
 
+            playerRightX -= Math.atan(baseIncline) * 180 / Math.PI;
             player.style.transform = 'rotate(' + Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
 
         }
@@ -907,8 +909,21 @@ function Play() {
         }
 
 
+        if (inRange(legsHeight - parseFloat(player.style.height), map[playerLeftX])){
+            //hit roof
+            moveY = 0;
+        }
+
+
+        var moveX = right;
+        for (var i = -5; i < 5; i++){
+            if (legsHeight < map[playerRightX + i] && legsHeight > map[playerRightX + i + 1]){
+                moveX = 0;
+            }
+        }
+
         player.style.top = parseFloat(player.style.top) + moveY + 'px';
-        player.style.left = parseFloat(player.style.left) + right + 'px';
+        player.style.left = parseFloat(player.style.left) + moveX + 'px';
         
         if (legsHeight > 1400 - GLOBAL_OFFSET_Y || legsHeight < -150 - GLOBAL_OFFSET_Y) {
             player.style.left = '-102px';

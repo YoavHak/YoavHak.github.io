@@ -73,7 +73,7 @@ if (levelsBeaten > 0){
     changeScene();
 
     if (levelsBeaten > LEVEL_NUM){
-        levelsBeaten = LEVEL_NUM - 2;
+        levelsBeaten = 8;
 
         localStorage.setItem("levelsBeaten", levelsBeaten);
     }
