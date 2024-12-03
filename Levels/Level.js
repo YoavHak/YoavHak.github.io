@@ -46,6 +46,8 @@ var index = 0;
 
 var ACC = 9.80665;
 
+var RANGE = 5;
+
 var vel = 0;
 
 var calculator;
@@ -120,7 +122,7 @@ if (true){
                     map.push(2000-GLOBAL_OFFSET_Y);
                 }
                 else {
-                    map.push(412-GLOBAL_OFFSET_Y);
+                    map.push(415-GLOBAL_OFFSET_Y);
                 }
             }
         }
@@ -617,7 +619,7 @@ function drawText(txt, x, y) {
 }
 
 function inRange(num1, num2) {
-    return (num1 < num2 + 10 && num1 > num2 - 10);
+    return (num1 < num2 + RANGE && num1 > num2 - RANGE);
 }
 
 "use strict"; // To avoid this-wrapping overhead (optional)
@@ -691,23 +693,31 @@ function DrawFunc() {
     DeathText.innerHTML = "Deaths: " + Deaths;
 }
 
-function IsColliding(IncRad) {
+function GetPlayerPoints(IncRad){
+    var changeConst1 = parseFloat(player.style.width) * 0.2 * Math.cos(IncRad);
+    var changeConst2 = parseFloat(player.style.width) * 0.2 * Math.sin(IncRad);
 
-    var bottomLeft = [parseInt(parseFloat(player.style.left) + (1 - Math.cos(IncRad)) * parseFloat(player.style.width) / 2), parseInt(parseFloat(player.style.top) + parseFloat(player.style.height) / 2 + Math.sin(IncRad) * parseFloat(player.style.width) / 2) - GLOBAL_OFFSET_Y];
-    var bottomRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2), parseFloat(player.style.top) + parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2 - GLOBAL_OFFSET_Y];
-    var topLeft = [parseInt(parseFloat(player.style.left) + (1 - Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - Math.sin(IncRad) * parseFloat(player.style.height) / 2), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * parseFloat(player.style.height) / 2 + Math.sin(IncRad) * parseFloat(player.style.width) / 2) - GLOBAL_OFFSET_Y];
-    var topRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - Math.sin(IncRad) * parseFloat(player.style.height) / 2), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2) - GLOBAL_OFFSET_Y];
+    var bottomRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2), parseInt(parseFloat(player.style.top) + parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2 + parseFloat(player.style.width) * 0.3 * Math.sin(IncRad)) - GLOBAL_OFFSET_Y];
+    var topRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - Math.sin(IncRad) * parseFloat(player.style.height) / 2 - parseFloat(player.style.width) * 0.3 * Math.cos(IncRad)), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2 + parseFloat(player.style.width) * 0.3 * Math.sin(IncRad)) - GLOBAL_OFFSET_Y];
+    
+    var btR = [parseInt((bottomRight[0] + topRight[0]) / 2 + parseFloat(player.style.width) * 0.2 * Math.cos(IncRad)), parseInt((bottomRight[1] + topRight[1]) / 2 - parseFloat(player.style.width) * 0.2 * Math.cos(IncRad))];
+
+
+
+
+    var bottomLeft = [parseInt(parseFloat(player.style.left) + (1 - Math.cos(IncRad)) * parseFloat(player.style.width) / 2 + changeConst1), parseInt(parseFloat(player.style.top) + parseFloat(player.style.height) / 2 + Math.sin(IncRad) * parseFloat(player.style.width) / 2 - changeConst2 - GLOBAL_OFFSET_Y)];
+    var bottomRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - 1.5*changeConst1), parseInt(parseFloat(player.style.top) + parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2 + changeConst2 - GLOBAL_OFFSET_Y)];
+    var topLeft = [parseInt(parseFloat(player.style.left) + (1 - Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - Math.sin(IncRad) * parseFloat(player.style.height) / 2 + 1.4*changeConst1), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * parseFloat(player.style.height) / 2 + Math.sin(IncRad) * parseFloat(player.style.width) / 2 - changeConst2) - GLOBAL_OFFSET_Y];
+    var topRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - Math.sin(IncRad) * parseFloat(player.style.height) / 2 - 1.6*changeConst1), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2 + 1.6*changeConst2) - GLOBAL_OFFSET_Y];
 
     var Blr = [parseInt((bottomLeft[0] + bottomRight[0]) / 2), parseInt((bottomLeft[1] + bottomRight[1]) / 2)];
-    var btR = [parseInt((bottomRight[0] + topRight[0]) / 2), parseInt((bottomRight[1] + topRight[1]) / 2)];
+    var btR = [parseInt((bottomRight[0] + topRight[0]) / 2 + 1.2*changeConst1), parseInt((bottomRight[1] + topRight[1]) / 2 - changeConst2)];
     var Trl = [parseInt((topRight[0] + topLeft[0]) / 2), parseInt((topRight[1] + topLeft[1]) / 2)];
-    var tbL = [parseInt((topLeft[0] + bottomLeft[0]) / 2), parseInt((topLeft[1] + bottomLeft[1]) / 2)];
+    var tbL = [parseInt((topLeft[0] + bottomLeft[0]) / 2 - 1.2*changeConst1), parseInt((topLeft[1] + bottomLeft[1]) / 2 + changeConst2)];
 
-    //var points = [bottomLeft, bottomRight, topLeft, topRight];
     var points = [bottomLeft, Blr, bottomRight, btR, topLeft, Trl, topRight, tbL];
-    
-        
 
+    
     // ctx.fillStyle = "white";
     // for (var i = 0; i < points.length; i++) {
     //    ctx.fillRect(points[i][0]-right, points[i][1], 6, 6);
@@ -718,17 +728,27 @@ function IsColliding(IncRad) {
     //    ctx.fillRect(points[i][0], points[i][1], 6, 6);
     // }
 
-    // ctx.fillStyle = "black";
+    ctx.fillStyle = "black";
+
+    return points;
+        
+
+}
+
+function IsColliding(IncRad) {
+    var points = GetPlayerPoints(IncRad);
 
     for (var i = 0; i < points.length; i++) {
 
         for (var j = -right; j < right; j++) {
             if (points[i][0] > 0 && points[i][0] < deathMap.length){
                 //point exists
+
+
                 if (points[i][1] > deathMap[points[i][0] + j][0] && points[i][1] < deathMap[points[i][0] + j][1]) {
                     return true;
                 }
-
+                
             }
 
         }
@@ -853,9 +873,9 @@ function Play() {
     if (!pause) {
 
         var playerLeftX = parseFloat(player.style.left) + 50;
-        var playerRightX = parseFloat(player.style.left) + parseFloat(player.style.width);
         var legsHeight = parseFloat(player.style.top) + parseFloat(player.style.height) / 2 - GLOBAL_OFFSET_Y;
         var moveY = vel, baseIncline = 0, funcIncline = funcMap[playerLeftX + 1] - funcMap[playerLeftX];
+
         
         // ctx.fillStyle = "white";
         // ctx.fillRect(playerLeftX-1, legsHeight, 6, 6);
@@ -868,11 +888,10 @@ function Play() {
         //console.log(funcMap[playerLeftX], calculator.pixelsToMath({ x: 0, y: funcMap[playerLeftX]}).y)
         if (inRange(funcMap[playerLeftX], map[playerLeftX]) && inRange(legsHeight, map[playerLeftX])) {
             //switch between function and base
-            //console.log("switch");
+            console.log("switch");
             moveY += Math.min(funcIncline, baseIncline) - vel;
             vel = 0;
 
-            
             player.style.transform = 'rotate(' + Math.atan(Math.min(funcIncline, baseIncline)) * 180 / Math.PI + 'deg)';
         }
         else if (inRange(legsHeight, funcMap[playerLeftX])) {
@@ -881,7 +900,6 @@ function Play() {
             moveY += funcIncline - vel;
             vel = 0;
 
-            playerRightX -= Math.atan(funcIncline) * 180 / Math.PI;
             player.style.transform = 'rotate(' + Math.atan(funcIncline) * 180 / Math.PI + 'deg)';
         }
         else if (inRange(legsHeight, map[playerLeftX - 20])) {
@@ -891,7 +909,6 @@ function Play() {
             moveY += baseIncline - vel + (map[playerLeftX -20] - legsHeight);
             vel = 0;
 
-            playerRightX -= Math.atan(baseIncline) * 180 / Math.PI;
             player.style.transform = 'rotate(' + Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
 
         }
@@ -905,22 +922,37 @@ function Play() {
             //fall
             //console.log("fall");
             player.style.transform = 'rotate(' + (parseInt(player.style.transform.substring(7, player.style.transform.length - 4)) + Math.sin(playerLeftX / n)) + 'deg)';
-            vel += (ACC / 65.378);
+            vel += (ACC / 100);
         }
 
-
-        if (inRange(legsHeight - parseFloat(player.style.height), map[playerLeftX])){
-            //hit roof
-            moveY = 0;
-        }
-
-
+        
+        
+        
+        var IncRad = -1 * parseFloat(player.style.transform.substring(7, player.style.transform.length - 4)) * Math.PI / 180;
+        var points = GetPlayerPoints(IncRad);
         var moveX = right;
-        for (var i = -5; i < 5; i++){
-            if (legsHeight < map[playerRightX + i] && legsHeight > map[playerRightX + i + 1]){
-                moveX = 0;
+
+        for (var i = 0; i < points.length; i++) {
+    
+            if (points[i][1] < map[points[i][0] - right] && points[i][1] - RANGE > map[points[i][0] + right + 1]){
+                moveX -= right;
+                if (moveY == vel - (ACC / 100)){
+                    moveY = 2;
+                }
+                break;
+
             }
         }
+
+        for (var i = Math.min(points[4][0], points[7][0]); i < Math.max(points[2][0], points[3][0]) - right; i++) {
+            if (map[i] > points[2][1] && map[i+right] < points[2][1] - RANGE){
+                moveX = i - Math.max(points[2][0], points[3][0]);
+
+                console.log("fix");
+            }
+        }
+
+
 
         player.style.top = parseFloat(player.style.top) + moveY + 'px';
         player.style.left = parseFloat(player.style.left) + moveX + 'px';
