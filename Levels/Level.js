@@ -72,12 +72,6 @@ if (levelNum !== null) {
     // You can now use the index variable as needed
 }
 
-
-
-
-
-
-
 //start
 if (true){
 
@@ -150,7 +144,7 @@ if (true){
             for (var i = 1; i <= canvas.width; i++) {
     
                 if (i == 913) {
-                    var temp = [1, 570-GLOBAL_OFFSET_Y];
+                    var temp = [1, 533-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 914) {
@@ -514,9 +508,6 @@ if (true){
     }
 }
 
-
-
-
 // // Resize canvas to fit the window
 // canvas.width = window.innerWidth;
 // canvas.height = window.innerHeight;
@@ -659,14 +650,16 @@ function DrawFunc() {
             }
         }
 
+        if (false){
+            
+            ctx.fillStyle = "white";
+            ctx.fillRect(i, funcMap[i], 6, 6);
 
-        //  ctx.fillStyle = "white";
-        //  ctx.fillRect(i, funcMap[i], 6, 6);
+            ctx.fillStyle = "orange";
+            ctx.fillRect(i, funcMap[i], 6, 6);
 
-        //  ctx.fillStyle = "orange";
-        //  ctx.fillRect(i, funcMap[i], 6, 6);
-
-        //  ctx.fillStyle = "black";
+            ctx.fillStyle = "black";
+        }//draw calculated function
 
     }
 
@@ -685,24 +678,12 @@ function DrawFunc() {
 
 
 
-    //drawText("y  =", 10, 40);
-    //ctx.fillStyle = "white";
-    //ctx.fillRect(450, 20, 280, 60);
-    //ctx.fillStyle = "black";
-    //drawText("Deaths: " + Deaths, 460, 40);
     DeathText.innerHTML = "Deaths: " + Deaths;
 }
 
 function GetPlayerPoints(IncRad){
     var changeConst1 = parseFloat(player.style.width) * 0.2 * Math.cos(IncRad);
     var changeConst2 = parseFloat(player.style.width) * 0.2 * Math.sin(IncRad);
-
-    var bottomRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2), parseInt(parseFloat(player.style.top) + parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2 + parseFloat(player.style.width) * 0.3 * Math.sin(IncRad)) - GLOBAL_OFFSET_Y];
-    var topRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - Math.sin(IncRad) * parseFloat(player.style.height) / 2 - parseFloat(player.style.width) * 0.3 * Math.cos(IncRad)), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2 + parseFloat(player.style.width) * 0.3 * Math.sin(IncRad)) - GLOBAL_OFFSET_Y];
-    
-    var btR = [parseInt((bottomRight[0] + topRight[0]) / 2 + parseFloat(player.style.width) * 0.2 * Math.cos(IncRad)), parseInt((bottomRight[1] + topRight[1]) / 2 - parseFloat(player.style.width) * 0.2 * Math.cos(IncRad))];
-
-
 
 
     var bottomLeft = [parseInt(parseFloat(player.style.left) + (1 - Math.cos(IncRad)) * parseFloat(player.style.width) / 2 + changeConst1), parseInt(parseFloat(player.style.top) + parseFloat(player.style.height) / 2 + Math.sin(IncRad) * parseFloat(player.style.width) / 2 - changeConst2 - GLOBAL_OFFSET_Y)];
@@ -711,26 +692,30 @@ function GetPlayerPoints(IncRad){
     var topRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - Math.sin(IncRad) * parseFloat(player.style.height) / 2 - 1.6*changeConst1), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2 + 1.6*changeConst2) - GLOBAL_OFFSET_Y];
 
     var Blr = [parseInt((bottomLeft[0] + bottomRight[0]) / 2), parseInt((bottomLeft[1] + bottomRight[1]) / 2)];
-    var btR = [parseInt((bottomRight[0] + topRight[0]) / 2 + 1.2*changeConst1), parseInt((bottomRight[1] + topRight[1]) / 2 - changeConst2)];
+    var btR = [parseInt((bottomRight[0] + topRight[0]) / 2 + 1.3*changeConst1), parseInt((bottomRight[1] + topRight[1]) / 2 - changeConst2)];
     var Trl = [parseInt((topRight[0] + topLeft[0]) / 2), parseInt((topRight[1] + topLeft[1]) / 2)];
-    var tbL = [parseInt((topLeft[0] + bottomLeft[0]) / 2 - 1.2*changeConst1), parseInt((topLeft[1] + bottomLeft[1]) / 2 + changeConst2)];
+    var tbL = [parseInt((topLeft[0] + bottomLeft[0]) / 2 - 1.3*changeConst1), parseInt((topLeft[1] + bottomLeft[1]) / 2 + changeConst2)];
 
-    var points = [bottomLeft, Blr, bottomRight, btR, topLeft, Trl, topRight, tbL];
+    var points = [bottomLeft, Blr, bottomRight];
 
+    var points2 = [bottomLeft, Blr, bottomRight, btR, topLeft, Trl, topRight, tbL];
     
-    // ctx.fillStyle = "white";
-    // for (var i = 0; i < points.length; i++) {
-    //    ctx.fillRect(points[i][0]-right, points[i][1], 6, 6);
-    // }
+    if (false){
+        
+        ctx.fillStyle = "white";
+        for (var i = 0; i < points.length; i++) {
+        ctx.fillRect(points[i][0]-right, points[i][1], 6, 6);
+        }
 
-    // ctx.fillStyle = "orange";
-    // for (var i = 0; i < points.length; i++) {
-    //    ctx.fillRect(points[i][0], points[i][1], 6, 6);
-    // }
+        ctx.fillStyle = "orange";
+        for (var i = 0; i < points.length; i++) {
+        ctx.fillRect(points[i][0], points[i][1], 6, 6);
+        }
 
-    ctx.fillStyle = "black";
+        ctx.fillStyle = "black";
+    }// draw collision dots
 
-    return points;
+    return points2;
         
 
 }
@@ -791,7 +776,6 @@ function transformLogExpression(expression) {
     return expression.replace(logPattern, replaceLogs);
 }
 
-
 function FilterExpression(exp){
     var newExpr = "";
     for (var i = 0; i < exp.length; i++) {
@@ -812,7 +796,6 @@ function FilterExpression(exp){
     
     return newExpr;
 }
-
 
 function FilterExpression2(exp){
     var newExpr = "";
@@ -838,7 +821,6 @@ function Play() {
     expr = FilterExpression(MQtoAM(String(enteredMath)));
     var expr2 = FilterExpression2(enteredMath);
 
-    //console.log("expr: " + expr, "expr2: " + expr2)
     
     input.style.width = (expr.length * 17) + 'px';
     if (expr.length < 11) {
@@ -861,7 +843,6 @@ function Play() {
         
         DrawFunc();
 
-        //console.log(expr)
 
         if (expr2 == String.raw`\int_{ }^{ }\sqrt{∞}\\piθσ\sum_{ }^{ }Δ` || expr2 == String.raw`\int_{ }^{ }\sqrt{\infty}\\pi\theta\sigma\sum_{ }^{ }\Delta`){
             
@@ -872,65 +853,90 @@ function Play() {
 
     if (!pause) {
 
-        var playerLeftX = parseFloat(player.style.left) + 50;
-        var legsHeight = parseFloat(player.style.top) + parseFloat(player.style.height) / 2 - GLOBAL_OFFSET_Y;
-        var moveY = vel, baseIncline = 0, funcIncline = funcMap[playerLeftX + 1] - funcMap[playerLeftX];
+        var IncRad = 0;
+        if (player.style.transform != ""){
+            IncRad = -1 * parseFloat(player.style.transform.substring(7, player.style.transform.length - 4)) * Math.PI / 180;
+        }
+        var points = GetPlayerPoints(IncRad);
 
+        var playerCenterX = parseInt(parseFloat(player.style.left) + parseFloat(player.style.width) / 2);
+        var legsHeight = points[1][1];
+
+        var moveY = vel, moveX = right;
+        var baseIncline = map[playerCenterX + right] - map[playerCenterX];
+        var funcIncline = funcMap[playerCenterX + right] - funcMap[playerCenterX];
         
-        // ctx.fillStyle = "white";
-        // ctx.fillRect(playerLeftX-1, legsHeight, 6, 6);
+        
+        if (baseIncline > 5){
+            baseIncline = 0;
+        }
+        
+        if (funcIncline > 800){
+            funcIncline = 0;
+        }
 
-        // ctx.fillStyle = "orange";
-        // ctx.fillRect(playerLeftX, legsHeight, 6, 6);
+        if (false){
+            
+            ctx.fillStyle = "white";
+            ctx.fillRect(playerCenterX-1, legsHeight, 6, 6);
 
-        // ctx.fillStyle = "black";
+            ctx.fillStyle = "orange";
+            ctx.fillRect(playerCenterX, legsHeight, 6, 6);
 
-        //console.log(funcMap[playerLeftX], calculator.pixelsToMath({ x: 0, y: funcMap[playerLeftX]}).y)
-        if (inRange(funcMap[playerLeftX], map[playerLeftX]) && inRange(legsHeight, map[playerLeftX])) {
+            ctx.fillStyle = "black";
+        }// movement dot
+
+
+        var printActions = false;
+        if (inRange(funcMap[playerCenterX], map[playerCenterX]) && inRange(legsHeight, map[playerCenterX])) {
             //switch between function and base
-            console.log("switch");
+            if (printActions){
+                console.log("switch");
+            }
             moveY += Math.min(funcIncline, baseIncline) - vel;
             vel = 0;
 
             player.style.transform = 'rotate(' + Math.atan(Math.min(funcIncline, baseIncline)) * 180 / Math.PI + 'deg)';
         }
-        else if (inRange(legsHeight, funcMap[playerLeftX])) {
+        else if (inRange(legsHeight, funcMap[playerCenterX])) {
             //walk on function
-            //console.log("walk func");
+            if (printActions){
+                console.log("walk func");
+            }
             moveY += funcIncline - vel;
             vel = 0;
 
             player.style.transform = 'rotate(' + Math.atan(funcIncline) * 180 / Math.PI + 'deg)';
         }
-        else if (inRange(legsHeight, map[playerLeftX - 20])) {
+        else if (inRange(points[0][1], map[points[0][0]]) || inRange(points[2][1], map[points[2][0]])) {
             //walk on base
-            //console.log("walk base");
+            if (printActions){
+                console.log("walk base");
+            }
 
-            moveY += baseIncline - vel + (map[playerLeftX -20] - legsHeight);
+            moveY += baseIncline - vel;
             vel = 0;
 
             player.style.transform = 'rotate(' + Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
 
         }
-        else if (playerLeftX < 50) {
+        else if (playerCenterX < 50) {
             //start of map
-            //console.log("start");
+            if (printActions){
+                console.log("start");
+            }
             moveY = map[0] - legsHeight;
             vel = 0;
         }
         else {
             //fall
-            //console.log("fall");
-            player.style.transform = 'rotate(' + (parseInt(player.style.transform.substring(7, player.style.transform.length - 4)) + Math.sin(playerLeftX / n)) + 'deg)';
+            if (printActions){
+                console.log("fall");
+            }
+            player.style.transform = 'rotate(' + (parseInt(player.style.transform.substring(7, player.style.transform.length - 4)) + Math.sin(playerCenterX / n)) + 'deg)';
             vel += (ACC / 100);
         }
 
-        
-        
-        
-        var IncRad = -1 * parseFloat(player.style.transform.substring(7, player.style.transform.length - 4)) * Math.PI / 180;
-        var points = GetPlayerPoints(IncRad);
-        var moveX = right;
 
         for (var i = 0; i < points.length; i++) {
     
@@ -938,6 +944,7 @@ function Play() {
                 moveX -= right;
                 if (moveY == vel - (ACC / 100)){
                     moveY = 2;
+                    player.style.transform = 'rotate(' + (parseInt(player.style.transform.substring(7, player.style.transform.length - 4)) + Math.sin(playerCenterX / n)) + 'deg)';
                 }
                 break;
 
@@ -947,8 +954,6 @@ function Play() {
         for (var i = Math.min(points[4][0], points[7][0]); i < Math.max(points[2][0], points[3][0]) - right; i++) {
             if (map[i] > points[2][1] && map[i+right] < points[2][1] - RANGE){
                 moveX = i - Math.max(points[2][0], points[3][0]);
-
-                console.log("fix");
             }
         }
 
@@ -957,6 +962,7 @@ function Play() {
         player.style.top = parseFloat(player.style.top) + moveY + 'px';
         player.style.left = parseFloat(player.style.left) + moveX + 'px';
         
+
         if (legsHeight > 1400 - GLOBAL_OFFSET_Y || legsHeight < -150 - GLOBAL_OFFSET_Y) {
             player.style.left = '-102px';
             player.style.top = '308px';
@@ -964,7 +970,7 @@ function Play() {
             Deaths++;
             DrawFunc();
         }
-        else if (playerLeftX > 2080) {
+        else if (playerCenterX > 2080) {
 
             if (legsHeight > parseFloat(door.style.top) - GLOBAL_OFFSET_Y && legsHeight < parseFloat(door.style.top) + door.height - GLOBAL_OFFSET_Y) {
                 Wins++;
@@ -987,7 +993,7 @@ function Play() {
                     window.location.href = `../Functions.html`;
                 }
             }
-            else if (playerLeftX > 2300){
+            else if (playerCenterX > 2300){
                 Deaths++;
                 DrawFunc();
                 player.style.left = '-102px';
