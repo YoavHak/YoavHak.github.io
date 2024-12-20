@@ -100,7 +100,7 @@ if (true){
                     map.push(2000 - GLOBAL_OFFSET_Y);
                 }
                 else {
-                    map.push(880 - GLOBAL_OFFSET_Y);
+                    map.push(862 - GLOBAL_OFFSET_Y);
                 }
             }
         }
@@ -176,12 +176,12 @@ if (true){
             door.style.top = "458px";
             for (var i = 1; i <= canvas.width; i++) {
     
-                if (i == 688) {
-                    var temp = [1, 450-GLOBAL_OFFSET_Y];
+                if (i == 763) {
+                    var temp = [1, 370-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 940) {
-                    var temp = [562-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [382-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 1129) {
@@ -195,8 +195,8 @@ if (true){
     
     
     
-                if (i <= 463) {
-                    map.push(412-GLOBAL_OFFSET_Y);
+                if (i <= 613) {
+                    map.push(562-GLOBAL_OFFSET_Y);
                 }
                 else if (i < 1213) {
     
@@ -450,7 +450,7 @@ if (true){
                 }
             }
         }
-        else if (parseInt(levelNum) > 25){
+        else if (parseInt(levelNum) > LEVEL_NUM){
             window.location.href = `../nothing_to_see_here/25+.html`;
         }
         else {
@@ -894,6 +894,9 @@ function Play() {
                 console.log("switch");
             }
             moveY += Math.min(funcIncline, baseIncline) - vel;
+            if (inRange(legsHeight - 1, funcMap[playerCenterX])){
+                moveY -= 1;
+            }
             vel = 0;
 
             player.style.transform = 'rotate(' + Math.atan(Math.min(funcIncline, baseIncline)) * 180 / Math.PI + 'deg)';
