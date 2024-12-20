@@ -15,7 +15,7 @@ The project is built with simple HTML and JavaScript files, making it lightweigh
 ## Getting Started
 
 ### Play the Game
-Search `yoavhak.github.io` in your browser, you will be connected to my page in which the game is hosted on.
+Search `yoavhak.github.io` in your browser (or click this link: https://yoavhak.github.io/), you will be connected to my .io page in which the game is hosted on.
 
 ## Technologies Used
 - **HTML** for the structure.
@@ -30,7 +30,7 @@ Special thanks to everyone who inspired this project and to the open-source comm
 
 More special thanks:
 - Desmos team & API https://www.desmos.com/api/v1.10/docs/index.html
-- [Currently Anonymous] (Help with ideas for levels)
+- _[Currently Anonymous]_ (Help with ideas for levels)
 
 ---
 
