@@ -30,6 +30,10 @@ var funcMap = [];
 
 var deathMap = [];
 
+var smallMakers = [];
+
+var bigMakers = [];
+
 var start = true;
 
 var gamespeed = 5;
@@ -63,6 +67,8 @@ var returnButton = document.getElementById("returnButton");
 var GLOBAL_OFFSET_Y = parseInt(canvas.style.top);
 
 var LEVEL_NUM = parseInt(localStorage.getItem("LEVEL_NUM"));
+
+var playerScale = 1;
 
 // Use the function to get the value of 'index'
 const levelNum = getQueryParameter('index');
@@ -213,7 +219,15 @@ if (true){
             door.style.top = "608px";
             for (var i = 1; i <= canvas.width; i++) {
     
-                if (i == 972) {
+                if (i == 852) {
+                    var temp = [1, 580-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 912) {
+                    var temp = [1, 517-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 972) {
                     var temp = [1, 487-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
@@ -233,6 +247,10 @@ if (true){
                     var temp = [697-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
+                else if (i == 1212) {
+                    var temp = [1, 517-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
                 else {
                     var temp = [0, 0];
                     deathMap.push(temp);
@@ -250,7 +268,15 @@ if (true){
             door.style.top = "608px";
             for (var i = 1; i <= canvas.width; i++) {
     
-                if (i == 673) {
+                if (i == 552) {
+                    var temp = [1, 505-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                if (i == 612) {
+                    var temp = [1, 447-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 673) {
                     var temp = [1, 412-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
@@ -267,7 +293,11 @@ if (true){
                     deathMap.push(temp);
                 }
                 else if (i == 853) {
-                    var temp = [622-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [624-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 912) {
+                    var temp = [1, 447-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else {
@@ -291,12 +321,20 @@ if (true){
                     var temp = [600-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
-                else if (i == 1062) {
-                    var temp = [1, 450-GLOBAL_OFFSET_Y];
+                else if (i == 912) {
+                    var temp = [1, 410-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 1061) {
                     var temp = [717-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1062) {
+                    var temp = [1, 550-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1212) {
+                    var temp = [1, 410-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 1272) {
@@ -328,51 +366,35 @@ if (true){
             player.style.top = "308px";
             door.style.top = "608px";
             for (var i = 1; i <= canvas.width; i++) {
-    
-                if (i == 673) {
-                    var temp = [1, 412-GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 703) {
-                    var temp = [592-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 762) {
-                    var temp = [1, 397-GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 763) {
-                    var temp = [562-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 853) {
-                    var temp = [622-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-
                 
-                else if (i == 1423) {
+                if (i == 612 || i == 1362) {
+                    var temp = [1, 447-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 673 || i == 1423) {
                     var temp = [1, 412-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
-                else if (i == 1453) {
+                else if (i == 703 || i == 1453) {
                     var temp = [592-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
-                else if (i == 1512) {
+                else if (i == 762 || i == 1512) {
                     var temp = [1, 397-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
-                else if (i == 1513) {
+                else if (i == 763 || i == 1513) {
                     var temp = [562-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
-                else if (i == 1603) {
-                    var temp = [622-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                else if (i == 853 || i == 1603) {
+                    var temp = [624-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
-
-
+                else if (i == 912 || i == 1662) {
+                    var temp = [1, 447-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
                 else {
                     var temp = [0, 0];
                     deathMap.push(temp);
@@ -414,6 +436,10 @@ if (true){
                     var temp = [1, 382-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
+                else if (i == 1213) {
+                    var temp = [542-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
                 else if (i == 1362) {
                     var temp = [490-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
@@ -427,7 +453,7 @@ if (true){
                     deathMap.push(temp);
                 }
                 else if (i == 2037) {
-                    var temp = [562-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [564-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 2112) {
@@ -450,6 +476,66 @@ if (true){
                 }
             }
         }
+        else if (levelNum == "11") {
+            deathMap = [];
+            player.style.top = "308px";
+            door.style.top = "160px";
+            for (var i = 1; i <= canvas.width; i++) {
+                if (i == 762) {
+                    var temp = [502-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1107) {
+                    var temp = [457-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1211) {
+                    var temp = [1, 412-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1212) {
+                    var temp = [517-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1312) {
+                    var temp = [457-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else {
+                    var temp = [0, 0];
+                    deathMap.push(temp);
+                }
+
+                if (i < 662) {
+                    map.push(862 - GLOBAL_OFFSET_Y);
+                }
+                else if (i > 1422) {
+                    map.push(412 - GLOBAL_OFFSET_Y);
+                }
+                else {
+                    map.push(2000 - GLOBAL_OFFSET_Y);
+                }
+            }
+
+            var smallMaker = createCoin("small");
+            smallMaker.setAttribute("id", "smallMaker0");
+            smallMaker.style.left = 902 - parseInt(smallMaker.style.height) / 2 + "px";
+            smallMaker.style.top = 212 - parseInt(smallMaker.style.height) / 2 + "px";
+            
+
+            var bigMaker = createCoin("big");
+            bigMaker.setAttribute("id", "bigMaker0");
+            bigMaker.style.left = 902 - parseInt(bigMaker.style.height) / 2 + "px";
+            bigMaker.style.top = 362 - parseInt(bigMaker.style.height) / 2 + "px";
+
+
+            smallMakers.push(smallMaker);
+            bigMakers.push(bigMaker);
+            
+            levelDiv.appendChild(smallMaker);
+            levelDiv.appendChild(bigMaker);
+
+        }
         else if (parseInt(levelNum) > LEVEL_NUM){
             window.location.href = `../nothing_to_see_here/25+.html`;
         }
@@ -465,7 +551,8 @@ if (true){
                 }
             }
         }
-        
+
+
         elt = document.getElementById('Graph');
         //elt.style.width 
         calculator = Desmos.GraphingCalculator(elt, {
@@ -572,7 +659,27 @@ function updateTransform() {
 
 }
 
+function createCoin(type) {
+    var Coin = document.createElement("img");
+    Coin.style.position = "fixed";
+    Coin.style.width = "50px";
+    Coin.style.height = "50px";
+    Coin.setAttribute("class", "coin");
 
+    const randomDegrees = Math.random() * 360;
+    Coin.style.setProperty('--random-rotation', `${randomDegrees}deg`);
+    switch (type){
+        case "small":
+            Coin.setAttribute("src", "../Images/small-maker.png");
+            return Coin
+        case "big":
+            Coin.setAttribute("src", "../Images/big-maker.png");
+            return Coin
+        default:
+            return null
+    }
+            
+}
 
 function point(x, y) {
     ctx2.moveTo(x, y);
@@ -676,27 +783,37 @@ function DrawFunc() {
         }
     }
 
+    
 
 
     DeathText.innerHTML = "Deaths: " + Deaths;
 }
 
-function GetPlayerPoints(IncRad){
-    var changeConst1 = parseFloat(player.style.width) * 0.2 * Math.cos(IncRad);
-    var changeConst2 = parseFloat(player.style.width) * 0.2 * Math.sin(IncRad);
+function GetPlayerPoints() {
+
+    var IncRad = 0;
+    if (player.style.transform.includes("rotate")){
+        IncRad = -1 * parseFloat(player.style.transform.substring(player.style.transform.indexOf("rotate") + 7, player.style.transform.indexOf("deg"))) * Math.PI / 180;
+    }
+
+    var playerWidth = parseFloat(player.style.width);
+    var playerHeight = parseFloat(player.style.height);
+
+    var changeConst1 = playerWidth * 0.2 * Math.cos(IncRad);
+    var changeConst2 = playerWidth * 0.2 * Math.sin(IncRad);
 
 
-    var bottomLeft = [parseInt(parseFloat(player.style.left) + (1 - Math.cos(IncRad)) * parseFloat(player.style.width) / 2 + changeConst1), parseInt(parseFloat(player.style.top) + parseFloat(player.style.height) / 2 + Math.sin(IncRad) * parseFloat(player.style.width) / 2 - changeConst2 - GLOBAL_OFFSET_Y)];
-    var bottomRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - 1.5*changeConst1), parseInt(parseFloat(player.style.top) + parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2 + changeConst2 - GLOBAL_OFFSET_Y)];
-    var topLeft = [parseInt(parseFloat(player.style.left) + (1 - Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - Math.sin(IncRad) * parseFloat(player.style.height) / 2 + 1.4*changeConst1), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * parseFloat(player.style.height) / 2 + Math.sin(IncRad) * parseFloat(player.style.width) / 2 - changeConst2) - GLOBAL_OFFSET_Y];
-    var topRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * parseFloat(player.style.width) / 2 - Math.sin(IncRad) * parseFloat(player.style.height) / 2 - 1.6*changeConst1), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * parseFloat(player.style.height) / 2 - Math.sin(IncRad) * parseFloat(player.style.width) / 2 + 1.6*changeConst2) - GLOBAL_OFFSET_Y];
+    var bottomLeft = [parseInt(parseFloat(player.style.left) + (1 - Math.cos(IncRad)) * playerWidth / 2 + changeConst1), parseInt(parseFloat(player.style.top) + playerHeight / 2 + Math.sin(IncRad) * playerWidth / 2 - changeConst2 - GLOBAL_OFFSET_Y)];
+    var bottomRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * playerWidth / 2 - 1.5*changeConst1), parseInt(parseFloat(player.style.top) + playerHeight / 2 - Math.sin(IncRad) * playerWidth / 2 + changeConst2 - GLOBAL_OFFSET_Y)];
+    var topLeft = [parseInt(parseFloat(player.style.left) + (1 - Math.cos(IncRad)) * playerWidth / 2 - Math.sin(IncRad) * playerHeight / 2 + 1.4*changeConst1), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * playerHeight / 2 + Math.sin(IncRad) * playerWidth / 2 - changeConst2) - GLOBAL_OFFSET_Y];
+    var topRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * playerWidth / 2 - Math.sin(IncRad) * playerHeight / 2 - 1.6*changeConst1), parseInt(parseFloat(player.style.top) + (1 - Math.cos(IncRad)) * playerHeight / 2 - Math.sin(IncRad) * playerWidth / 2 + 1.6*changeConst2) - GLOBAL_OFFSET_Y];
 
     var Blr = [parseInt((bottomLeft[0] + bottomRight[0]) / 2), parseInt((bottomLeft[1] + bottomRight[1]) / 2)];
     var btR = [parseInt((bottomRight[0] + topRight[0]) / 2 + 1.3*changeConst1), parseInt((bottomRight[1] + topRight[1]) / 2 - changeConst2)];
     var Trl = [parseInt((topRight[0] + topLeft[0]) / 2), parseInt((topRight[1] + topLeft[1]) / 2)];
     var tbL = [parseInt((topLeft[0] + bottomLeft[0]) / 2 - 1.3*changeConst1), parseInt((topLeft[1] + bottomLeft[1]) / 2 + changeConst2)];
 
-    var points = [bottomLeft, Blr, bottomRight];
+    var points = [bottomLeft, Blr, bottomRight, btR, topLeft, Trl, topRight, tbL];
 
     var points2 = [bottomLeft, Blr, bottomRight, btR, topLeft, Trl, topRight, tbL];
     
@@ -704,14 +821,15 @@ function GetPlayerPoints(IncRad){
         
         ctx.fillStyle = "white";
         for (var i = 0; i < points.length; i++) {
-        ctx.fillRect(points[i][0]-right, points[i][1], 6, 6);
+            ctx.fillRect(points[i][0]-right, points[i][1], 6, 6);
         }
 
         ctx.fillStyle = "orange";
         for (var i = 0; i < points.length; i++) {
-        ctx.fillRect(points[i][0], points[i][1], 6, 6);
+            ctx.fillRect(points[i][0], points[i][1], 6, 6);
         }
 
+        
         ctx.fillStyle = "black";
     }// draw collision dots
 
@@ -720,8 +838,8 @@ function GetPlayerPoints(IncRad){
 
 }
 
-function IsColliding(IncRad) {
-    var points = GetPlayerPoints(IncRad);
+function IsCollidingDeath() {
+    var points = GetPlayerPoints();
 
     for (var i = 0; i < points.length; i++) {
 
@@ -740,6 +858,105 @@ function IsColliding(IncRad) {
     }
 
     return false;
+}
+
+
+
+// Helper function to check circle-line intersection
+function circleIntersectsLine(circle, start, end) {
+    const dx = end[0] - start[0];
+    const dy = end[1] - start[1];
+
+    const circleRadius = parseInt(circle.style.height) / 2;
+
+    const fx = start[0] - (parseInt(circle.style.left) + circleRadius);
+    const fy = start[1] - (parseInt(circle.style.top) + circleRadius - GLOBAL_OFFSET_Y);
+
+    const a = dx ** 2 + dy ** 2;
+    const b = 2 * (fx * dx + fy * dy);
+    const c = fx ** 2 + fy ** 2 - circleRadius ** 2;
+
+    const discriminant = b ** 2 - 4 * a * c;
+
+    if (discriminant < 0) {
+        return false; // No intersection
+    }
+
+    // Check if the intersection points are on the line segment
+    const t1 = (-b - Math.sqrt(discriminant)) / (2 * a);
+    const t2 = (-b + Math.sqrt(discriminant)) / (2 * a);
+
+    return (t1 >= 0 && t1 <= 1) || (t2 >= 0 && t2 <= 1);
+}
+
+
+function IsCollidingCoins(){
+    for (var i = 0; i < smallMakers.length; i++) {
+        var collidingCoinID = IsCollidingCoin(smallMakers[i].id);
+        if (collidingCoinID.length > 0){
+            return collidingCoinID;
+        }
+    }
+    for (var i = 0; i < bigMakers.length; i++) {
+        var collidingCoinID = IsCollidingCoin(bigMakers[i].id);
+        if (collidingCoinID.length > 0){
+            return collidingCoinID;
+        }
+    }
+    return "";
+}
+
+function IsCollidingCoin(CoinID){
+
+
+    var Coin = document.getElementById(CoinID);
+
+    var CoinRadius = parseInt(Coin.style.height) / 2;
+    var CoinX = parseInt(Coin.style.left) + CoinRadius;
+    var CoinY = parseInt(Coin.style.top) + CoinRadius - GLOBAL_OFFSET_Y;
+
+
+    if (false){
+    
+
+        ctx.fillStyle = "orange";
+        ctx.fillRect(CoinX - CoinRadius, CoinY - CoinRadius, 2*CoinRadius, 2*CoinRadius);
+        ctx.fillStyle = "black";
+    }// mark coin
+
+
+
+    var playerPoints = GetPlayerPoints();
+    for (var j = 0; j < playerPoints.length; j++) {
+        var dist = Math.sqrt((playerPoints[j][0] - CoinX) ** 2 + (playerPoints[j][1] - CoinY) ** 2);
+        if (dist <= CoinRadius){
+            return CoinID;
+        }
+
+        const start = playerPoints[j];
+        const end = playerPoints[(j + 1) % playerPoints.length]; // Loop back to the first point
+        if (circleIntersectsLine(Coin, start, end)) {
+            return CoinID; // Circle intersects an edge
+        }
+    }
+    return "";
+}
+
+function ResetGame(){
+    player.style.left = '-102px';
+    player.style.top = '308px';
+    player.style.transform = 'rotate(0deg)';
+
+    var coins = document.querySelectorAll('.coin');
+    for (var i = 0; i < coins.length; i++) {
+        var Coin = document.getElementById(coins[i].id);
+        Coin.style.visibility = "visible";
+    }
+
+    scaleImage(1 / playerScale);
+    playerScale = 1;
+    Deaths++;
+    DrawFunc();
 }
 
 function transformLogExpression(expression) {
@@ -810,6 +1027,39 @@ function FilterExpression2(exp){
     return newExpr + exp[exp.length-1];
 }
 
+
+
+function scaleImage(factor) {
+    // Calculate new width and height
+    const currentWidth = parseFloat(player.style.width);
+    const currentHeight = parseFloat(player.style.height);
+    const newWidth = currentWidth * factor;
+    const newHeight = currentHeight * factor;
+
+    // Adjust position to maintain center
+    const widthDiff = (currentWidth - newWidth) / 2;
+    const heightDiff = (currentHeight - newHeight) / 2;
+
+    player.style.width = `${newWidth}px`;
+    player.style.height = `${newHeight}px`;
+    player.style.left = `${parseFloat(player.style.left) + widthDiff}px`;
+    player.style.top = `${parseFloat(player.style.top) + heightDiff}px`;
+}
+
+function DoCoinEffect(collidingCoinID) {
+    const scaleDiff = 0.5
+
+
+    if (collidingCoinID.includes("small")) {
+        playerScale *= scaleDiff;
+        scaleImage(scaleDiff);
+    }
+    else if (collidingCoinID.includes("big")) {
+        playerScale /= scaleDiff;
+        scaleImage(1 / scaleDiff);
+    }
+}
+
 function Play() {
     var answerMathField = MQ.MathField(input, {
         handlers: {
@@ -853,11 +1103,7 @@ function Play() {
 
     if (!pause) {
 
-        var IncRad = 0;
-        if (player.style.transform != ""){
-            IncRad = -1 * parseFloat(player.style.transform.substring(7, player.style.transform.length - 4)) * Math.PI / 180;
-        }
-        var points = GetPlayerPoints(IncRad);
+        var points = GetPlayerPoints();
 
         var playerCenterX = parseInt(parseFloat(player.style.left) + parseFloat(player.style.width) / 2);
         var legsHeight = points[1][1];
@@ -961,60 +1207,49 @@ function Play() {
         }
 
 
-
         player.style.top = parseFloat(player.style.top) + moveY + 'px';
         player.style.left = parseFloat(player.style.left) + moveX + 'px';
+
+
+
+
+        var collidingCoinID = IsCollidingCoins();
+        if (collidingCoinID.length > 0){
+            var collidingCoin = document.getElementById(collidingCoinID);
+            if (collidingCoin.style.visibility != "hidden"){
+                collidingCoin.style.visibility = "hidden";
+                DoCoinEffect(collidingCoinID);
+            }
+        }
         
 
-        if (legsHeight > 1400 - GLOBAL_OFFSET_Y || legsHeight < -150 - GLOBAL_OFFSET_Y) {
-            player.style.left = '-102px';
-            player.style.top = '308px';
-            player.style.transform = 'rotate(0deg)';
-            Deaths++;
-            DrawFunc();
+        if (legsHeight > 1400 - GLOBAL_OFFSET_Y || legsHeight < -150 - GLOBAL_OFFSET_Y) {// out of bounds - death
+            ResetGame();
         }
-        else if (playerCenterX > 2080) {
+        else if (playerCenterX > 2080 && legsHeight > parseFloat(door.style.top) - GLOBAL_OFFSET_Y && legsHeight < parseFloat(door.style.top) + parseFloat(door.style.height) - GLOBAL_OFFSET_Y) {// win
+            Wins++;
+            ResetGame();
+            Deaths--;
+            
 
-            if (legsHeight > parseFloat(door.style.top) - GLOBAL_OFFSET_Y && legsHeight < parseFloat(door.style.top) + door.height - GLOBAL_OFFSET_Y) {
-                Wins++;
-
-
-                DrawFunc();
-                player.style.left = '-102px';
-                player.style.top = '308px';
-                player.style.transform = 'rotate(0deg)';
-
-                if (levelNum > parseInt(localStorage.getItem('levelsBeaten'))) {
-                    localStorage.setItem('levelsBeaten', levelNum);
-                }
-
-                secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
-                if (Deaths > 100 && !secretsFound.includes("UNSTOPPABLE")){
-                    window.location.href = `../nothing_to_see_here/ded.html`;
-                }
-                else{
-                    window.location.href = `../Functions.html`;
-                }
+            if (levelNum > parseInt(localStorage.getItem('levelsBeaten'))) {
+                localStorage.setItem('levelsBeaten', levelNum);
             }
-            else if (playerCenterX > 2300){
-                Deaths++;
-                DrawFunc();
-                player.style.left = '-102px';
-                player.style.top = '308px';
-                player.style.transform = 'rotate(0deg)';
+
+            secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
+            if (Deaths > 100 && !secretsFound.includes("UNSTOPPABLE")){
+                window.location.href = `../nothing_to_see_here/ded.html`;
+            }
+            else{
+                window.location.href = `../Functions.html`;
             }
         }
-           
-        else if (IsColliding(-1 * parseFloat(player.style.transform.substring(7, player.style.transform.length - 4)) * Math.PI / 180)) {
-            player.style.left = '-102px';
-            player.style.top = '308px';
-            player.style.transform = 'rotate(0deg)';
-            Deaths++;
-            DrawFunc();
+        else if (playerCenterX > 2300){// after door - death
+            ResetGame();
         }
-
-
-
+        else if (IsCollidingDeath()) {// hit death wall - death
+            ResetGame();
+        }
     }
     last = expr;
 }
