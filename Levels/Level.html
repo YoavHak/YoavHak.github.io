@@ -30,7 +30,7 @@
             width: 200px;
             height: 200px;
             transform: rotateY(45deg);
-            animation: rotateAnimation 1s linear infinite;
+            animation: rotateAnimation 2s linear infinite;
             filter: drop-shadow(0px 0px 20px rgba(89, 128, 219, 0.3)); /* Adding circle shadow */
         }
 
@@ -39,7 +39,7 @@
                 transform: rotateY(var(--random-rotation));
             }
             to {
-                transform: rotateY(calc(var(--random-rotation) + 180deg)); /* Adjusting to complete the rotation */
+                transform: rotateY(calc(var(--random-rotation) + 360deg)); /* Adjusting to complete the rotation */
             }
         }
 

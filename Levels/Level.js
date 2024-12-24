@@ -28,11 +28,15 @@ var map = [];
 
 var funcMap = [];
 
+var platforms = [];
+
 var deathMap = [];
 
 var smallMakers = [];
 
 var bigMakers = [];
+
+var turners = [];
 
 var start = true;
 
@@ -69,6 +73,8 @@ var GLOBAL_OFFSET_Y = parseInt(canvas.style.top);
 var LEVEL_NUM = parseInt(localStorage.getItem("LEVEL_NUM"));
 
 var playerScale = 1;
+        
+var DoorRight = true;
 
 // Use the function to get the value of 'index'
 const levelNum = getQueryParameter('index');
@@ -97,10 +103,9 @@ if (true){
             deathMap.push(temp);
         }
     
-    
         if (levelNum == "1") {
-            player.style.top = "308px";
-            door.style.top = "650px";
+            
+            door.style.top = "620px";
             for (var i = 1; i <= canvas.width; i++) {
                 if (i > 910 && i < 1215) {
                     map.push(2000 - GLOBAL_OFFSET_Y);
@@ -112,7 +117,7 @@ if (true){
         }
         else if (levelNum == "2") {
     
-            player.style.top = "308px";
+            
             door.style.top = "170px";
             for (var i = 1; i <= canvas.width; i++) {
                 if (i <= 763) {
@@ -128,7 +133,6 @@ if (true){
         }
         else if (levelNum == "3") {
     
-            player.style.top = "178px";
             door.style.top = "470px";
             for (var i = 1; i <= canvas.width; i++) {
                 if (i < 763) {
@@ -145,7 +149,7 @@ if (true){
         }
         else if (levelNum == "4") {
             deathMap = [];
-            player.style.top = "308px";
+            
             door.style.top = "428px";
             for (var i = 1; i <= canvas.width; i++) {
     
@@ -178,7 +182,7 @@ if (true){
         }
         else if (levelNum == "5") {
             deathMap = [];
-            player.style.top = "308px";
+            
             door.style.top = "458px";
             for (var i = 1; i <= canvas.width; i++) {
     
@@ -215,7 +219,7 @@ if (true){
         }
         else if (levelNum == "6") {
             deathMap = [];
-            player.style.top = "308px";
+            
             door.style.top = "608px";
             for (var i = 1; i <= canvas.width; i++) {
     
@@ -244,11 +248,15 @@ if (true){
                     deathMap.push(temp);
                 }
                 else if (i == 1153) {
-                    var temp = [697-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [702-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 1212) {
                     var temp = [1, 517-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1272) {
+                    var temp = [1, 580-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else {
@@ -264,7 +272,7 @@ if (true){
         }
         else if (levelNum == "7") {
             deathMap = [];
-            player.style.top = "308px";
+            
             door.style.top = "608px";
             for (var i = 1; i <= canvas.width; i++) {
     
@@ -293,11 +301,15 @@ if (true){
                     deathMap.push(temp);
                 }
                 else if (i == 853) {
-                    var temp = [624-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [630-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 912) {
                     var temp = [1, 447-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 972) {
+                    var temp = [1, 505-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else {
@@ -313,16 +325,19 @@ if (true){
         }
         else if (levelNum == "8") {
             deathMap = [];
-            player.style.top = "178px";
             door.style.top = "150px";
             for (var i = 1; i <= canvas.width; i++) {
                 
                 if (i == 852) {
-                    var temp = [600-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [606-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 912) {
                     var temp = [1, 410-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 972) {
+                    var temp = [1, 499-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 1061) {
@@ -333,12 +348,16 @@ if (true){
                     var temp = [1, 550-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
+                else if (i == 1152) {
+                    var temp = [1, 499-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
                 else if (i == 1212) {
                     var temp = [1, 410-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 1272) {
-                    var temp = [600-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [606-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else {
@@ -363,11 +382,15 @@ if (true){
         }
         else if (levelNum == "9") {
             deathMap = [];
-            player.style.top = "308px";
+            
             door.style.top = "608px";
             for (var i = 1; i <= canvas.width; i++) {
                 
-                if (i == 612 || i == 1362) {
+                if (i == 552 || i == 1302) {
+                    var temp = [1, 505-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 612 || i == 1362) {
                     var temp = [1, 447-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
@@ -388,11 +411,15 @@ if (true){
                     deathMap.push(temp);
                 }
                 else if (i == 853 || i == 1603) {
-                    var temp = [624-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [629-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 912 || i == 1662) {
                     var temp = [1, 447-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 972 || i == 1722) {
+                    var temp = [1, 505-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else {
@@ -408,7 +435,7 @@ if (true){
         }
         else if (levelNum == "10") {
             deathMap = [];
-            player.style.top = "308px";
+            
             door.style.top = "308px";
             for (var i = 1; i <= canvas.width; i++) {
     
@@ -418,6 +445,10 @@ if (true){
                 }
                 else if (i == 612) {
                     var temp = [1, 502-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 613) {
+                    var temp = [682-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 762) {
@@ -478,7 +509,7 @@ if (true){
         }
         else if (levelNum == "11") {
             deathMap = [];
-            player.style.top = "308px";
+            
             door.style.top = "160px";
             for (var i = 1; i <= canvas.width; i++) {
                 if (i == 762) {
@@ -536,22 +567,68 @@ if (true){
             levelDiv.appendChild(bigMaker);
 
         }
+        else if (levelNum == "12") {
+            deathMap = [];
+            door.style.top = "160px";
+            DoorRight = false;
+            for (var i = 1; i <= canvas.width; i++) {
+                if (i == 912) {
+                    var temp = [1, 652-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1062) {
+                    var temp = [714-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1152) {
+                    var temp = [552-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1235) {
+                    var temp = [480-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else {
+                    var temp = [0, 0];
+                    deathMap.push(temp);
+                }
+
+                if (i < 812) {
+                    map.push(862 - GLOBAL_OFFSET_Y);
+                }
+                else {
+                    map.push(2000 - GLOBAL_OFFSET_Y);
+                }
+            }
+            platforms.push([
+                [0, 412],
+                [702, 412]
+            ]);
+
+            var turner = createCoin("turner");
+            turner.setAttribute("id", "turner0");
+            turner.style.left = 1452 - parseInt(turner.style.height) / 2 + "px";
+            turner.style.top = 602 - parseInt(turner.style.height) / 2 + "px";
+
+
+            turners.push(turner);
+            
+            levelDiv.appendChild(turner);
+
+        }
         else if (parseInt(levelNum) > LEVEL_NUM){
             window.location.href = `../nothing_to_see_here/25+.html`;
         }
         else {
-            player.style.top = "308px";
-            door.style.top = "650px";
-            for (var i = 1; i <= canvas.width; i++) {
-                if (i > 910 && i < 1215) {
-                    map.push(2000-GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(880-GLOBAL_OFFSET_Y);
-                }
-            }
+            window.location.href = `../Functions.html`;
         }
 
+        player.style.top = map[0] + GLOBAL_OFFSET_Y - 150 + "px";
+        
+        if (!DoorRight){
+            door.style.left = "30px";
+            door.style.transform = "scaleX(-1)"; //flip horizontally
+        }
 
         elt = document.getElementById('Graph');
         //elt.style.width 
@@ -675,6 +752,9 @@ function createCoin(type) {
         case "big":
             Coin.setAttribute("src", "../Images/big-maker.png");
             return Coin
+        case "turner":
+            Coin.setAttribute("src", "../Images/turner.png");
+            return Coin
         default:
             return null
     }
@@ -782,7 +862,13 @@ function DrawFunc() {
             drawLine(ctx, i, deathMap[i][0], i, deathMap[i][1], 'red', 5);
         }
     }
-
+    for (var i = 0; i < platforms.length; i++) {
+        var platform = platforms[i];
+        
+        var point1 = platform[0];
+        var point2 = platform[1];
+        drawLine(ctx, point1[0], point1[1] - GLOBAL_OFFSET_Y, point2[0], point2[1] - GLOBAL_OFFSET_Y, 'black', 3);
+    }
     
 
 
@@ -801,7 +887,7 @@ function GetPlayerPoints() {
 
     var changeConst1 = playerWidth * 0.2 * Math.cos(IncRad);
     var changeConst2 = playerWidth * 0.2 * Math.sin(IncRad);
-
+    
 
     var bottomLeft = [parseInt(parseFloat(player.style.left) + (1 - Math.cos(IncRad)) * playerWidth / 2 + changeConst1), parseInt(parseFloat(player.style.top) + playerHeight / 2 + Math.sin(IncRad) * playerWidth / 2 - changeConst2 - GLOBAL_OFFSET_Y)];
     var bottomRight = [parseInt(parseFloat(player.style.left) + (1 + Math.cos(IncRad)) * playerWidth / 2 - 1.5*changeConst1), parseInt(parseFloat(player.style.top) + playerHeight / 2 - Math.sin(IncRad) * playerWidth / 2 + changeConst2 - GLOBAL_OFFSET_Y)];
@@ -843,15 +929,14 @@ function IsCollidingDeath() {
 
     for (var i = 0; i < points.length; i++) {
 
-        for (var j = -right; j < right; j++) {
-            if (points[i][0] > 0 && points[i][0] < deathMap.length){
+        for (var j = -RANGE; j < RANGE; j++) {
+            if (points[i][0] + j > 0 && points[i][0] + j < deathMap.length){
                 //point exists
 
 
                 if (points[i][1] > deathMap[points[i][0] + j][0] && points[i][1] < deathMap[points[i][0] + j][1]) {
                     return true;
                 }
-                
             }
 
         }
@@ -891,14 +976,9 @@ function circleIntersectsLine(circle, start, end) {
 
 
 function IsCollidingCoins(){
-    for (var i = 0; i < smallMakers.length; i++) {
-        var collidingCoinID = IsCollidingCoin(smallMakers[i].id);
-        if (collidingCoinID.length > 0){
-            return collidingCoinID;
-        }
-    }
-    for (var i = 0; i < bigMakers.length; i++) {
-        var collidingCoinID = IsCollidingCoin(bigMakers[i].id);
+    var coins = document.querySelectorAll('.coin');
+    for (var i = 0; i < coins.length; i++) {
+        var collidingCoinID = IsCollidingCoin(coins[i].id);
         if (collidingCoinID.length > 0){
             return collidingCoinID;
         }
@@ -955,6 +1035,11 @@ function ResetGame(){
 
     scaleImage(1 / playerScale);
     playerScale = 1;
+
+    if (right < 0){
+        right = -right;
+    }
+
     Deaths++;
     DrawFunc();
 }
@@ -1046,6 +1131,78 @@ function scaleImage(factor) {
     player.style.top = `${parseFloat(player.style.top) + heightDiff}px`;
 }
 
+function IsOnPlatform(){
+    var points = GetPlayerPoints();
+
+    var legsHeight = points[1][1];
+    var bottomLeftX = points[0][0];
+    var bottomRightX = points[2][0];
+
+    for (var i = 0; i < platforms.length; i++) {
+        var platform = platforms[i];
+
+        var point1 = platform[0];
+        var point2 = platform[1];
+
+        if (bottomRightX > Math.min(point1[0], point2[0]) && bottomLeftX < Math.max(point1[0], point2[0])){
+            var platInc = -1 * (point1[1] - point2[1]) / (point1[0] - point2[0]);
+
+            if (inRange(platInc * (bottomLeftX - point1[0]) + point1[1] - GLOBAL_OFFSET_Y, legsHeight)) {
+                return i;
+            }
+            if (inRange(platInc * (bottomRightX - point1[0]) + point1[1] - GLOBAL_OFFSET_Y, legsHeight)) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+
+function GetPlatformIncline() {
+    var platformIndex = IsOnPlatform();
+    if (platformIndex >= 0){
+
+        var platform = platforms[platformIndex];
+
+        var point1 = platform[0];
+        var point2 = platform[1];
+
+        return -1 * (point1[1] - point2[1]) / (point1[0] - point2[0]);
+    }
+    return 0;
+}
+
+function HeadHitPlatform() {
+    var points = GetPlayerPoints();
+
+    var TopLeft = points[4];
+    var TopRight = points[6];
+    var CenterRight = points[3];
+
+
+    for (var i = 0; i < platforms.length; i++) {
+        var platform = platforms[i];
+
+        var point1 = platform[0];
+        var point2 = platform[1];
+
+        if (Math.max(TopRight[0], CenterRight[0]) > Math.min(point1[0], point2[0]) && TopLeft[0] < Math.max(point1[0], point2[0])){
+            var platInc = -1 * (point1[1] - point2[1]) / (point1[0] - point2[0]);
+
+            if (inRange(platInc * (TopLeft[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y, TopLeft[1])) {
+                return true;
+            }
+            if (inRange(platInc * (TopRight[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y, TopRight[1])) {
+                return true;
+            }
+            if (inRange(platInc * (CenterRight[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y, CenterRight[1])) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 function DoCoinEffect(collidingCoinID) {
     const scaleDiff = 0.5
 
@@ -1058,7 +1215,12 @@ function DoCoinEffect(collidingCoinID) {
         playerScale /= scaleDiff;
         scaleImage(1 / scaleDiff);
     }
+    else if (collidingCoinID.includes("turner")) {
+        right = -right;
+    }
 }
+
+
 
 function Play() {
     var answerMathField = MQ.MathField(input, {
@@ -1111,7 +1273,13 @@ function Play() {
         var moveY = vel, moveX = right;
         var baseIncline = map[playerCenterX + right] - map[playerCenterX];
         var funcIncline = funcMap[playerCenterX + right] - funcMap[playerCenterX];
+        var platIncline = GetPlatformIncline();
+
         
+        var IncDeg = 0;
+        if (player.style.transform.includes("rotate")){
+            IncDeg = parseFloat(player.style.transform.substring(player.style.transform.indexOf("rotate") + 7, player.style.transform.indexOf("deg")));
+        }
         
         if (baseIncline > 5){
             baseIncline = 0;
@@ -1137,15 +1305,15 @@ function Play() {
         if (inRange(funcMap[playerCenterX], map[playerCenterX]) && inRange(legsHeight, map[playerCenterX])) {
             //switch between function and base
             if (printActions){
-                console.log("switch");
+                console.log("switch func-map");
             }
             moveY += Math.min(funcIncline, baseIncline) - vel;
-            if (inRange(legsHeight - 1, funcMap[playerCenterX])){
+            if (funcIncline == Math.min(funcIncline, baseIncline) && inRange(legsHeight - 1, funcMap[playerCenterX])){
                 moveY -= 1;
             }
             vel = 0;
 
-            player.style.transform = 'rotate(' + Math.atan(Math.min(funcIncline, baseIncline)) * 180 / Math.PI + 'deg)';
+            player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(funcIncline, baseIncline)) * 180 / Math.PI + 'deg)';
         }
         else if (inRange(legsHeight, funcMap[playerCenterX])) {
             //walk on function
@@ -1155,7 +1323,7 @@ function Play() {
             moveY += funcIncline - vel;
             vel = 0;
 
-            player.style.transform = 'rotate(' + Math.atan(funcIncline) * 180 / Math.PI + 'deg)';
+            player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(funcIncline) * 180 / Math.PI + 'deg)';
         }
         else if (inRange(points[0][1], map[points[0][0]]) || inRange(points[2][1], map[points[2][0]])) {
             //walk on base
@@ -1166,8 +1334,34 @@ function Play() {
             moveY += baseIncline - vel;
             vel = 0;
 
-            player.style.transform = 'rotate(' + Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
+            player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
 
+        }
+        else if (inRange(legsHeight, funcMap[playerCenterX]) && IsOnPlatform() >= 0) {
+            //switch between function and platform
+            if (printActions){
+                console.log("switch func-plat");
+            }
+
+            moveY += Math.min(funcIncline, platIncline) - vel;
+            if (funcIncline == Math.min(funcIncline, platIncline) && inRange(legsHeight - 1, funcMap[playerCenterX])){
+                moveY -= 1;
+            }
+            vel = 0;
+
+            player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(funcIncline, baseIncline)) * 180 / Math.PI + 'deg)';
+        }
+        else if (IsOnPlatform() >= 0) {
+            //walk on platform
+            if (printActions){
+                console.log("walk platform");
+            }
+
+            moveY += platIncline - vel;
+            vel = 0;
+
+
+            player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(platIncline) * 180 / Math.PI + 'deg)';
         }
         else if (playerCenterX < 50) {
             //start of map
@@ -1182,10 +1376,9 @@ function Play() {
             if (printActions){
                 console.log("fall");
             }
-            player.style.transform = 'rotate(' + (parseInt(player.style.transform.substring(7, player.style.transform.length - 4)) + Math.sin(playerCenterX / n)) + 'deg)';
+            player.style.transform = 'rotate(' + (IncDeg * 0.95) + 'deg)';
             vel += (ACC / 100);
         }
-
 
         for (var i = 0; i < points.length; i++) {
     
@@ -1193,10 +1386,17 @@ function Play() {
                 moveX -= right;
                 if (moveY == vel - (ACC / 100)){
                     moveY = 2;
-                    player.style.transform = 'rotate(' + (parseInt(player.style.transform.substring(7, player.style.transform.length - 4)) + Math.sin(playerCenterX / n)) + 'deg)';
+                    player.style.transform = 'rotate(' + (IncDeg * 0.95) + 'deg)';
                 }
                 break;
 
+            }
+        }
+
+        if (HeadHitPlatform()) {
+            moveX = 0;
+            if (moveY != vel - (ACC / 100)){
+                moveY = 0;
             }
         }
 
@@ -1226,28 +1426,34 @@ function Play() {
         if (legsHeight > 1400 - GLOBAL_OFFSET_Y || legsHeight < -150 - GLOBAL_OFFSET_Y) {// out of bounds - death
             ResetGame();
         }
-        else if (playerCenterX > 2080 && legsHeight > parseFloat(door.style.top) - GLOBAL_OFFSET_Y && legsHeight < parseFloat(door.style.top) + parseFloat(door.style.height) - GLOBAL_OFFSET_Y) {// win
-            Wins++;
-            ResetGame();
-            Deaths--;
-            
+        if (legsHeight > parseFloat(door.style.top) - GLOBAL_OFFSET_Y && legsHeight < parseFloat(door.style.top) + parseFloat(door.style.height) - GLOBAL_OFFSET_Y) {// win
+            if (playerCenterX > parseFloat(door.style.left) + 50 * (right > 0) && playerCenterX < parseFloat(door.style.left) + parseFloat(door.style.width) - 50 * (right < 0)){
+                Wins++;
+                ResetGame();
+                Deaths--;
+                
+                
 
-            if (levelNum > parseInt(localStorage.getItem('levelsBeaten'))) {
-                localStorage.setItem('levelsBeaten', levelNum);
-            }
+                ctx.fillStyle = "orange";
+                ctx.fillRect(i, funcMap[i], 6, 6);
 
-            secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
-            if (Deaths > 100 && !secretsFound.includes("UNSTOPPABLE")){
-                window.location.href = `../nothing_to_see_here/ded.html`;
-            }
-            else{
-                window.location.href = `../Functions.html`;
+                if (levelNum > parseInt(localStorage.getItem('levelsBeaten'))) {
+                    localStorage.setItem('levelsBeaten', levelNum);
+                }
+
+                secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
+                if (Deaths > 100 && !secretsFound.includes("UNSTOPPABLE")){
+                    window.location.href = `../nothing_to_see_here/ded.html`;
+                }
+                else{
+                    window.location.href = `../Functions.html`;
+                }
             }
         }
-        else if (playerCenterX > 2300){// after door - death
+        if (playerCenterX > 2300 || playerCenterX < -240){// after door - death
             ResetGame();
         }
-        else if (IsCollidingDeath()) {// hit death wall - death
+        if (IsCollidingDeath()) {// hit death wall - death
             ResetGame();
         }
     }
