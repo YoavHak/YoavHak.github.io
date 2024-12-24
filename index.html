@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
     <title>Index Page</title>
     <!-- Link to Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
@@ -98,5 +99,26 @@
         <p>Click below to play the Functions Game:</p>
         <a href="Functions.html">Functions Game</a>
     </div>
+    <script>
+        
+        document.addEventListener('contextmenu', (event) => event.preventDefault());
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
+                alert('Developer tools are disabled on this site.');
+                event.preventDefault();
+            }
+        });
+    
+        (function detectConsole() {
+            const element = new Image();
+            Object.defineProperty(element, 'id', {
+                get: function () {
+                    alert('Console access is disabled!');
+                    throw new Error('Console access detected');
+                }
+            });
+            console.log(element);
+        })();
+    </script>
 </body>
 </html>

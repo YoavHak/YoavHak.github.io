@@ -512,7 +512,11 @@ if (true){
             
             door.style.top = "160px";
             for (var i = 1; i <= canvas.width; i++) {
-                if (i == 762) {
+                if (i == 642) {
+                    var temp = [1, 352-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 762) {
                     var temp = [502-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
@@ -1570,3 +1574,22 @@ function getQueryParameter(name) {
 
 
 
+
+document.addEventListener('contextmenu', (event) => event.preventDefault());
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
+        alert('Developer tools are disabled on this site.');
+        event.preventDefault();
+    }
+});
+
+(function detectConsole() {
+    const element = new Image();
+    Object.defineProperty(element, 'id', {
+        get: function () {
+            alert('Console access is disabled!');
+            throw new Error('Console access detected');
+        }
+    });
+    console.log(element);
+})();

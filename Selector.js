@@ -297,3 +297,11 @@ function changeMuteMusicState(){
         muteMusicIcon.src = 'Images/music-on.png'; // Image for unmuted state
     }
 }
+
+document.addEventListener('contextmenu', (event) => event.preventDefault());
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
+        alert('Developer tools are disabled on this site.');
+        event.preventDefault();
+    }
+});
