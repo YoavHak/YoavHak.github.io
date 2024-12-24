@@ -517,7 +517,7 @@ if (true){
                     deathMap.push(temp);
                 }
                 else if (i == 1107) {
-                    var temp = [457-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [460-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 1211) {
