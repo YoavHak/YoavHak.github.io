@@ -30,7 +30,7 @@ Special thanks to everyone who inspired this project and to the open-source comm
 
 More special thanks:
 - Desmos team & API https://www.desmos.com/api/v1.10/docs/index.html
-- _[Currently Anonymous]_ (Help with ideas for levels)
+- _[Currently Anonymous]_ (Level Design)
 - SuperZinc (Playtester)
 
 ---
