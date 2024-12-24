@@ -28,7 +28,7 @@ This project is licensed under the MIT License. See the LICENSE.md file for deta
 ## Acknowledgments
 Special thanks to everyone who inspired this project and to the open-source community for their tools and resources.
 
-More special thanks:
+#### More special thanks:
 - Desmos team & API https://www.desmos.com/api/v1.10/docs/index.html
 - _[Currently Anonymous]_ (Level Design)
 - SuperZinc (Playtester)
