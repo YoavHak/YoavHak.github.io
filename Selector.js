@@ -139,13 +139,15 @@ document.getElementById("progressButton").onclick = function() {
     var temp_EPP = secretsFound.length / MAX_EGGS;
 
     levelsProgressPercentage.innerHTML = Math.round(100 * temp_LPP) + "%";
-    eggsProgressPercentage.innerHTML = Math.round(100 * temp_EPP) + "%";
+    //eggsProgressPercentage.innerHTML = Math.round(100 * temp_EPP) + "%";
+    eggsProgressPercentage.innerHTML = "found " + secretsFound.length + " out of " + (secretsFound.length == MAX_EGGS ? MAX_EGGS:"???");
     totalProgressPercentage.innerHTML = Math.round(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS)) + "%";
 
     document.getElementById("levelsProgressBar").style.width = levelsProgressPercentage.innerHTML;
-    document.getElementById("eggsProgressBar").style.width = eggsProgressPercentage.innerHTML;
+    document.getElementById("eggsProgressBar").style.width = Math.round(100 * temp_EPP) + "%";
     document.getElementById("totalProgressBar").style.width = totalProgressPercentage.innerHTML;
 
+    document.getElementById("easterEggsTitle").innerHTML = secretsFound.length > 0 ? "Easter Eggs:" : "???";
 };
 
 document.getElementById("progressExitButton").onclick = function() {
@@ -173,6 +175,7 @@ for (var i = 0; i < 5; i++) {
 
         // Animate cell on click and redirect
         td.onclick = function () {
+            levelsBeaten = parseInt(localStorage.getItem("levelsBeaten"));
             if (this.innerHTML <= levelsBeaten + 1 && this.innerHTML != LEVEL_NUM + 1) {
                 this.style.backgroundColor = '#ff6a00';
                 this.style.color = '#2b2b2b';
@@ -236,13 +239,13 @@ function FloatRight(){
         setTimeout(() => {
             switch (MAX_EGGS - secretsFound.length) {
                 case 0:
-                    fadeText("easterEggText", "You have now found every Easter Egg.");
+                    fadeText("imposterEasterEggText", "You have now found every Easter Egg.");
                     break;
                 case 1:
-                    fadeText("easterEggText", "1 Easter Egg remains.");
+                    fadeText("imposterEasterEggText", "1 Easter Egg remains.");
                     break;
                 default:
-                    fadeText("easterEggText", (MAX_EGGS - secretsFound.length) + " Easter Eggs remaining.");
+                    fadeText("imposterEasterEggText", (MAX_EGGS - secretsFound.length) + " Easter Eggs remaining.");
               }
         }, 2500);
 
