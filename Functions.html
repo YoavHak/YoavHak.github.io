@@ -22,6 +22,12 @@
             color: #fff;
             font-family: Arial, sans-serif;
             position: relative;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         
 
@@ -146,6 +152,8 @@
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
+            pointer-events: none; /* Disable clicks */
+            opacity: 0.5; /* Optional: visually indicate that the element is disabled */
             z-index: 2;
         }
 

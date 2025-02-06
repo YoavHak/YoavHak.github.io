@@ -4,6 +4,7 @@ var canvas = document.getElementById("myCanvas"),
     outLevelDiv = document.getElementById("outLevel"),
     player = document.getElementById("player"),
     door = document.getElementById("Door"),
+    exitArrow = document.getElementById("exit-arrow"),
     ctx = canvas.getContext('2d'),
     ctx2 = canvas.getContext('2d'),
     start_message = document.getElementById('start_message'),
@@ -634,6 +635,8 @@ if (true){
             door.style.transform = "scaleX(-1)"; //flip horizontally
         }
 
+        exitArrow.style.top = parseInt(door.style.top) + 65 + "px"
+
         elt = document.getElementById('Graph');
         //elt.style.width 
         calculator = Desmos.GraphingCalculator(elt, {
@@ -673,6 +676,7 @@ if (true){
                 start_message.style.visibility = "hidden";
             }
         };
+
     }
 }
 
@@ -1236,7 +1240,6 @@ function Play() {
     });
     expr = FilterExpression(MQtoAM(String(enteredMath)));
     var expr2 = FilterExpression2(enteredMath);
-
     
     input.style.width = (expr.length * 17) + 'px';
     if (expr.length < 11) {
@@ -1263,6 +1266,42 @@ function Play() {
         if (expr2 == String.raw`\int_{ }^{ }\sqrt{∞}\\piθσ\sum_{ }^{ }Δ` || expr2 == String.raw`\int_{ }^{ }\sqrt{\infty}\\pi\theta\sigma\sum_{ }^{ }\Delta`){
             
             window.location.href = `../nothing_to_see_here/puzz.html`;
+        }
+    }
+    
+    
+    if (DoorRight * (window.innerWidth + parseInt(door.style.width)) - offsetX < parseInt(door.style.left) + parseInt(door.style.width)) {
+        exitArrow.setAttribute("src", "../Images/exit-arrow-" + (DoorRight ? "right" : "left") + ".png");
+        exitArrow.setAttribute("class", "arrow-" + (DoorRight ? "right" : "left"));
+        exitArrow.style.visibility = "visible";
+        exitArrow.style.left = (DoorRight * (window.innerWidth - parseInt(exitArrow.style.width)) - offsetX - 10) + "px"
+        exitArrow.style.top = Math.min( Math.max(parseInt(door.style.top) + 65, - offsetY + 10), window.innerHeight - offsetY - parseInt(exitArrow.style.height) - 10) + "px"
+        
+    }
+    else {
+        exitArrow.style.visibility = "hidden";
+    }
+
+    if (parseInt(door.style.top) + parseInt(door.style.height) - 65 < - offsetY) {
+        exitArrow.setAttribute("src", "../Images/exit-arrow-up.png");
+        exitArrow.setAttribute("class", "arrow-up");
+        exitArrow.style.visibility = "visible";
+        exitArrow.style.top = ( - offsetY + 10) + "px"
+        exitArrow.style.left = parseInt(door.style.left) - 20 + "px"
+        if (parseInt(door.style.left) + parseInt(door.style.width) > window.innerWidth - offsetX - 10 || parseInt(door.style.left) < - offsetX + 10) {
+            
+            exitArrow.style.left = DoorRight * (window.innerWidth - parseInt(exitArrow.style.width)) - offsetX - 10 * (2*DoorRight - 1) + "px"
+        }
+    }
+    else if (parseInt(door.style.top) > window.innerHeight - offsetY) {
+        exitArrow.setAttribute("src", "../Images/exit-arrow-down.png");
+        exitArrow.setAttribute("class", "arrow-down");
+        exitArrow.style.visibility = "visible";
+        exitArrow.style.top = (window.innerHeight - offsetY - parseInt(exitArrow.style.height) - 10) + "px"
+        exitArrow.style.left = parseInt(door.style.left) - 20 + "px"
+        if (parseInt(door.style.left) + parseInt(door.style.width) > window.innerWidth - offsetX - 10 || parseInt(door.style.left) < - offsetX + 10) {
+            
+            exitArrow.style.left = DoorRight * (window.innerWidth - parseInt(exitArrow.style.width)) - offsetX - 10 * (2*DoorRight - 1) + "px"
         }
     }
 
@@ -1591,5 +1630,4 @@ document.addEventListener('keydown', (event) => {
             throw new Error('Console access detected');
         }
     });
-    console.log(element);
 })();

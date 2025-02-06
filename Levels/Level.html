@@ -25,6 +25,12 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .coin {
@@ -44,8 +50,6 @@
             }
         }
 
-
-        
         .returnButton {
             margin-top: 20px;
             padding: 20px 40px;
@@ -56,14 +60,80 @@
             border-radius: 5px;
             cursor: pointer;
             animation: glow 1.5s ease-in-out infinite alternate, rotate3DTitle 6s infinite;
+            z-index: 1;
         }
         .returnButton:hover {
             background-color: #ff6a00;
             color: #ffeb3b;
             transform: scale(1.1);
-            z-index: 2;
+            z-index: 10;
             
         }
+
+        .arrow-right {
+            animation: rightAnimation 1s ease-in-out infinite;
+        }
+
+        .arrow-left {
+            animation: leftAnimation 1s ease-in-out infinite;
+        }
+
+        .arrow-up {
+            animation: upAnimation 1s ease-in-out infinite;
+        }
+
+        .arrow-down {
+            animation: downAnimation 1s ease-in-out infinite;
+        }
+        
+        @keyframes rightAnimation {
+            0% {
+                transform: translateX(0); /* Start position */
+            }
+            50% {
+                transform: translateX(-50px); /* Move right */
+            }
+            100% {
+                transform: translateX(0); /* Return to start position */
+            }
+        }
+        
+        @keyframes leftAnimation {
+            0% {
+                transform: translateX(0); /* Start position */
+            }
+            50% {
+                transform: translateX(50px); /* Move left */
+            }
+            100% {
+                transform: translateX(0); /* Return to start position */
+            }
+        }
+        
+        @keyframes upAnimation {
+            0% {
+                transform: translateY(0); /* Start position */
+            }
+            50% {
+                transform: translateY(50px); /* Move up */
+            }
+            100% {
+                transform: translateY(0); /* Return to start position */
+            }
+        }
+        
+        @keyframes downAnimation {
+            0% {
+                transform: translateY(0); /* Start position */
+            }
+            50% {
+                transform: translateY(-50px); /* Move down */
+            }
+            100% {
+                transform: translateY(0); /* Return to start position */
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -72,8 +142,9 @@
         <div id="level" style="position: fixed; left: 0px; top: 0px; width:1650px; height: 700px;">
             <div id="Graph" style="position: fixed; left: -440px; top: -1090px; width:3000px; height: 3000px;"></div>
     
-            <img id="Door" src="../Images/Door.png" style="position:fixed; left:2030px; top:508px; width:131px; height:294px;" />
             <img id="player" src="../Images/player.png" style="position:fixed; left:-122px; top:308px; width:100px; height:292px;" />
+            <img id="Door" src="../Images/Door.png" style="position:fixed; left:2030px; top:508px; width:131px; height:294px;" />
+            <img id="exit-arrow" class="arrow-right" src="../Images/exit-arrow-right.png" style="position:fixed; left:1800px; top:685px; width:171px; height:162px; z-index: 5; visibility: visible;"/>
             <canvas id="myCanvas" width="2750px" height="2800px" style="border:0px solid #000000; position: fixed; left: 0px; top: -2000px;">
             </canvas>
         </div>
@@ -86,7 +157,7 @@
         </div>
 
         <!-- New Button at the Top Right Corner -->
-        <button id="returnButton" class="returnButton" style="position: fixed; top: 10px; right: 30px; padding: 40px 40px; font-size: 30px; cursor: pointer;">
+        <button id="returnButton" class="returnButton" style="position: fixed; top: 220px; right: 30px; padding: 40px 40px; font-size: 30px; cursor: pointer;">
             QUIT LEVEL
         </button>
     </div>

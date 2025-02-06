@@ -28,9 +28,11 @@ var float_rotation = 50;
 
 var float_interval;
 
-var levelsBeaten = parseInt(localStorage.getItem('levelsBeaten'));
-
 var LEVEL_NUM = 12;
+
+localStorage.setItem("LEVEL_NUM", LEVEL_NUM);
+
+var levelsBeaten = parseInt(localStorage.getItem('levelsBeaten'));
 
 var MAX_EGGS = 4;
 
@@ -38,7 +40,7 @@ let soundIsMuted = false;
 
 let musicIsMuted = false;
 
-localStorage.setItem("LEVEL_NUM", LEVEL_NUM);
+var imposterTextAppeared = false;
 
 const muteSoundsButton = document.getElementById('muteSoundsButton');
 const muteSoundsIcon = document.getElementById('muteSoundsIcon');
@@ -207,17 +209,19 @@ function changeScene() {
     document.getElementById('gameMenu').style.display = 'none'; // Hide the menu
     document.getElementById('levelSelector').style.display = 'flex'; // Show the level selector
     setTimeout(() => {
-        float_interval = setInterval(FloatLeft, 1);
+        float_interval = setInterval(FloatRight, 1);
     }, 60000);
+
 }
 
-function FloatLeft(){
+function FloatRight(){
     float_rotation += 0.1;
 
     playerImage.style.left = parseFloat(player.style.left) + 0.1 + 'px';
     playerImage.style.transform = 'rotate(' + float_rotation + 'deg)';
 
-    if (parseFloat(player.style.left) == 1225){
+    if (parseFloat(player.style.left) > window.innerWidth / 2 && !imposterTextAppeared){
+        imposterTextAppeared = true;
         if (!soundIsMuted){
             var sound = document.createElement("audio");
     
