@@ -39,6 +39,8 @@ var bigMakers = [];
 
 var turners = [];
 
+var boosters = [];
+
 var start = true;
 
 var gamespeed = 5;
@@ -76,6 +78,8 @@ var LEVEL_NUM = parseInt(localStorage.getItem("LEVEL_NUM"));
 var playerScale = 1;
         
 var DoorRight = true;
+
+var IsBoosted = false;
 
 // Use the function to get the value of 'index'
 const levelNum = getQueryParameter('index');
@@ -621,6 +625,109 @@ if (true){
             levelDiv.appendChild(turner);
 
         }
+        else if (levelNum == "13") {
+            deathMap = [];
+            door.style.top = "235px";
+            DoorRight = false;
+            for (var i = 1; i <= canvas.width; i++) {
+                if (i == 824) {
+                    var temp = [1, 327-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 825) {
+                    var temp = [375-GLOBAL_OFFSET_Y, 520-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 826) {
+                    var temp = [675-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1061) {
+                    var temp = [1, 414-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1062) {
+                    var temp = [864-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1298) {
+                    var temp = [1, 290-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1299) {
+                    var temp = [375-GLOBAL_OFFSET_Y, 590-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1300) {
+                    var temp = [675-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else {
+                    var temp = [0, 0];
+                    deathMap.push(temp);
+                }
+
+                if (i < 728) {
+                    map.push(862 - GLOBAL_OFFSET_Y);
+                }
+                else {
+                    map.push(2000 - GLOBAL_OFFSET_Y);
+                }
+            }
+            platforms.push([
+                [0, 487],
+                [745, 487]
+            ]);
+
+            var smallMaker1 = createCoin("small");
+            smallMaker1.setAttribute("id", "smallMaker0");
+            smallMaker1.style.left = 1062 - parseInt(smallMaker1.style.height) / 2 + "px";
+            smallMaker1.style.top = 804 - parseInt(smallMaker1.style.height) / 2 + "px";
+
+            var boost1 = createCoin("boost");
+            boost1.setAttribute("id", "boost0");
+            boost1.style.left = 1452 - parseInt(boost1.style.height) / 2 + "px";
+            boost1.style.top = 752 - parseInt(boost1.style.height) / 2 + "px";
+
+            var turner = createCoin("turner");
+            turner.setAttribute("id", "turner0");
+            turner.style.left = 1452 - parseInt(turner.style.height) / 2 + "px";
+            turner.style.top = 352 - parseInt(turner.style.height) / 2 + "px";
+
+            var smallMaker2 = createCoin("small");
+            smallMaker2.setAttribute("id", "smallMaker1");
+            smallMaker2.style.left = 1202 - parseInt(smallMaker2.style.height) / 2 + "px";
+            smallMaker2.style.top = 352 - parseInt(smallMaker2.style.height) / 2 + "px";
+
+            var boost2 = createCoin("boost");
+            boost2.setAttribute("id", "boost1");
+            boost2.style.left = 752 - parseInt(boost2.style.height) / 2 + "px";
+            boost2.style.top = 352 - parseInt(boost2.style.height) / 2 + "px";
+
+            var bigMaker = createCoin("big");
+            bigMaker.setAttribute("id", "bigMaker0");
+            bigMaker.style.left = 1062 - parseInt(bigMaker.style.height) / 2 + "px";
+            bigMaker.style.top = 634 - parseInt(bigMaker.style.height) / 2 + "px";
+
+
+            
+            smallMakers.push(smallMaker1);
+            smallMakers.push(smallMaker2);
+            levelDiv.appendChild(smallMaker1);
+            levelDiv.appendChild(smallMaker2);
+            
+            boosters.push(boost1);
+            boosters.push(boost2);
+            levelDiv.appendChild(boost1);
+            levelDiv.appendChild(boost2);
+
+            turners.push(turner);
+            levelDiv.appendChild(turner);
+
+            bigMakers.push(bigMaker);
+            levelDiv.appendChild(bigMaker);
+
+        }
         else if (parseInt(levelNum) > LEVEL_NUM){
             window.location.href = `../nothing_to_see_here/25+.html`;
         }
@@ -762,6 +869,9 @@ function createCoin(type) {
             return Coin
         case "turner":
             Coin.setAttribute("src", "../Images/turner.png");
+            return Coin
+        case "boost":
+            Coin.setAttribute("src", "../Images/boost.png");
             return Coin
         default:
             return null
@@ -1226,6 +1336,9 @@ function DoCoinEffect(collidingCoinID) {
     else if (collidingCoinID.includes("turner")) {
         right = -right;
     }
+    else if (collidingCoinID.includes("boost")) {
+        IsBoosted = true;
+    }
 }
 
 
@@ -1241,7 +1354,7 @@ function Play() {
     expr = FilterExpression(MQtoAM(String(enteredMath)));
     var expr2 = FilterExpression2(enteredMath);
     
-    input.style.width = (expr.length * 17) + 'px';
+    input.style.width = expr.length * 17 + 'px';
     if (expr.length < 11) {
         input.style.width = "200px";
     }
@@ -1360,7 +1473,12 @@ function Play() {
 
 
         var printActions = false;
-        if (inRange(funcMap[playerCenterX], map[playerCenterX]) && inRange(legsHeight, map[playerCenterX])) {
+        if (IsBoosted) {
+            IsBoosted = false;
+            vel = -8;
+            moveY += vel;
+        }
+        else if (inRange(funcMap[playerCenterX], map[playerCenterX]) && inRange(legsHeight, map[playerCenterX])) {
             //switch between function and base
             if (printActions){
                 console.log("switch func-map");
