@@ -1288,9 +1288,20 @@ function Play() {
         exitArrow.style.visibility = "visible";
         exitArrow.style.top = ( - offsetY + 10) + "px"
         exitArrow.style.left = parseInt(door.style.left) - 20 + "px"
-        if (parseInt(door.style.left) + parseInt(door.style.width) > window.innerWidth - offsetX - 10 || parseInt(door.style.left) < - offsetX + 10) {
+        if (parseInt(door.style.left) + parseInt(door.style.width) > window.innerWidth - offsetX - 10) {
             
             exitArrow.style.left = DoorRight * (window.innerWidth - parseInt(exitArrow.style.width)) - offsetX - 10 * (2*DoorRight - 1) + "px"
+        }
+        if (parseInt(door.style.left) < - offsetX + 10) {
+            exitArrow.style.left = - offsetX + 30 * (2*DoorRight - 1) + "px"
+        }
+        returnLeft = window.innerWidth - offsetX - 300
+        returnHeight = 50
+        if (parseInt(door.style.left) + parseInt(door.style.width) > returnLeft) {
+            exitArrow.style.top = - offsetY + returnHeight + 20 + "px"
+        }
+        if (parseInt(door.style.left) < 150 - offsetX) {
+            exitArrow.style.top = - offsetY + returnHeight + 120 + "px"
         }
     }
     else if (parseInt(door.style.top) > window.innerHeight - offsetY) {
@@ -1299,9 +1310,12 @@ function Play() {
         exitArrow.style.visibility = "visible";
         exitArrow.style.top = (window.innerHeight - offsetY - parseInt(exitArrow.style.height) - 10) + "px"
         exitArrow.style.left = parseInt(door.style.left) - 20 + "px"
-        if (parseInt(door.style.left) + parseInt(door.style.width) > window.innerWidth - offsetX - 10 || parseInt(door.style.left) < - offsetX + 10) {
+        if (parseInt(door.style.left) + parseInt(door.style.width) > window.innerWidth - offsetX - 10) {
             
             exitArrow.style.left = DoorRight * (window.innerWidth - parseInt(exitArrow.style.width)) - offsetX - 10 * (2*DoorRight - 1) + "px"
+        }
+        if (parseInt(door.style.left) < - offsetX + 30) {
+            exitArrow.style.left = - offsetX + 10 * (2*DoorRight - 1) + "px"
         }
     }
 
