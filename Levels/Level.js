@@ -1270,11 +1270,12 @@ function Play() {
     }
     
     
-    if (DoorRight * (window.innerWidth + parseInt(door.style.width)) - offsetX < parseInt(door.style.left) + parseInt(door.style.width)) {
+    // + 2 * (- DoorRight + 1) * parseInt(door.style.width)
+    if (DoorRight * (2 * parseInt(door.style.left) + parseInt(door.style.width) - window.innerWidth + 2 * offsetX) > parseInt(door.style.left) + parseInt(door.style.width) + offsetX) {
         exitArrow.setAttribute("src", "../Images/exit-arrow-" + (DoorRight ? "right" : "left") + ".png");
         exitArrow.setAttribute("class", "arrow-" + (DoorRight ? "right" : "left"));
         exitArrow.style.visibility = "visible";
-        exitArrow.style.left = (DoorRight * (window.innerWidth - parseInt(exitArrow.style.width)) - offsetX - 10) + "px"
+        exitArrow.style.left = (DoorRight * (window.innerWidth - parseInt(exitArrow.style.width) - 20) - offsetX + 10) + "px"
         exitArrow.style.top = Math.min( Math.max(parseInt(door.style.top) + 65, - offsetY + 10), window.innerHeight - offsetY - parseInt(exitArrow.style.height) - 10) + "px"
         
     }
@@ -1290,10 +1291,10 @@ function Play() {
         exitArrow.style.left = parseInt(door.style.left) - 20 + "px"
         if (parseInt(door.style.left) + parseInt(door.style.width) > window.innerWidth - offsetX - 10) {
             
-            exitArrow.style.left = DoorRight * (window.innerWidth - parseInt(exitArrow.style.width)) - offsetX - 10 * (2*DoorRight - 1) + "px"
+            exitArrow.style.left = DoorRight * (window.innerWidth - parseInt(exitArrow.style.width) - 20) - offsetX + 10 + "px"
         }
-        if (parseInt(door.style.left) < - offsetX + 10) {
-            exitArrow.style.left = - offsetX + 30 * (2*DoorRight - 1) + "px"
+        if (parseInt(door.style.left) < - offsetX + 30) {
+            exitArrow.style.left = DoorRight * -40 - offsetX + 20 + "px"
         }
         returnLeft = window.innerWidth - offsetX - 300
         returnHeight = 50
@@ -1312,10 +1313,10 @@ function Play() {
         exitArrow.style.left = parseInt(door.style.left) - 20 + "px"
         if (parseInt(door.style.left) + parseInt(door.style.width) > window.innerWidth - offsetX - 10) {
             
-            exitArrow.style.left = DoorRight * (window.innerWidth - parseInt(exitArrow.style.width)) - offsetX - 10 * (2*DoorRight - 1) + "px"
+            exitArrow.style.left = DoorRight * (window.innerWidth - parseInt(exitArrow.style.width) - 20) - offsetX + 10 + "px"
         }
         if (parseInt(door.style.left) < - offsetX + 30) {
-            exitArrow.style.left = - offsetX + 10 * (2*DoorRight - 1) + "px"
+            exitArrow.style.left = DoorRight * -20 - offsetX + 10 + "px"
         }
     }
 
