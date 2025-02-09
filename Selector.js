@@ -28,7 +28,7 @@ var float_rotation = 50;
 
 var float_interval;
 
-var LEVEL_NUM = 13;
+var LEVEL_NUM = 14;
 
 localStorage.setItem("LEVEL_NUM", LEVEL_NUM);
 
@@ -141,7 +141,7 @@ document.getElementById("progressButton").onclick = function() {
     levelsProgressPercentage.innerHTML = Math.round(100 * temp_LPP) + "%";
     eggsProgressPercentage.innerHTML = Math.round(100 * temp_EPP) + "%";
     //eggsProgressPercentage.innerHTML = "found " + secretsFound.length + " out of " + (secretsFound.length == MAX_EGGS ? MAX_EGGS:"???");
-    totalProgressPercentage.innerHTML = Math.round(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS)) + "%";
+    totalProgressPercentage.innerHTML = Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS)) + "%";
 
     document.getElementById("levelsProgressBar").style.width = levelsProgressPercentage.innerHTML;
     document.getElementById("eggsProgressBar").style.width = eggsProgressPercentage.innerHTML;

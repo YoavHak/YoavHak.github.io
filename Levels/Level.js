@@ -526,7 +526,7 @@ if (true){
                     deathMap.push(temp);
                 }
                 else if (i == 1107) {
-                    var temp = [460-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [465-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 1211) {
@@ -534,7 +534,7 @@ if (true){
                     deathMap.push(temp);
                 }
                 else if (i == 1212) {
-                    var temp = [517-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
+                    var temp = [522-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else if (i == 1312) {
@@ -728,7 +728,83 @@ if (true){
             levelDiv.appendChild(bigMaker);
 
         }
-        else if (parseInt(levelNum) > LEVEL_NUM){
+        else if (levelNum == "14") {
+
+            deathMap = [];
+            
+            door.style.top = "160px";
+            for (var i = 1; i <= canvas.width; i++) {
+                if (i == 762) {
+                    var temp = [1, 82-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1752) {
+                    var temp = [1, 82-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else if (i == 1452) {
+                    var temp = [1, 172-GLOBAL_OFFSET_Y];
+                    deathMap.push(temp);
+                }
+                else {
+                    var temp = [0, 0];
+                    deathMap.push(temp);
+                }
+
+                if (i < 463) {
+                    map.push(562 - GLOBAL_OFFSET_Y);
+                }
+                else if (i > 1362) {
+                    map.push(412 - GLOBAL_OFFSET_Y);
+                }
+                else {
+                    map.push(2000 - GLOBAL_OFFSET_Y);
+                }
+            }
+            platforms.push([
+                [462, 562],
+                [927, 740]
+            ]);
+
+            for (var i = 0; i < 5; i++) {
+                for (var j = 0; j < 4; j++) {
+                    smalls_indexes = [
+                        9,
+                        10,
+                        12,
+                    ];
+                    if (smalls_indexes.includes((i * 4 + j))) {
+                        var smallMaker = createCoin("small");
+                        smallMaker.setAttribute("id", "smallMaker" + (i * 4 + j));
+                        smallMaker.style.left = 837 + j * 150 - parseInt(smallMaker.style.height) / 2 + "px";
+                        smallMaker.style.top = 187 + i * 150 - parseInt(smallMaker.style.height) / 2 + "px";
+                        
+                        smallMakers.push(smallMaker);
+                        levelDiv.appendChild(smallMaker);
+                    }
+                    else {
+                        var bigMaker = createCoin("big");
+                        bigMaker.setAttribute("id", "bigMaker" + (i * 4 + j));
+                        bigMaker.style.left = 837 + j * 150 - parseInt(bigMaker.style.height) / 2 + "px";
+                        bigMaker.style.top = 187 + i * 150 - parseInt(bigMaker.style.height) / 2 + "px";
+                        
+                        bigMakers.push(bigMaker);
+                        levelDiv.appendChild(bigMaker);
+                    }
+                }
+            }
+
+            var bigMaker20 = createCoin("big");
+            bigMaker20.setAttribute("id", "bigMaker20");
+            bigMaker20.style.left = 1587 - parseInt(bigMaker20.style.height) / 2 + "px";
+            bigMaker20.style.top = 337 - parseInt(bigMaker20.style.height) / 2 + "px";
+            
+            bigMakers.push(bigMaker20);
+            levelDiv.appendChild(bigMaker20);
+
+
+        }
+        else if (parseInt(levelNum) > levelsBeaten + 1){
             window.location.href = `../nothing_to_see_here/25+.html`;
         }
         else {
@@ -1249,12 +1325,33 @@ function scaleImage(factor) {
     player.style.top = `${parseFloat(player.style.top) + heightDiff}px`;
 }
 
-function IsOnPlatform(){
+function IsPointOnPlayer(pointX, pointY) {
+    function crossProduct(p1, p2, p3) {
+        return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]);
+    }
+    
     var points = GetPlayerPoints();
 
-    var legsHeight = points[1][1];
-    var bottomLeftX = points[0][0];
-    var bottomRightX = points[2][0];
+    var BottomLeft = points[0];
+    var BottomRight = points[2];
+    var TopLeft = points[4];
+    var TopRight = points[6];
+    
+    let cross1 = crossProduct(BottomLeft, BottomRight, [pointX, pointY]);
+    let cross2 = crossProduct(BottomRight, TopLeft, [pointX, pointY]);
+    let cross3 = crossProduct(TopLeft, TopRight, [pointX, pointY]);
+    let cross4 = crossProduct(TopRight, BottomLeft, [pointX, pointY]);
+    
+    let hasPositive = cross1 > 0 || cross2 > 0 || cross3 > 0 || cross4 > 0;
+    let hasNegative = cross1 < 0 || cross2 < 0 || cross3 < 0 || cross4 < 0;
+    
+    return !(hasPositive && hasNegative);
+}
+
+
+
+function GetPlatformY(X) {
+    var Y_values = [];
 
     for (var i = 0; i < platforms.length; i++) {
         var platform = platforms[i];
@@ -1262,31 +1359,58 @@ function IsOnPlatform(){
         var point1 = platform[0];
         var point2 = platform[1];
 
-        if (bottomRightX > Math.min(point1[0], point2[0]) && bottomLeftX < Math.max(point1[0], point2[0])){
-            var platInc = -1 * (point1[1] - point2[1]) / (point1[0] - point2[0]);
+        var leftPoint = point1[0] < point2[0] ? point1 : point2;
 
-            if (inRange(platInc * (bottomLeftX - point1[0]) + point1[1] - GLOBAL_OFFSET_Y, legsHeight)) {
-                return i;
-            }
-            if (inRange(platInc * (bottomRightX - point1[0]) + point1[1] - GLOBAL_OFFSET_Y, legsHeight)) {
-                return i;
-            }
+        var rightPoint = point1[0] > point2[0] ? point1 : point2;
+
+        var platInc = (point1[1] - point2[1]) / (point1[0] - point2[0]);
+
+        if (leftPoint[0] < X && X < rightPoint[0]){
+            Y_values.push([i, leftPoint[1] + platInc * (X - leftPoint[0])]);
+        }
+
+
+    }
+    return Y_values;
+}
+
+function IsOnPlatform() {
+    var points = GetPlayerPoints();
+
+    var playerX = points[1][0];
+    var playerY = points[1][1];
+
+    var Y_values = GetPlatformY(playerX);
+
+    for (var i = 0; i < Y_values.length; i++) {
+        if (inRange(Y_values[i][1], playerY + GLOBAL_OFFSET_Y)) {
+            return Y_values[i][0];
         }
     }
+
     return -1;
 }
 
 function GetPlatformIncline() {
-    var platformIndex = IsOnPlatform();
-    if (platformIndex >= 0){
+    var points = GetPlayerPoints();
 
-        var platform = platforms[platformIndex];
+    var playerX = points[1][0];
+    var playerY = points[1][1];
 
-        var point1 = platform[0];
-        var point2 = platform[1];
+    var Y_values = GetPlatformY(playerX);
 
-        return -1 * (point1[1] - point2[1]) / (point1[0] - point2[0]);
+    for (var i = 0; i < Y_values.length; i++) {
+        if (inRange(Y_values[i][1], playerY + GLOBAL_OFFSET_Y)) {
+            var next_Y_values = GetPlatformY(playerX + right);
+            for (var j = 0; j < next_Y_values.length; j++) {
+                if (Y_values[i][0] == next_Y_values[j][0]) {
+                    return next_Y_values[j][1] - Y_values[i][1];
+                }
+            }
+        }
     }
+
+
     return 0;
 }
 
@@ -1305,17 +1429,22 @@ function HeadHitPlatform() {
         var point2 = platform[1];
 
         if (Math.max(TopRight[0], CenterRight[0]) > Math.min(point1[0], point2[0]) && TopLeft[0] < Math.max(point1[0], point2[0])){
-            var platInc = -1 * (point1[1] - point2[1]) / (point1[0] - point2[0]);
+            var platInc = (point1[1] - point2[1]) / (point1[0] - point2[0]);
+            var hitY1 = platInc * (TopLeft[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y;
+            var hitY2 = platInc * (TopRight[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y;
+            var hitY3 = platInc * (CenterRight[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y;
+            
+            //console.log(IsPointOnPlayer(CenterRight[0], hitY3))
+            if (inRange(hitY1, TopLeft[1]) && hitY1 < TopRight[1]) {
+                return true;
+            }
+            if (inRange(hitY2, TopRight[1])) {
+                return true;
+            }
+            if (inRange(hitY3, CenterRight[1])) {
+                return true;
+            }
 
-            if (inRange(platInc * (TopLeft[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y, TopLeft[1])) {
-                return true;
-            }
-            if (inRange(platInc * (TopRight[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y, TopRight[1])) {
-                return true;
-            }
-            if (inRange(platInc * (CenterRight[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y, CenterRight[1])) {
-                return true;
-            }
         }
     }
     return false;
@@ -1491,10 +1620,38 @@ function Play() {
 
             player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(funcIncline, baseIncline)) * 180 / Math.PI + 'deg)';
         }
+        else if (inRange(legsHeight, funcMap[playerCenterX]) && IsOnPlatform() >= 0) {
+            //switch between function and platform
+            if (printActions){
+                console.log("switch func-plat");
+            }
+
+            moveY += Math.min(funcIncline, platIncline) - vel;
+            if (platIncline >= funcIncline && inRange(legsHeight - 1, funcMap[playerCenterX])){
+                moveY -= 1;
+            }
+            vel = 0;
+
+            player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(funcIncline, baseIncline)) * 180 / Math.PI + 'deg)';
+        }
+        else if (inRange(legsHeight, map[playerCenterX]) && IsOnPlatform() >= 0) {
+            //switch between function and platform
+            if (printActions){
+                console.log("switch base-plat");
+            }
+
+            moveY += Math.min(baseIncline, platIncline) - vel;
+            if (platIncline >= baseIncline && inRange(legsHeight - 1, map[playerCenterX])){
+                moveY -= 1;
+            }
+            vel = 0;
+
+            player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(platIncline, baseIncline)) * 180 / Math.PI + 'deg)';
+        }
         else if (inRange(legsHeight, funcMap[playerCenterX])) {
             //walk on function
             if (printActions){
-                console.log("walk func");
+                console.log("walk func", funcIncline);
             }
             moveY += funcIncline - vel;
             vel = 0;
@@ -1513,20 +1670,6 @@ function Play() {
             player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
 
         }
-        else if (inRange(legsHeight, funcMap[playerCenterX]) && IsOnPlatform() >= 0) {
-            //switch between function and platform
-            if (printActions){
-                console.log("switch func-plat");
-            }
-
-            moveY += Math.min(funcIncline, platIncline) - vel;
-            if (funcIncline == Math.min(funcIncline, platIncline) && inRange(legsHeight - 1, funcMap[playerCenterX])){
-                moveY -= 1;
-            }
-            vel = 0;
-
-            player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(funcIncline, baseIncline)) * 180 / Math.PI + 'deg)';
-        }
         else if (IsOnPlatform() >= 0) {
             //walk on platform
             if (printActions){
@@ -1544,13 +1687,14 @@ function Play() {
             if (printActions){
                 console.log("start");
             }
-            moveY = map[0] - legsHeight;
+            moveY = map[0] - legsHeight - RANGE / 2;
             vel = 0;
         }
         else {
             //fall
             if (printActions){
                 console.log("fall");
+                // + platIncline * (playerCenterX - platforms[0][0][0])
             }
             player.style.transform = 'rotate(' + (IncDeg * 0.95) + 'deg)';
             vel += (ACC / 100);
@@ -1574,6 +1718,7 @@ function Play() {
             if (moveY != vel - (ACC / 100)){
                 moveY = 0;
             }
+            console.log("head hit platform");
         }
 
         for (var i = Math.min(points[4][0], points[7][0]); i < Math.max(points[2][0], points[3][0]) - right; i++) {
