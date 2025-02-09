@@ -738,12 +738,12 @@ if (true){
                     var temp = [1, 82-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
-                else if (i == 1752) {
-                    var temp = [1, 82-GLOBAL_OFFSET_Y];
+                else if (i == 1062) {
+                    var temp = [442-GLOBAL_OFFSET_Y, 2000-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
-                else if (i == 1452) {
-                    var temp = [1, 172-GLOBAL_OFFSET_Y];
+                else if (i == 1752) {
+                    var temp = [1, 82-GLOBAL_OFFSET_Y];
                     deathMap.push(temp);
                 }
                 else {
@@ -773,7 +773,21 @@ if (true){
                         10,
                         12,
                     ];
-                    if (smalls_indexes.includes((i * 4 + j))) {
+
+                    boosts_indexes = [
+                        5,
+                        6,
+                    ]
+                    if (boosts_indexes.includes((i * 4 + j))) {
+                        var booster = createCoin("boost");
+                        booster.setAttribute("id", "booster" + (i * 4 + j));
+                        booster.style.left = 837 + j * 150 - parseInt(booster.style.height) / 2 + "px";
+                        booster.style.top = 187 + i * 150 - parseInt(booster.style.height) / 2 + "px";
+                        
+                        boosters.push(booster);
+                        levelDiv.appendChild(booster);
+                    }
+                    else if (smalls_indexes.includes((i * 4 + j))) {
                         var smallMaker = createCoin("small");
                         smallMaker.setAttribute("id", "smallMaker" + (i * 4 + j));
                         smallMaker.style.left = 837 + j * 150 - parseInt(smallMaker.style.height) / 2 + "px";
@@ -1574,6 +1588,7 @@ function Play() {
         var baseIncline = map[playerCenterX + right] - map[playerCenterX];
         var funcIncline = funcMap[playerCenterX + right] - funcMap[playerCenterX];
         var platIncline = GetPlatformIncline();
+        var upperBounds = -150;
 
         
         var IncDeg = 0;
@@ -1655,6 +1670,7 @@ function Play() {
             }
             moveY += funcIncline - vel;
             vel = 0;
+            upperBounds = 150 * funcIncline;
 
             player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(funcIncline) * 180 / Math.PI + 'deg)';
         }
@@ -1744,7 +1760,8 @@ function Play() {
         }
         
 
-        if (legsHeight > 1400 - GLOBAL_OFFSET_Y || legsHeight < -150 - GLOBAL_OFFSET_Y) {// out of bounds - death
+        if (legsHeight > 1400 - GLOBAL_OFFSET_Y || legsHeight < upperBounds - GLOBAL_OFFSET_Y) {// out of bounds - death
+            console.log(1);
             ResetGame();
         }
         if (legsHeight > parseFloat(door.style.top) - GLOBAL_OFFSET_Y && legsHeight < parseFloat(door.style.top) + parseFloat(door.style.height) - GLOBAL_OFFSET_Y) {// win
@@ -1772,9 +1789,11 @@ function Play() {
             }
         }
         if (playerCenterX > 2300 || playerCenterX < -240){// after door - death
+            console.log(2);
             ResetGame();
         }
         if (IsCollidingDeath()) {// hit death wall - death
+            console.log(3);
             ResetGame();
         }
     }
