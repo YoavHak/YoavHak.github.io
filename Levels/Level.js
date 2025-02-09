@@ -774,18 +774,17 @@ if (true){
                         12,
                     ];
 
-                    boosts_indexes = [
-                        5,
+                    turners_indexes = [
                         6,
                     ]
-                    if (boosts_indexes.includes((i * 4 + j))) {
-                        var booster = createCoin("boost");
-                        booster.setAttribute("id", "booster" + (i * 4 + j));
-                        booster.style.left = 837 + j * 150 - parseInt(booster.style.height) / 2 + "px";
-                        booster.style.top = 187 + i * 150 - parseInt(booster.style.height) / 2 + "px";
+                    if (turners_indexes.includes((i * 4 + j))) {
+                        var turner = createCoin("turner");
+                        turner.setAttribute("id", "turner" + (i * 4 + j));
+                        turner.style.left = 837 + j * 150 - parseInt(turner.style.height) / 2 + "px";
+                        turner.style.top = 187 + i * 150 - parseInt(turner.style.height) / 2 + "px";
                         
-                        boosters.push(booster);
-                        levelDiv.appendChild(booster);
+                        turners.push(turner);
+                        levelDiv.appendChild(turner);
                     }
                     else if (smalls_indexes.includes((i * 4 + j))) {
                         var smallMaker = createCoin("small");
