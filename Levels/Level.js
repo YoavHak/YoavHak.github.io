@@ -817,7 +817,7 @@ if (true){
 
 
         }
-        else if (parseInt(levelNum) > levelsBeaten + 1){
+        else if (parseInt(levelNum) > parseInt(localStorage.getItem("levelsBeaten")) + 1){
             window.location.href = `../nothing_to_see_here/25+.html`;
         }
         else {
@@ -830,6 +830,7 @@ if (true){
             door.style.left = "30px";
             door.style.transform = "scaleX(-1)"; //flip horizontally
         }
+
 
         exitArrow.style.top = parseInt(door.style.top) + 65 + "px"
 
