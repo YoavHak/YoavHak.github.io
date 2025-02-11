@@ -28,7 +28,7 @@ var float_rotation = 50;
 
 var float_interval;
 
-var LEVEL_NUM = 14;
+var LEVEL_NUM = 15;
 
 localStorage.setItem("LEVEL_NUM", LEVEL_NUM);
 
@@ -68,13 +68,13 @@ else {
     localStorage.setItem("levelsBeaten", levelsBeaten);
 }
 
-if (levelsBeaten > 0){
-    
+if (levelsBeaten > 0) {
+
     changeMuteSoundsState();
     changeMuteMusicState();
     changeScene();
 
-    if (levelsBeaten > LEVEL_NUM){
+    if (levelsBeaten > LEVEL_NUM) {
         levelsBeaten = 8;
 
         localStorage.setItem("levelsBeaten", levelsBeaten);
@@ -87,7 +87,7 @@ var secretsFound = localStorage.getItem('secretsFound');
 if (secretsFound) {
     secretsFound = JSON.parse(secretsFound);
 }
-else{
+else {
     secretsFound = [];
 }
 localStorage.setItem('secretsFound', JSON.stringify(secretsFound));
@@ -98,7 +98,7 @@ localStorage.setItem("maxEggs", MAX_EGGS);
 
 
 
-for (var i = 1; i< 26; i++){
+for (var i = 1; i < 26; i++) {
     var sound = document.createElement("audio");
     sound.setAttribute("src", "Sounds/Hover.mp3");
     sound.volume = 0.5;
@@ -111,24 +111,24 @@ backgroundMusic.load();
 
 playerImage.style.transformOrigin = "center 25%";
 
-document.getElementById("resetButton").onclick = function() {
+document.getElementById("resetButton").onclick = function () {
     selectorDiv.classList.add("disabled");
     confirmReset.style.visibility = "visible";
 };
 
-document.getElementById("yesReset").onclick = function() {
+document.getElementById("yesReset").onclick = function () {
     localStorage.setItem('levelsBeaten', 0);
     localStorage.setItem('secretsFound', JSON.stringify([]));
     location.reload();
 };
 
-document.getElementById("noReset").onclick = function() {
+document.getElementById("noReset").onclick = function () {
     selectorDiv.classList.remove("disabled");
     confirmReset.style.visibility = "hidden";
 };
 
 
-document.getElementById("progressButton").onclick = function() {
+document.getElementById("progressButton").onclick = function () {
     selectorDiv.classList.add("disabled");
     progressViewer.style.visibility = "visible";
 
@@ -150,7 +150,7 @@ document.getElementById("progressButton").onclick = function() {
     document.getElementById("easterEggsTitle").innerHTML = secretsFound.length > 0 ? "Easter Eggs:" : "???";
 };
 
-document.getElementById("progressExitButton").onclick = function() {
+document.getElementById("progressExitButton").onclick = function () {
     selectorDiv.classList.remove("disabled");
     progressViewer.style.visibility = "hidden";
 };
@@ -161,15 +161,15 @@ for (var i = 0; i < 5; i++) {
     var tr = document.createElement("tr");
     for (var j = 0; j < 5; j++) {
         var td = document.createElement("td");
-        
+
 
         let index = (i * 5 + j + 1);
         td.innerHTML = index;
 
-        
+
         td.style.backgroundSize = "cover";
         td.style.backgroundPosition = "center";
-        if (td.innerHTML > levelsBeaten + 1 || td.innerHTML == LEVEL_NUM + 1){
+        if (td.innerHTML > levelsBeaten + 1 || td.innerHTML == LEVEL_NUM + 1) {
             td.style.opacity = "0.5";
         }
 
@@ -183,7 +183,7 @@ for (var i = 0; i < 5; i++) {
                 window.location.href = `Levels/Level.html?index=${this.innerHTML}`;
             }
             else if (!soundIsMuted) {
-                
+
                 var sound = document.createElement("audio");
                 sound.setAttribute("src", "Sounds/Locked.mp3");
                 sound.volume = 0.1;
@@ -191,9 +191,9 @@ for (var i = 0; i < 5; i++) {
             }
         };
         td.onmouseover = function () {
-            if (!soundIsMuted){
+            if (!soundIsMuted) {
 
-                hoverSounds[parseInt(this.innerHTML) - 1 ].play();
+                hoverSounds[parseInt(this.innerHTML) - 1].play();
             }
         };
         tr.appendChild(td);
@@ -217,17 +217,17 @@ function changeScene() {
 
 }
 
-function FloatRight(){
+function FloatRight() {
     float_rotation += 0.1;
 
     playerImage.style.left = parseFloat(player.style.left) + 0.1 + 'px';
     playerImage.style.transform = 'rotate(' + float_rotation + 'deg)';
 
-    if (parseFloat(player.style.left) > window.innerWidth / 2 && !imposterTextAppeared){
+    if (parseFloat(player.style.left) > window.innerWidth / 2 && !imposterTextAppeared) {
         imposterTextAppeared = true;
-        if (!soundIsMuted){
+        if (!soundIsMuted) {
             var sound = document.createElement("audio");
-    
+
             sound.setAttribute("src", "Sounds/AmongUsType.mp3");
             sound.play();
         }
@@ -246,12 +246,12 @@ function FloatRight(){
                     break;
                 default:
                     fadeText("imposterEasterEggText", (MAX_EGGS - secretsFound.length) + " Easter Eggs remaining.");
-              }
+            }
         }, 2500);
 
         secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
-        if (!secretsFound.includes("PATIENCE")){
-            
+        if (!secretsFound.includes("PATIENCE")) {
+
             secretsFound.push("PATIENCE");
             localStorage.setItem('secretsFound', JSON.stringify(secretsFound));
         }
@@ -282,7 +282,7 @@ function fadeText(elementId, text) {
 
 }
 
-function changeMuteSoundsState(){
+function changeMuteSoundsState() {
     soundIsMuted = !soundIsMuted;
     if (soundIsMuted) {
         muteSoundsIcon.src = 'Images/sound-off.png'; // Image for muted state
@@ -291,14 +291,14 @@ function changeMuteSoundsState(){
     }
 }
 
-function changeMuteMusicState(){
+function changeMuteMusicState() {
     musicIsMuted = !musicIsMuted;
     if (musicIsMuted) {
         backgroundMusic.muted = true;
         muteMusicIcon.src = 'Images/music-off.png'; // Image for muted state
     } else {
         backgroundMusic.muted = false;
-        if (backgroundMusic.duration == 0 || backgroundMusic.paused){
+        if (backgroundMusic.duration == 0 || backgroundMusic.paused) {
             backgroundMusic.play();
         }
         muteMusicIcon.src = 'Images/music-on.png'; // Image for unmuted state
