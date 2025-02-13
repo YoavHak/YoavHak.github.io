@@ -6,22 +6,29 @@ var canvas = document.getElementById("myCanvas"),
     door = document.getElementById("Door"),
     exitArrow = document.getElementById("exit-arrow"),
     ctx = canvas.getContext('2d'),
-    ctx2 = canvas.getContext('2d'),
-    start_message = document.getElementById('start_message'),
-    font = '40px sans-serif', n = canvas.width, xMin = -9, xMax = 9, yMin = -3.8, yMax = 5.1,
 
     mathjs = mathjs(),
     expr = '',
     scope = { x: 0 },
     tree = mathjs.parse(expr, scope),
-    right = 1,
-    DeathText = document.getElementById("Deaths")
+    right = 1
     ;
 
 
 
-var input = document.getElementById("input");
 
+const ACC = 9.80665;
+
+const RANGE = 5;
+
+//var GLOBAL_OFFSET_Y = parseInt(canvas.style.top);
+const GLOBAL_OFFSET_Y = -2000;
+
+const LOWER_BOUNDS = 1462;
+
+
+
+var input = document.getElementById("input");
 
 var enteredMath = "";
 
@@ -33,13 +40,7 @@ var platforms = [];
 
 var deathMap = [];
 
-var smallMakers = [];
-
-var bigMakers = [];
-
-var turners = [];
-
-var boosters = [];
+var coins = [];
 
 var start = true;
 
@@ -49,15 +50,9 @@ var pause = true;
 
 var play;
 
-var Wins = 0;
-
 var Deaths = 0;
 
 var index = 0;
-
-var ACC = 9.80665;
-
-var RANGE = 5;
 
 var vel = 0;
 
@@ -71,8 +66,6 @@ var secretsFound = JSON.parse(localStorage.getItem('secretsFound'));
 
 var returnButton = document.getElementById("returnButton");
 
-var GLOBAL_OFFSET_Y = parseInt(canvas.style.top);
-
 var LEVEL_NUM = parseInt(localStorage.getItem("LEVEL_NUM"));
 
 var playerScale = 1;
@@ -82,6 +75,8 @@ var DoorRight = true;
 var IsBoosted = false;
 
 var playerStartY = 0;
+
+var start_message = document.getElementById('start_message');
 
 // Use the function to get the value of 'index'
 const levelNum = getQueryParameter('index');
@@ -98,46 +93,34 @@ if (true) {
     if (parseInt(localStorage.getItem('levelsBeaten')) + 1 < parseInt(levelNum) && parseInt(levelNum) <= 25) {
         window.location.href = `../Functions.html`;
     }
-    else if (parseInt(levelNum) > LEVEL_NUM) {
+    else if (parseInt(levelNum) == LEVEL_NUM + 1 && parseInt(levelNum) == parseInt(localStorage.getItem('levelsBeaten')) + 1) {
+        window.location.href = `../Functions.html`;
+    }
+    else if (parseInt(levelNum) > 25) {
         window.location.href = `../nothing_to_see_here/25+.html`;
     }
     else {
 
-        map = [];
-        deathMap = [];
-        for (var i = 1; i <= canvas.width; i++) {
-            var temp = [];
-            temp.push(0);
-            temp.push(0);
-            deathMap.push(temp);
-        }
-
+        map = new Array(canvas.width).fill(LOWER_BOUNDS - GLOBAL_OFFSET_Y);
+        deathMap = new Array(canvas.width).fill([0,0]);
         if (levelNum == "1") {
 
             door.style.top = "620px";
-            for (var i = 1; i <= canvas.width; i++) {
-                if (i > 910 && i < 1215) {
-                    map.push(2000 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(862 - GLOBAL_OFFSET_Y);
+            for (var i = 0; i < canvas.width; i++) {
+                if (i < 912 || i > 1212) {
+                    map[i] = 862 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
         }
         else if (levelNum == "2") {
-
-
             door.style.top = "170px";
-            for (var i = 1; i <= canvas.width; i++) {
-                if (i <= 763) {
-                    map.push(712 - GLOBAL_OFFSET_Y);
+            for (var i = 0; i < canvas.width; i++) {
+                if (i < 763) {
+                    map[i] = 712 - GLOBAL_OFFSET_Y;
                 }
-                else if (i < 1363) {
-                    map.push(2000 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(415 - GLOBAL_OFFSET_Y);
+                else if (i > 1360) {
+                    map[i] = 411 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
@@ -145,429 +128,183 @@ if (true) {
         else if (levelNum == "3") {
 
             door.style.top = "470px";
-            for (var i = 1; i <= canvas.width; i++) {
+            for (var i = 0; i < canvas.width; i++) {
                 if (i < 763) {
-                    map.push(412 - GLOBAL_OFFSET_Y);
+                    map[i] = 411 - GLOBAL_OFFSET_Y;
                 }
-                else if (i < 1213) {
-                    map.push(2000 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(712 - GLOBAL_OFFSET_Y);
+                else if (i > 1211) {
+                    map[i] = 712 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
 
         }
         else if (levelNum == "4") {
-            deathMap = [];
 
             door.style.top = "428px";
-            for (var i = 1; i <= canvas.width; i++) {
+            for (var i = 0; i < canvas.width; i++) {
 
-                if (i == 913) {
-                    var temp = [1, 533 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 914) {
-                    var temp = [728 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [];
-                    temp.push(0);
-                    temp.push(0);
-                    deathMap.push(temp);
-                }
+                deathMap[913] = [1, 533 - GLOBAL_OFFSET_Y];
+                deathMap[914] = [728 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
 
-                if (i <= 763) {
-                    map.push(742 - GLOBAL_OFFSET_Y);
+                if (i < 764) {
+                    map[i] = 742 - GLOBAL_OFFSET_Y;
                 }
-                else if (i < 1213) {
+                else if (i > 1213) {
 
-                    map.push(2000 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(697 - GLOBAL_OFFSET_Y);
+                    map[i] = 697 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
         }
         else if (levelNum == "5") {
-            deathMap = [];
 
             door.style.top = "458px";
-            for (var i = 1; i <= canvas.width; i++) {
+            for (var i = 0; i < canvas.width; i++) {
 
-                if (i == 763) {
-                    var temp = [1, 370 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 940) {
-                    var temp = [382 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1129) {
-                    var temp = [1, 364 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
+                deathMap[763] = [1, 370 - GLOBAL_OFFSET_Y];
+                deathMap[940] = [382 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1129] = [1, 364 - GLOBAL_OFFSET_Y];
 
-
-
-                if (i <= 613) {
-                    map.push(562 - GLOBAL_OFFSET_Y);
+                if (i < 613) {
+                    map[i] = 562 - GLOBAL_OFFSET_Y;
                 }
-                else if (i < 1213) {
-
-                    map.push(2000 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(712 - GLOBAL_OFFSET_Y);
+                else if (i > 1213) {
+                    map[i] = 712 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
         }
         else if (levelNum == "6") {
-            deathMap = [];
 
             door.style.top = "608px";
-            for (var i = 1; i <= canvas.width; i++) {
+            for (var i = 0; i < canvas.width; i++) {
 
-                if (i == 852) {
-                    var temp = [1, 580 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 912) {
-                    var temp = [1, 517 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 972) {
-                    var temp = [1, 487 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1002) {
-                    var temp = [667 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1062) {
-                    var temp = [1, 472 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1063) {
-                    var temp = [637 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1153) {
-                    var temp = [702 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1212) {
-                    var temp = [1, 517 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1272) {
-                    var temp = [1, 580 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
+                deathMap[852] = [1, 580 - GLOBAL_OFFSET_Y];
+                deathMap[912] = [1, 517 - GLOBAL_OFFSET_Y];
+                deathMap[972] = [1, 487 - GLOBAL_OFFSET_Y];
+                deathMap[1002] = [667 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1062] = [1, 472 - GLOBAL_OFFSET_Y];
+                deathMap[1063] = [637 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1153] = [702 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1212] = [1, 517 - GLOBAL_OFFSET_Y];
+                deathMap[1272] = [1, 580 - GLOBAL_OFFSET_Y];
 
-
-
-
-                map.push(862 - GLOBAL_OFFSET_Y);
+                map[i] = 862 - GLOBAL_OFFSET_Y;
             }
             playerStartY = map[0];
         }
         else if (levelNum == "7") {
-            deathMap = [];
 
             door.style.top = "608px";
-            for (var i = 1; i <= canvas.width; i++) {
+            for (var i = 0; i < canvas.width; i++) {
 
-                if (i == 552) {
-                    var temp = [1, 505 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                if (i == 612) {
-                    var temp = [1, 447 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 673) {
-                    var temp = [1, 412 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 703) {
-                    var temp = [592 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 762) {
-                    var temp = [1, 397 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 763) {
-                    var temp = [562 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 853) {
-                    var temp = [630 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 912) {
-                    var temp = [1, 447 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 972) {
-                    var temp = [1, 505 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
+                deathMap[552] = [1, 505 - GLOBAL_OFFSET_Y];
+                deathMap[612] = [1, 447 - GLOBAL_OFFSET_Y];
+                deathMap[673] = [1, 412 - GLOBAL_OFFSET_Y];
+                deathMap[703] = [592 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[762] = [1, 397 - GLOBAL_OFFSET_Y];
+                deathMap[763] = [562 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[853] = [630 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[912] = [1, 447 - GLOBAL_OFFSET_Y];
+                deathMap[972] = [1, 505 - GLOBAL_OFFSET_Y];
 
-
-
-
-                map.push(862 - GLOBAL_OFFSET_Y);
+                map[i] = 862 - GLOBAL_OFFSET_Y;
             }
             playerStartY = map[0];
         }
         else if (levelNum == "8") {
-            deathMap = [];
             door.style.top = "150px";
-            for (var i = 1; i <= canvas.width; i++) {
+            for (var i = 0; i < canvas.width; i++) {
 
-                if (i == 852) {
-                    var temp = [606 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 912) {
-                    var temp = [1, 410 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 972) {
-                    var temp = [1, 499 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1061) {
-                    var temp = [717 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1062) {
-                    var temp = [1, 550 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1152) {
-                    var temp = [1, 499 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1212) {
-                    var temp = [1, 410 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1272) {
-                    var temp = [606 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
+                deathMap[852] = [606 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[912] = [1, 410 - GLOBAL_OFFSET_Y];
+                deathMap[972] = [1, 499 - GLOBAL_OFFSET_Y];
+                deathMap[1061] = [717 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1062] = [1, 550 - GLOBAL_OFFSET_Y];
+                deathMap[1152] = [1, 499 - GLOBAL_OFFSET_Y];
+                deathMap[1212] = [1, 410 - GLOBAL_OFFSET_Y];
+                deathMap[1272] = [606 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
 
-
-
-
-                if (i <= 725) {
-                    map.push(410 - GLOBAL_OFFSET_Y);
-                }
-                else if (i < 1397) {
-
-                    map.push(2000 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(410 - GLOBAL_OFFSET_Y);
+                if (i < 725 || i > 1397) {
+                    map[i] = 410 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
         }
         else if (levelNum == "9") {
-            deathMap = [];
 
             door.style.top = "608px";
-            for (var i = 1; i <= canvas.width; i++) {
+            for (var i = 0; i < canvas.width; i++) {
 
-                if (i == 552 || i == 1302) {
-                    var temp = [1, 505 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 612 || i == 1362) {
-                    var temp = [1, 447 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 673 || i == 1423) {
-                    var temp = [1, 412 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 703 || i == 1453) {
-                    var temp = [592 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 762 || i == 1512) {
-                    var temp = [1, 397 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 763 || i == 1513) {
-                    var temp = [562 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 853 || i == 1603) {
-                    var temp = [629 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 912 || i == 1662) {
-                    var temp = [1, 447 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 972 || i == 1722) {
-                    var temp = [1, 505 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
+                deathMap[552] = [1, 505 - GLOBAL_OFFSET_Y];
+                deathMap[612] = [1, 447 - GLOBAL_OFFSET_Y];
+                deathMap[673] = [1, 412 - GLOBAL_OFFSET_Y];
+                deathMap[703] = [592 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[762] = [1, 397 - GLOBAL_OFFSET_Y];
+                deathMap[763] = [562 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[853] = [629 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[912] = [1, 447 - GLOBAL_OFFSET_Y];
+                deathMap[972] = [1, 505 - GLOBAL_OFFSET_Y];
 
+                deathMap[1302] = [1, 505 - GLOBAL_OFFSET_Y];
+                deathMap[1362] = [1, 447 - GLOBAL_OFFSET_Y];
+                deathMap[1423] = [1, 412 - GLOBAL_OFFSET_Y];
+                deathMap[1453] = [592 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1512] = [1, 397 - GLOBAL_OFFSET_Y];
+                deathMap[1513] = [562 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1603] = [629 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1662] = [1, 447 - GLOBAL_OFFSET_Y];
+                deathMap[1722] = [1, 505 - GLOBAL_OFFSET_Y];
 
-
-
-                map.push(862 - GLOBAL_OFFSET_Y);
+                map[i] = 862 - GLOBAL_OFFSET_Y;
             }
             playerStartY = map[0];
         }
         else if (levelNum == "10") {
-            deathMap = [];
 
             door.style.top = "308px";
-            for (var i = 1; i <= canvas.width; i++) {
+            for (var i = 0; i < canvas.width; i++) {
 
-                if (i == 462) {
-                    var temp = [780 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 612) {
-                    var temp = [1, 502 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 613) {
-                    var temp = [682 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 762) {
-                    var temp = [610 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 912) {
-                    var temp = [1, 415 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1062) {
-                    var temp = [563 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1212) {
-                    var temp = [1, 382 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1213) {
-                    var temp = [542 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1362) {
-                    var temp = [490 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1512) {
-                    var temp = [1, 220 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1662) {
-                    var temp = [300 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 2037) {
-                    var temp = [564 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 2112) {
-                    var temp = [1, 310 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
+                deathMap[462] = [780 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[612] = [1, 502 - GLOBAL_OFFSET_Y];
+                deathMap[613] = [682 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[762] = [610 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[912] = [1, 415 - GLOBAL_OFFSET_Y];
+                deathMap[1062] = [563 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1212] = [1, 382 - GLOBAL_OFFSET_Y];
+                deathMap[1213] = [542 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1362] = [490 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1512] = [1, 220 - GLOBAL_OFFSET_Y];
+                deathMap[1662] = [300 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[2037] = [564 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[2112] = [1, 310 - GLOBAL_OFFSET_Y];
+
+                if (i < 373) {
+                    map[i] = 862 - GLOBAL_OFFSET_Y;
                 }
                 else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
-
-
-
-
-                if (i <= 373) {
-                    map.push(862 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(1000 - GLOBAL_OFFSET_Y);
+                    map[i] = 1000 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
         }
         else if (levelNum == "11") {
-            deathMap = [];
 
             door.style.top = "160px";
-            for (var i = 1; i <= canvas.width; i++) {
-                if (i == 642) {
-                    var temp = [1, 352 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 762) {
-                    var temp = [502 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1107) {
-                    var temp = [465 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1211) {
-                    var temp = [1, 412 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1212) {
-                    var temp = [522 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1312) {
-                    var temp = [457 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
+            for (var i = 0; i < canvas.width; i++) {
+                deathMap[642] = [1, 352 - GLOBAL_OFFSET_Y];
+                deathMap[762] = [502 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1107] = [465 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1211] = [1, 412 - GLOBAL_OFFSET_Y];
+                deathMap[1212] = [522 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1312] = [457 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
 
                 if (i < 662) {
-                    map.push(862 - GLOBAL_OFFSET_Y);
+                    map[i] = 862 - GLOBAL_OFFSET_Y;
                 }
                 else if (i > 1422) {
-                    map.push(412 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(2000 - GLOBAL_OFFSET_Y);
+                    map[i] = 412 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
@@ -576,6 +313,9 @@ if (true) {
             smallMaker.setAttribute("id", "smallMaker0");
             smallMaker.style.left = 902 - parseInt(smallMaker.style.height) / 2 + "px";
             smallMaker.style.top = 212 - parseInt(smallMaker.style.height) / 2 + "px";
+            
+            coins.push(smallMaker);
+            levelDiv.appendChild(smallMaker);
 
 
             var bigMaker = createCoin("big");
@@ -583,45 +323,22 @@ if (true) {
             bigMaker.style.left = 902 - parseInt(bigMaker.style.height) / 2 + "px";
             bigMaker.style.top = 362 - parseInt(bigMaker.style.height) / 2 + "px";
 
-
-            smallMakers.push(smallMaker);
-            bigMakers.push(bigMaker);
-
-            levelDiv.appendChild(smallMaker);
+            coins.push(bigMaker);
             levelDiv.appendChild(bigMaker);
+
 
         }
         else if (levelNum == "12") {
-            deathMap = [];
             door.style.top = "160px";
             DoorRight = false;
-            for (var i = 1; i <= canvas.width; i++) {
-                if (i == 912) {
-                    var temp = [1, 652 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1062) {
-                    var temp = [714 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1152) {
-                    var temp = [552 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1235) {
-                    var temp = [480 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
+            for (var i = 0; i < canvas.width; i++) {
+                deathMap[912] = [1, 652 - GLOBAL_OFFSET_Y];
+                deathMap[1062] = [714 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1152] = [552 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1235] = [480 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
 
                 if (i < 812) {
-                    map.push(862 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(2000 - GLOBAL_OFFSET_Y);
+                    map[i] = 862 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
@@ -637,58 +354,24 @@ if (true) {
             turner.style.top = 602 - parseInt(turner.style.height) / 2 + "px";
 
 
-            turners.push(turner);
-
+            coins.push(turner);
             levelDiv.appendChild(turner);
-
         }
         else if (levelNum == "13") {
-            deathMap = [];
             door.style.top = "235px";
             DoorRight = false;
-            for (var i = 1; i <= canvas.width; i++) {
-                if (i == 824) {
-                    var temp = [1, 327 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 825) {
-                    var temp = [375 - GLOBAL_OFFSET_Y, 520 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 826) {
-                    var temp = [675 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1061) {
-                    var temp = [1, 414 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1062) {
-                    var temp = [864 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1298) {
-                    var temp = [1, 290 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1299) {
-                    var temp = [375 - GLOBAL_OFFSET_Y, 590 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1300) {
-                    var temp = [675 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
+            for (var i = 0; i < canvas.width; i++) {
+                deathMap[824] = [1, 327 - GLOBAL_OFFSET_Y];
+                deathMap[825] = [375 - GLOBAL_OFFSET_Y, 520 - GLOBAL_OFFSET_Y];
+                deathMap[826] = [675 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1061] = [1, 414 - GLOBAL_OFFSET_Y];
+                deathMap[1062] = [864 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1298] = [1, 290 - GLOBAL_OFFSET_Y];
+                deathMap[1299] = [375 - GLOBAL_OFFSET_Y, 590 - GLOBAL_OFFSET_Y];
+                deathMap[1300] = [675 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
 
                 if (i < 728) {
-                    map.push(862 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(2000 - GLOBAL_OFFSET_Y);
+                    map[i] = 862 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
@@ -703,81 +386,69 @@ if (true) {
             smallMaker1.style.left = 1062 - parseInt(smallMaker1.style.height) / 2 + "px";
             smallMaker1.style.top = 804 - parseInt(smallMaker1.style.height) / 2 + "px";
 
+            coins.push(smallMaker1);
+            levelDiv.appendChild(smallMaker1);
+
+
             var boost1 = createCoin("boost");
             boost1.setAttribute("id", "boost0");
             boost1.style.left = 1452 - parseInt(boost1.style.height) / 2 + "px";
             boost1.style.top = 752 - parseInt(boost1.style.height) / 2 + "px";
+
+            coins.push(boost1);
+            levelDiv.appendChild(boost1);
+
 
             var turner = createCoin("turner");
             turner.setAttribute("id", "turner0");
             turner.style.left = 1452 - parseInt(turner.style.height) / 2 + "px";
             turner.style.top = 352 - parseInt(turner.style.height) / 2 + "px";
 
+            coins.push(turner);
+            levelDiv.appendChild(turner);
+
+            
             var smallMaker2 = createCoin("small");
             smallMaker2.setAttribute("id", "smallMaker1");
             smallMaker2.style.left = 1202 - parseInt(smallMaker2.style.height) / 2 + "px";
             smallMaker2.style.top = 352 - parseInt(smallMaker2.style.height) / 2 + "px";
+
+            coins.push(smallMaker2);
+            levelDiv.appendChild(smallMaker2);
+
 
             var boost2 = createCoin("boost");
             boost2.setAttribute("id", "boost1");
             boost2.style.left = 752 - parseInt(boost2.style.height) / 2 + "px";
             boost2.style.top = 352 - parseInt(boost2.style.height) / 2 + "px";
 
+            coins.push(boost2);
+            levelDiv.appendChild(boost2);
+
+
             var bigMaker = createCoin("big");
             bigMaker.setAttribute("id", "bigMaker0");
             bigMaker.style.left = 1062 - parseInt(bigMaker.style.height) / 2 + "px";
             bigMaker.style.top = 634 - parseInt(bigMaker.style.height) / 2 + "px";
 
-
-
-            smallMakers.push(smallMaker1);
-            smallMakers.push(smallMaker2);
-            levelDiv.appendChild(smallMaker1);
-            levelDiv.appendChild(smallMaker2);
-
-            boosters.push(boost1);
-            boosters.push(boost2);
-            levelDiv.appendChild(boost1);
-            levelDiv.appendChild(boost2);
-
-            turners.push(turner);
-            levelDiv.appendChild(turner);
-
-            bigMakers.push(bigMaker);
+            coins.push(bigMaker);
             levelDiv.appendChild(bigMaker);
+
 
         }
         else if (levelNum == "14") {
 
-            deathMap = [];
-
             door.style.top = "160px";
-            for (var i = 1; i <= canvas.width; i++) {
-                if (i == 762) {
-                    var temp = [1, 82 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1062) {
-                    var temp = [442 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1752) {
-                    var temp = [1, 82 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
+            for (var i = 0; i < canvas.width; i++) {
+                deathMap[762] = [1, 82 - GLOBAL_OFFSET_Y];
+                deathMap[1062] = [442 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1752] = [1, 82 - GLOBAL_OFFSET_Y];
 
                 if (i < 463) {
-                    map.push(562 - GLOBAL_OFFSET_Y);
+                    map[i] = 562 - GLOBAL_OFFSET_Y;
                 }
                 else if (i > 1362) {
-                    map.push(412 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(2000 - GLOBAL_OFFSET_Y);
+                    map[i] = 412 - GLOBAL_OFFSET_Y;
                 }
             }
             playerStartY = map[0];
@@ -804,7 +475,7 @@ if (true) {
                         turner.style.left = 837 + j * 150 - parseInt(turner.style.height) / 2 + "px";
                         turner.style.top = 187 + i * 150 - parseInt(turner.style.height) / 2 + "px";
 
-                        turners.push(turner);
+                        coins.push(turner);
                         levelDiv.appendChild(turner);
                     }
                     else if (smalls_indexes.includes((i * 4 + j))) {
@@ -813,7 +484,7 @@ if (true) {
                         smallMaker.style.left = 837 + j * 150 - parseInt(smallMaker.style.height) / 2 + "px";
                         smallMaker.style.top = 187 + i * 150 - parseInt(smallMaker.style.height) / 2 + "px";
 
-                        smallMakers.push(smallMaker);
+                        coins.push(smallMaker);
                         levelDiv.appendChild(smallMaker);
                     }
                     else {
@@ -822,7 +493,7 @@ if (true) {
                         bigMaker.style.left = 837 + j * 150 - parseInt(bigMaker.style.height) / 2 + "px";
                         bigMaker.style.top = 187 + i * 150 - parseInt(bigMaker.style.height) / 2 + "px";
 
-                        bigMakers.push(bigMaker);
+                        coins.push(bigMaker);
                         levelDiv.appendChild(bigMaker);
                     }
                 }
@@ -833,52 +504,28 @@ if (true) {
             bigMaker20.style.left = 1587 - parseInt(bigMaker20.style.height) / 2 + "px";
             bigMaker20.style.top = 337 - parseInt(bigMaker20.style.height) / 2 + "px";
 
-            bigMakers.push(bigMaker20);
+            coins.push(bigMaker20);
             levelDiv.appendChild(bigMaker20);
 
 
         }
         else if (levelNum == "15") {
-            deathMap = [];
             door.style.top = "155px";
             DoorRight = false;
-            for (var i = 1; i <= canvas.width; i++) {
-                if (i == 912) {
-                    var temp = [1, 328 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 913) {
-                    var temp = [488 - GLOBAL_OFFSET_Y, 582 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 914) {
-                    var temp = [645 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1178) {
-                    var temp = [1, 440 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1179) {
-                    var temp = [482 - GLOBAL_OFFSET_Y, 560 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else if (i == 1180) {
-                    var temp = [645 - GLOBAL_OFFSET_Y, 2000 - GLOBAL_OFFSET_Y];
-                    deathMap.push(temp);
-                }
-                else {
-                    var temp = [0, 0];
-                    deathMap.push(temp);
-                }
+            for (var i = 0; i < canvas.width; i++) {
+                deathMap[912] = [1, 328 - GLOBAL_OFFSET_Y];
+                deathMap[913] = [488 - GLOBAL_OFFSET_Y, 582 - GLOBAL_OFFSET_Y];
+                deathMap[914] = [645 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+                deathMap[1178] = [1, 440 - GLOBAL_OFFSET_Y];
+                deathMap[1179] = [482 - GLOBAL_OFFSET_Y, 560 - GLOBAL_OFFSET_Y];
+                deathMap[1180] = [645 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
 
                 if (i < 763) {
-                    map.push(862 - GLOBAL_OFFSET_Y);
-                }
-                else {
-                    map.push(2000 - GLOBAL_OFFSET_Y);
+                    map[i] = 862 - GLOBAL_OFFSET_Y;
                 }
             }
+
+            playerStartY = map[0];
 
             platforms.push([
                 [0, 412],
@@ -890,14 +537,12 @@ if (true) {
                 [window.innerWidth, 172]
             ]);
 
-            playerStartY = map[0];
-
             var smallMaker1 = createCoin("small");
             smallMaker1.setAttribute("id", "smallMaker0");
             smallMaker1.style.left = 1072 - parseInt(smallMaker1.style.height) / 2 + "px";
             smallMaker1.style.top = 504 - parseInt(smallMaker1.style.height) / 2 + "px";
 
-            smallMakers.push(smallMaker1);
+            coins.push(smallMaker1);
             levelDiv.appendChild(smallMaker1);
 
 
@@ -906,7 +551,7 @@ if (true) {
             smallMaker2.style.left = 1322 - parseInt(smallMaker2.style.height) / 2 + "px";
             smallMaker2.style.top = 222 - parseInt(smallMaker2.style.height) / 2 + "px";
 
-            smallMakers.push(smallMaker2);
+            coins.push(smallMaker2);
             levelDiv.appendChild(smallMaker2);
 
 
@@ -915,7 +560,7 @@ if (true) {
             turner.style.left = 1462 - parseInt(turner.style.height) / 2 + "px";
             turner.style.top = 132 - parseInt(turner.style.height) / 2 + "px";
 
-            turners.push(turner);
+            coins.push(turner);
             levelDiv.appendChild(turner);
 
 
@@ -924,7 +569,7 @@ if (true) {
             bigMaker1.style.left = 1062 - parseInt(bigMaker1.style.height) / 2 + "px";
             bigMaker1.style.top = 634 - parseInt(bigMaker1.style.height) / 2 + "px";
 
-            bigMakers.push(bigMaker1);
+            coins.push(bigMaker1);
             levelDiv.appendChild(bigMaker1);
 
 
@@ -933,7 +578,7 @@ if (true) {
             bigMaker2.style.left = 1062 - parseInt(bigMaker2.style.height) / 2 + "px";
             bigMaker2.style.top = 334 - parseInt(bigMaker2.style.height) / 2 + "px";
 
-            bigMakers.push(bigMaker2);
+            coins.push(bigMaker2);
             levelDiv.appendChild(bigMaker2);
         }
         else {
@@ -948,10 +593,9 @@ if (true) {
         }
 
 
-        exitArrow.style.top = parseInt(door.style.top) + 65 + "px"
+        exitArrow.style.top = parseInt(door.style.top) + (parseInt(door.style.height) - parseInt(exitArrow.style.height)) / 2 + "px"
 
         elt = document.getElementById('Graph');
-        //elt.style.width 
         calculator = Desmos.GraphingCalculator(elt, {
             expressions: false,
             keypad: false,
@@ -960,13 +604,10 @@ if (true) {
             projectorMode: false,
             lockViewport: true
         });
-        canvas.width = calculator.graphpaperBounds.pixelCoordinates.width;
-        canvas.height = calculator.graphpaperBounds.pixelCoordinates.height;
-        n = canvas.width;
 
-        Wins = 0;
         Deaths = 0;
         play = setInterval("Play()", gamespeed);
+        start_message.style.left = window.innerWidth / 2 - parseInt(start_message.style.width) / 2  + "px";
 
         calculator.setExpression({
             id: 'line',
@@ -980,10 +621,10 @@ if (true) {
         };
 
         document.onkeydown = function (e) {
-            if (e.keyCode == "27" && gameStarted) {
+            if (e.key == "Escape" && gameStarted) {
                 pause = !pause;
             }
-            if (e.keyCode == "13" && !gameStarted) {
+            if (e.key == "Enter" && !gameStarted) {
                 pause = false;
                 gameStarted = true;
                 start_message.style.visibility = "hidden";
@@ -1057,6 +698,8 @@ function updateTransform() {
 
 }
 
+
+
 function createCoin(type) {
     var Coin = document.createElement("img");
     Coin.style.position = "fixed";
@@ -1085,11 +728,6 @@ function createCoin(type) {
 
 }
 
-function point(x, y) {
-    ctx2.moveTo(x, y);
-    ctx2.lineTo(x + 1, y + 1);
-}
-
 function drawLine(ctx, x1, y1, x2, y2, stroke, width) {
     // start a new path
     ctx.beginPath();
@@ -1113,21 +751,8 @@ function drawLine(ctx, x1, y1, x2, y2, stroke, width) {
 //Key handler for input box:
 var last = input.innerText;
 
-function drawText(txt, x, y) {
-    ctx.textBaseline = 'top';
-    ctx.textAlign = 'left';
-    ctx.font = font;
-    ctx.fillText(txt, x - 4, y - 4);
-}
-
 function inRange(num1, num2) {
     return (num1 < num2 + RANGE && num1 > num2 - RANGE);
-}
-
-"use strict"; // To avoid this-wrapping overhead (optional)
-
-Number.prototype.factorial = function () {
-    return this > 0 ? this * (this - 1).factorial() : 1;
 }
 
 
@@ -1136,21 +761,19 @@ function DrawFunc() {
 
 
     start = false;
-    var xPixel, yPixel, mathX, mathY;
 
     funcMap = [];
 
 
-    n = calculator.graphpaperBounds.pixelCoordinates.width * 2;
     ctx.beginPath();
-    for (var i = 0; i < n; i++) {
-        mathX = calculator.pixelsToMath({ x: (i - parseInt(elt.style.left)), y: 0 }).x
+    for (var i = 0; i < calculator.graphpaperBounds.pixelCoordinates.width * 2; i++) {
+        var mathX = calculator.pixelsToMath({ x: (i - parseInt(elt.style.left)), y: 0 }).x
 
-        mathY = evaluateMathExpr(mathX);
+        var mathY = evaluateMathExpr(mathX);
 
 
-        xPixel = i;
-        yPixel = calculator.mathToPixels({ x: mathX, y: mathY }).y + parseInt(elt.style.top)
+        var xPixel = i;
+        var yPixel = calculator.mathToPixels({ x: mathX, y: mathY }).y + parseInt(elt.style.top)
 
         if (isNaN(yPixel)) {
             funcMap[Math.floor(xPixel)] = 2000 - GLOBAL_OFFSET_Y;
@@ -1176,9 +799,26 @@ function DrawFunc() {
 
     ctx.stroke();
 
-    for (var i = 0; i < map.length - 1; i++) {
-        if (map[i] != -1 && map[i + 1] != -1) { //wall
-            drawLine(ctx, i, map[i], i + 1, map[i + 1], 'black', 3);
+    const WIDTH = 30, SPIKE_OFFSET_X = 12;
+    for (var i = 0; i < map.length - 1; i++) {//wall
+        drawLine(ctx, i, map[i], i + 1, map[i + 1], 'black', 3);
+
+        var spikeX = i + SPIKE_OFFSET_X;
+        if (map[spikeX] == LOWER_BOUNDS - GLOBAL_OFFSET_Y) {//draw spikes
+
+            var spike = document.createElement("img");
+            spike.src = "../Images/spike.png";
+            spike.style.position = "fixed";
+
+            spike.style.width = WIDTH + "px";
+            spike.style.height = 2 * WIDTH + "px";
+            
+            spike.style.top = LOWER_BOUNDS - parseInt(spike.style.height) + "px";
+            spike.style.left = spikeX + "px";
+
+            if (i % WIDTH == 0 && map[spikeX + WIDTH] == LOWER_BOUNDS - GLOBAL_OFFSET_Y) {
+                levelDiv.appendChild(spike);
+            }
         }
     }
     for (var i = 0; i < deathMap.length - 1; i++) {
@@ -1195,7 +835,7 @@ function DrawFunc() {
     }
 
 
-
+    var DeathText = document.getElementById("Deaths");
     DeathText.innerHTML = "Deaths: " + Deaths;
 }
 
@@ -1318,17 +958,6 @@ function IsCollidingCoin(CoinID) {
     var CoinRadius = parseInt(Coin.style.height) / 2;
     var CoinX = parseInt(Coin.style.left) + CoinRadius;
     var CoinY = parseInt(Coin.style.top) + CoinRadius - GLOBAL_OFFSET_Y;
-
-
-    if (false) {
-
-
-        ctx.fillStyle = "orange";
-        ctx.fillRect(CoinX - CoinRadius, CoinY - CoinRadius, 2 * CoinRadius, 2 * CoinRadius);
-        ctx.fillStyle = "black";
-    }// mark coin
-
-
 
     var playerPoints = GetPlayerPoints();
     for (var j = 0; j < playerPoints.length; j++) {
@@ -1478,8 +1107,6 @@ function IsPointOnPlayer(pointX, pointY) {
     return !(hasPositive && hasNegative);
 }
 
-
-
 function GetPlatformY(X) {
     var Y_values = [];
 
@@ -1564,7 +1191,6 @@ function HeadHitPlatform() {
             var hitY2 = platInc * (TopRight[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y;
             var hitY3 = platInc * (CenterRight[0] - point1[0]) + point1[1] - GLOBAL_OFFSET_Y;
 
-            //console.log(IsPointOnPlayer(CenterRight[0], hitY3))
             if (inRange(hitY1, TopLeft[1]) && hitY1 < TopRight[1]) {
                 return true;
             }
@@ -1581,7 +1207,7 @@ function HeadHitPlatform() {
 }
 
 function DoCoinEffect(collidingCoinID) {
-    const scaleDiff = 0.5
+    const scaleDiff = 0.5;
 
 
     if (collidingCoinID.includes("small")) {
@@ -1782,7 +1408,7 @@ function Play() {
         else if (inRange(legsHeight, funcMap[playerCenterX])) {
             //walk on function
             if (printActions) {
-                console.log("walk func", funcIncline);
+                console.log("walk func");
             }
             moveY += funcIncline - vel;
             vel = 0;
@@ -1826,7 +1452,6 @@ function Play() {
             //fall
             if (printActions) {
                 console.log("fall");
-                // + platIncline * (playerCenterX - platforms[0][0][0])
             }
             player.style.transform = 'rotate(' + (IncDeg * 0.95) + 'deg)';
             vel += (ACC / 100);
@@ -1834,10 +1459,10 @@ function Play() {
             if (legsHeight < funcMap[playerCenterX] && legsHeight + vel > funcMap[playerCenterX]) {
                 //walk on function
                 if (printActions) {
-                    console.log("walk func", funcIncline);
+                    console.log("fall to func");
                 }
                 vel = 0;
-                moveY += funcMap[playerCenterX] - legsHeight;
+                moveY += funcMap[playerCenterX] - legsHeight - RANGE;
 
                 player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(funcIncline) * 180 / Math.PI + 'deg)';
             }
@@ -1889,14 +1514,13 @@ function Play() {
             }
         }
 
-
-        if (legsHeight > 1400 - GLOBAL_OFFSET_Y || legsHeight < upperBounds - GLOBAL_OFFSET_Y) {// out of bounds - death
+        if (legsHeight > LOWER_BOUNDS - 30 - GLOBAL_OFFSET_Y|| legsHeight < upperBounds - GLOBAL_OFFSET_Y) {// out of bounds - death
 
             ResetGame();
         }
         if (legsHeight > parseFloat(door.style.top) - GLOBAL_OFFSET_Y && legsHeight < parseFloat(door.style.top) + parseFloat(door.style.height) - GLOBAL_OFFSET_Y) {// win
             if (playerCenterX > parseFloat(door.style.left) + 50 * (right > 0) && playerCenterX < parseFloat(door.style.left) + parseFloat(door.style.width) - 50 * (right < 0)) {
-                Wins++;
+
                 Deaths--;
                 ResetGame();
 
@@ -2037,9 +1661,6 @@ function getQueryParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
 }
-
-
-
 
 document.addEventListener('contextmenu', (event) => event.preventDefault());
 document.addEventListener('keydown', (event) => {
