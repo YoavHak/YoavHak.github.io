@@ -252,9 +252,15 @@
 
 
 
-        .settingsButtons {
+        .upperButtons {
             position: fixed;
-            margin-top: 700px;
+            margin-bottom: 600px;
+            margin-right: 10px;
+        }
+
+        .lowerButtons {
+            position: fixed;
+            margin-top: 650px;
         }
 
         .resetButton {
@@ -695,8 +701,44 @@
         <div class="stars"></div>
         <div class="twinkling"></div>
 
+        <div class="upperButtons">
+            
+            <!-- Mute Sounds Button -->
+            <button id="muteSoundsButton" class="muteButton">
+                <img id="muteSoundsIcon" src="Images/sound-on.png" alt="Mute Icon">
+            </button>
+
+            <!-- Mute Music Button -->
+            <button id="muteMusicButton" class="muteButton">
+                <img id="muteMusicIcon" src="Images/music-on.png" alt="Mute Icon">
+            </button>
+
+            <!-- AI Mode Button -->
+            <button id="AIModeButton" class="AIModeButton">
+                <img id="AIModeIcon" src="Images/player-resized.png" alt="AI Mode Icon">
+            </button>
+            
+        </div>
 
         <table id="levelTable"></table>
+
+        
+        <div class="lowerButtons">
+            <!-- Reset Button -->
+            <button id="resetButton" class="resetButton">
+                Reset
+            </button>
+    
+            <!-- Progress Button -->
+            <button id="progressButton" class="progressButton">
+                Progress
+            </button>
+
+            <!-- Submit Progress Button -->
+            <button id="submitButton" class="progressButton">
+                Submit
+            </button>
+        </div>
 
         <!-- Placeholder elements for animated math symbols -->
         <!-- Order: ∫√∞πθσ∑Δ (Also works as a cool math function!) -->
@@ -719,38 +761,8 @@
             <p id="imposterEasterEggText" class="otherMessage">1 Easter Egg remains.</p>
         </div>
 
-        <div class="settingsButtons">
+
  
-            <!-- Reset Button -->
-            <button id="resetButton" class="resetButton">
-                Reset
-            </button>
-    
-            <!-- Mute Sounds Button -->
-            <button id="muteSoundsButton" class="muteButton">
-                <img id="muteSoundsIcon" src="Images/sound-on.png" alt="Mute Icon">
-            </button>
-
-            <!-- Mute Music Button -->
-            <button id="muteMusicButton" class="muteButton">
-                <img id="muteMusicIcon" src="Images/music-on.png" alt="Mute Icon">
-            </button>
-    
-            <!-- Progress Button -->
-            <button id="progressButton" class="progressButton">
-                Progress
-            </button>
-
-            <!-- AI Mode Button -->
-            <button id="AIModeButton" class="AIModeButton">
-                <img id="AIModeIcon" src="Images/player-resized.png" alt="AI Mode Icon">
-            </button>
-
-            <!-- Submit Progress Button -->
-            <button id="submitButton" class="progressButton">
-                Submit
-            </button>
-        </div>
     </div>
 
     <!-- Progress Viewer -->
