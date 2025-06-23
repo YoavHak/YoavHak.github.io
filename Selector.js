@@ -3,9 +3,10 @@
 (function() {
 
     // ✅ BACKEND URL hosted on Replit
-    const BACKEND_URL = "https://5484eccc-32b4-46d1-8a0b-68d8a9073837-00-1waszd38yd3rf.sisko.replit.dev";
+    const BACKEND_URL = "https://5484eccc-32b4-46d1-8a0b-68d8a9073837-00-1waszd38yd3rf.sisko.replit.dev:3001";
 
-    // ✅ Connect to WebSocket
+    // ✅ Connect to WebSockete(/^http/, 'ws')}ws`);
+    // const ws = new WebSocket(`${BACKEND_URL.replac
     const ws = new WebSocket(`${BACKEND_URL.replace(/^http/, 'ws')}/ws`);
 
     ws.onopen = () => {
@@ -91,6 +92,43 @@
     let musicIsMuted = false;
 
     var imposterTextAppeared = false;
+
+    // Select buttons and modal elements
+    const submitButton = document.getElementById('submitButton');
+    const nameModal = document.getElementById('nameModal');
+    const playerNameInput = document.getElementById('playerNameInput');
+    const submitNameBtn = document.getElementById('submitName');
+    const cancelNameBtn = document.getElementById('cancelName');
+
+    // Show modal on button click
+    submitButton.onclick = () => {
+        nameModal.style.display = 'block';
+        playerNameInput.value = ''; // Clear previous input
+        playerNameInput.focus();
+    };
+
+    // Handle submit
+    submitNameBtn.onclick = () => {
+        const name = playerNameInput.value.trim();
+        if (name) {
+            // Call your saveHighScore function or similar
+            // For example, you can use current progress info:
+            const levelsBeaten = parseInt(localStorage.getItem('levelsBeaten')) || 0;
+            const secretsFound = JSON.parse(localStorage.getItem('secretsFound')) || [];
+            const totalScore = Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS));
+            saveHighScore(name, totalScore);
+            alert('High score submitted!');
+            nameModal.style.display = 'none';
+        } else {
+            alert('Please enter a name.');
+        }
+    };
+
+    // Handle cancel
+    cancelNameBtn.onclick = () => {
+        nameModal.style.display = 'none';
+    };
+
 
     const muteSoundsButton = document.getElementById('muteSoundsButton');
     const muteSoundsIcon = document.getElementById('muteSoundsIcon');
@@ -219,7 +257,6 @@
 
         document.getElementById("easterEggsTitle").innerHTML = secretsFound.length > 0 ? "Easter Eggs:" : "???";
 
-        saveHighScore("TEST_NAME2", Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS)))
 
     };
 

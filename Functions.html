@@ -362,6 +362,65 @@
             
         }
 
+        /* Modal overlay style matching the site theme */
+        #nameModal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(44, 44, 44, 0.95); /* Dark gray, semi-transparent */
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.6);
+        z-index: 10;
+        width: 300px;
+        max-width: 80%;
+        font-family: 'Lato', sans-serif;
+        color: #fff;
+        border: 2px solid #ff6a00;
+        }
+
+        /* Input style */
+        #playerNameInput {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #ff6a00;
+        border-radius: 8px;
+        background-color: #2b2b2b;
+        color: #fff;
+        outline: none;
+        box-sizing: border-box;
+        }
+
+        /* Buttons style (submit and cancel) */
+        #submitName, #cancelName {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        }
+
+        #submitName {
+        background-color: #ff6a00;
+        color: #fff;
+        }
+        #submitName:hover {
+        background-color: #ff8c00;
+        }
+
+        #cancelName {
+        background-color: #555;
+        color: #fff;
+        margin-left: 10px;
+        }
+        #cancelName:hover {
+        background-color: #777;
+        }
+
         /* Styling for Exit Button */
         .exitButton {
             position: absolute;    /* Position relative to the closest positioned parent (progressViewer) */
@@ -676,15 +735,20 @@
             <button id="muteMusicButton" class="muteButton">
                 <img id="muteMusicIcon" src="Images/music-on.png" alt="Mute Icon">
             </button>
+    
+            <!-- Progress Button -->
+            <button id="progressButton" class="progressButton">
+                Progress
+            </button>
 
             <!-- AI Mode Button -->
             <button id="AIModeButton" class="AIModeButton">
                 <img id="AIModeIcon" src="Images/player-resized.png" alt="AI Mode Icon">
             </button>
-    
-            <!-- Progress Button -->
-            <button id="progressButton" class="progressButton">
-                Progress
+
+            <!-- Submit Progress Button -->
+            <button id="submitButton" class="progressButton">
+                Submit
             </button>
         </div>
     </div>
@@ -720,6 +784,16 @@
             </button>
         </div>
 
+    </div>
+
+    <!-- Enter Name Modal -->
+    <div id="nameModal">
+        <h2 style="margin-top: 0; margin-bottom: 15px; font-family: 'Lato', sans-serif;">Enter Your Name</h2>
+        <input type="text" id="playerNameInput" placeholder="Your Name">
+        <div style="margin-top: 15px; display: flex; justify-content: center;">
+            <button id="submitName">Submit</button>
+            <button id="cancelName">Cancel</button>
+        </div>
     </div>
 
     <!-- Confirm Reset Viewer -->
