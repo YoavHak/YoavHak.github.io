@@ -309,6 +309,37 @@
             height: 18px;
         }
 
+        /* AI Mode Button */
+        .AIModeButton {
+            float: left;
+            margin-left: 10px;
+            margin-top: 10px;
+            width: 50px;
+            height: 50px;
+            background-color: #ff6a00;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .AIModeButton img {
+            width: 28px;
+            height: 28px;
+        }
+
+        .AIModeButton:hover {
+            transform: scale(1.1);
+        }
+
+        #AIModeIcon{
+            width: 28px;
+            height: 28px;
+        }
+
         .progressButton {
             margin-left: 10px;
             float: left;
@@ -609,7 +640,7 @@
         <table id="levelTable"></table>
 
         <!-- Placeholder elements for animated math symbols -->
-        <!-- Order: ∫√∞πθσ∑Δ -->
+        <!-- Order: ∫√∞πθσ∑Δ (Also works as a cool math function!) -->
 
         <div class="math-symbol" style="top: 44%; left: 15%; font-size: 50px;">&int;</div>
         <div class="math-symbol" style="top: 57%; left: 80%; font-size: 36px;">&sum;</div>
@@ -644,6 +675,11 @@
             <!-- Mute Music Button -->
             <button id="muteMusicButton" class="muteButton">
                 <img id="muteMusicIcon" src="Images/music-on.png" alt="Mute Icon">
+            </button>
+
+            <!-- AI Mode Button -->
+            <button id="AIModeButton" class="AIModeButton">
+                <img id="AIModeIcon" src="Images/player-resized.png" alt="AI Mode Icon">
             </button>
     
             <!-- Progress Button -->
@@ -702,7 +738,6 @@
             </button>
         </div>
     </div>
-
     <script src="Selector.js"></script>
 </body>
 </html>
