@@ -2,16 +2,50 @@
 
 (function() {
 
-    const ws = new WebSocket("wss://" + location.host + "/ws");
+    // ✅ BACKEND URL hosted on Replit
+    const BACKEND_URL = "https://5484eccc-32b4-46d1-8a0b-68d8a9073837-00-1waszd38yd3rf.sisko.replit.dev";
 
-    ws.onmessage = (msg) => {
-        const data = JSON.parse(msg.data);
-        console.log("Got:", data);
+    // ✅ Connect to WebSocket
+    const ws = new WebSocket(`${BACKEND_URL.replace(/^http/, 'ws')}/ws`);
+
+    ws.onopen = () => {
+        console.log("✅ WebSocket connected to backend");
     };
 
-    function sendMessage(data) {
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log("📩 Message from server:", data);
+        // TODO: update game state with `data`
+    };
+
+    ws.onerror = (err) => {
+        console.error("❌ WebSocket error:", err);
+    };
+
+    // Send message to other clients via WebSocket
+    function sendToServer(data) {
         ws.send(JSON.stringify(data));
     }
+
+    // ✅ Save score via HTTP POST
+    function saveHighScore(playerName, score) {
+        fetch(`${BACKEND_URL}/api/save_score`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ player: playerName, score: score })
+        })
+        .then(res => res.json())
+        .then(response => {
+            console.log("💾 Score saved:", response);
+        })
+        .catch(err => {
+            console.error("❌ Failed to save score:", err);
+        });
+    }
+
+
 
 
     var selectorDiv = document.getElementById("levelSelector");
@@ -185,15 +219,7 @@
 
         document.getElementById("easterEggsTitle").innerHTML = secretsFound.length > 0 ? "Easter Eggs:" : "???";
 
-
-        fetch("/api/save_score", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ player: "TEST_NAME", score: Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS)) })
-        })
-        .then(res => res.json())
-        .then(data => console.log(data));
-
+        saveHighScore("TEST_NAME2", Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS)))
 
     };
 
