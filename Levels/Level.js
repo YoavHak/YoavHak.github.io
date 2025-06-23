@@ -202,7 +202,7 @@ if (true) {
         door.style.top = "458px";
         for (var i = 0; i < canvas.width; i++) {
     
-            deathMap[763] = [1, 370 - GLOBAL_OFFSET_Y];
+            deathMap[763] = [1, 360 - GLOBAL_OFFSET_Y];
             deathMap[940] = [382 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
             deathMap[1129] = [1, 364 - GLOBAL_OFFSET_Y];
     

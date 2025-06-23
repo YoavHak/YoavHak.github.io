@@ -46,6 +46,27 @@
         });
     }
 
+    async function fetchHighScores() {
+        return fetch(`${BACKEND_URL}/api/get_scores`)
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`Network response was not ok: ${res.statusText}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                // Assuming your backend returns an object like { scores: [...] }
+                highScores = data.scores || [];
+                // console.log("High scores loaded:", highScores);
+                return highScores; // Return the list
+            })
+            .catch(err => {
+                console.error("Failed to fetch high scores:", err);
+                throw err; // Re-throw if you want to handle it later
+            });
+    }
+
+
 
 
 
@@ -117,7 +138,7 @@
             const secretsFound = JSON.parse(localStorage.getItem('secretsFound')) || [];
             const totalScore = Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS));
             saveHighScore(name, totalScore);
-            alert('High score submitted!');
+            // alert('High score submitted!');
             nameModal.style.display = 'none';
         } else {
             alert('Please enter a name.');
@@ -128,6 +149,8 @@
     cancelNameBtn.onclick = () => {
         nameModal.style.display = 'none';
     };
+
+
 
 
     const muteSoundsButton = document.getElementById('muteSoundsButton');
@@ -267,6 +290,7 @@
 
 
 
+
     for (var i = 0; i < 5; i++) {
         var tr = document.createElement("tr");
         for (var j = 0; j < 5; j++) {
@@ -310,6 +334,101 @@
         }
         levelTable.appendChild(tr);
     }
+
+    
+    const LeaderboardButton = document.getElementById('leaderBoardButton');
+    const LeaderboardViewer = document.getElementById('LeaderboardViewer');
+    const LeaderboardExitButton = document.getElementById('LeaderboardExitButton');
+
+    LeaderboardButton.onclick = () => {
+        selectorDiv.classList.add("disabled");
+        LeaderboardViewer.style.visibility = "visible";
+    }
+
+    LeaderboardExitButton.onclick = () => {
+        selectorDiv.classList.remove("disabled");
+        LeaderboardViewer.style.visibility = "hidden";
+    }
+    let Leaderboard = document.getElementById('Leaderboard');
+    fetchHighScores().then(scores => {
+        let sorted_scores = scores.sort((a, b) => b.score - a.score);
+        let count = 0;
+        for (let submission of sorted_scores) {
+            count++;
+            let tr = document.createElement("tr");
+            let index_td = document.createElement("td");
+            let name_td = document.createElement("td");
+            let score_td = document.createElement("td");
+            
+            index_td.innerHTML = count;
+
+            // Assign class for top 3
+            if (count === 1) {
+                index_td.className = 'top-index-1';
+                index_td.style.color = "gold";
+                index_td.style.backgroundImage = "url('images/1st place.png')";
+            } else if (count === 2) {
+                index_td.className = 'top-index-2';
+                index_td.style.color = "silver";
+                index_td.style.backgroundImage = "url('images/2nd place.png')";
+            } else if (count === 3) {
+                index_td.className = 'top-index-3';
+                index_td.style.color = "#b87333";
+                index_td.style.backgroundImage = "url('images/3rd place.png')";
+            }
+
+            if (count <= 3) {
+                index_td.className = 'top-index-' + count;
+                // index_td.style.color = ['gold', 'silver', '#b87333'][count - 1];
+                index_td.style.color = 'white';
+                index_td.style.backgroundImage = "url('Images/medal " + count + ".png')";
+                index_td.style.backgroundRepeat = "no-repeat";
+                index_td.style.backgroundPosition = "center";
+                index_td.style.backgroundSize = "contain";
+                index_td.style.textShadow = "0 0 5px red, 0 0 10px red, 0 0 15px red";
+                
+                if (count == 1) {
+                    index_td.style.backgroundPosition = "13px 10px";
+                }
+                else if (count == 2) {
+                    index_td.style.backgroundPosition = "11px 10px";
+                }
+                else if (count == 3) {
+                    index_td.style.backgroundPosition = "10px 10px";
+                }
+            }
+
+
+            name_td.innerHTML = submission["player"];
+            score_td.innerHTML = submission["score"];
+
+
+            tr.appendChild(index_td);
+            tr.appendChild(name_td);
+            tr.appendChild(score_td);
+            Leaderboard.appendChild(tr);
+        }
+    })
+    .catch(err => {
+        console.error('Error:', err);
+    });
+
+    const headerRow = document.createElement("tr");
+    const headerIndex = document.createElement("th");
+    const headerName = document.createElement("th");
+    const headerScore = document.createElement("th");
+
+    headerIndex.innerHTML = "#";
+    headerName.innerHTML = "Player";
+    headerScore.innerHTML = "Score";
+
+    headerRow.appendChild(headerIndex);
+    headerRow.appendChild(headerName);
+    headerRow.appendChild(headerScore);
+
+    Leaderboard.insertBefore(headerRow, Leaderboard.firstChild);
+
+
 
 
     // Play button click event
