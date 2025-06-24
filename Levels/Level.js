@@ -144,6 +144,134 @@ document.addEventListener('mouseup', () => {
 levelDiv.addEventListener('dragstart', (e) => e.preventDefault());
 
 
+class Level {
+    constructor(levelNumber, doorTop, deathMapData, mapData, platformData, coinsData) {
+        this.levelNumber = levelNumber;
+        this.doorTop = doorTop;
+        this.deathMapData = deathMapData; // Object with deathMap key-value pairs
+        this.mapData = mapData; // Function or data to generate the map array
+        this.platformData = platformData; // Platform coordinates
+        this.coinsData = coinsData; // Data for coins (type, position, etc.)
+    }
+
+    setup() {
+        // Set door position
+        door.style.top = this.doorTop + "px";
+
+        // Initialize deathMap
+        for (const key in this.deathMapData) {
+            deathMap[key] = this.deathMapData[key];
+        }
+
+        // Generate map array
+        if (typeof this.mapData === 'function') {
+            this.mapData();
+        } else {
+            // handle other map data setup
+        }
+
+        // Setup platforms
+        if (this.platformData) {
+            platforms.push(...this.platformData);
+        }
+
+        // Setup coins
+        if (this.coinsData) {
+            this.coinsData.forEach(coin => {
+                const coinElement = createCoin(coin.type);
+                coinElement.setAttribute("id", coin.id);
+                coinElement.style.left = coin.left + "px";
+                coinElement.style.top = coin.top + "px";
+                coins.push(coinElement);
+                levelDiv.appendChild(coinElement);
+            });
+        }
+    }
+}
+
+class Player {
+    constructor(element) {
+        this.element = element; // DOM element representing the player
+        this.x = 0;
+        this.y = 0;
+        this.velocityX = 0;
+        this.velocityY = 0;
+        this.scale = 1;
+        this.isOnGround = false;
+        this.isBoosted = false;
+        this.isDead = false;
+        // Add other properties as needed
+    }
+
+    setPosition(x, y) {
+        this.x = x;
+        this.y = y;
+        this.element.style.left = x + "px";
+        this.element.style.top = y + "px";
+    }
+
+    update() {
+        // Update position based on velocity and physics
+        this.velocityY += ACC * 0.016; // gravity
+        this.x += this.velocityX;
+        this.y += this.velocityY;
+
+        this.element.style.left = this.x + "px";
+        this.element.style.top = this.y + "px";
+
+        // Additional logic for movement, collision, etc.
+    }
+
+    // Add methods for jump, move, boost, etc.
+    jump() {
+        if (this.isOnGround) {
+            this.velocityY = -15; // example jump strength
+        }
+    }
+}
+
+class Bot {
+    constructor(id, imageElement) {
+        this.id = id;
+        this.element = imageElement; // DOM element for the bot
+        this.x = 0;
+        this.y = 0;
+        this.velocityX = parseFloat(this.element.getAttribute("moveRight") || 0);
+        this.upperBounds = parseFloat(this.element.getAttribute("upperBounds") || 0);
+        this.vel = parseFloat(this.element.getAttribute("vel") || 0);
+        this.isOnFunction = false;
+        this.hasTouchedFunction = false;
+        this.isDead = false;
+        this.isBoosted = false;
+        this.deathX = 0;
+        this.scale = parseFloat(this.element.getAttribute("scale") || 1);
+        this.isOnWall = false;
+        // Add other properties as needed
+    }
+
+    setPosition(x, y) {
+        this.x = x;
+        this.y = y;
+        this.element.style.left = x + "px";
+        this.element.style.top = y + "px";
+    }
+
+    update() {
+        // Basic movement logic
+        this.x += this.velocityX;
+        // Implement behavior, e.g., change direction at bounds
+        if (this.x > this.upperBounds) {
+            this.velocityX = -Math.abs(this.velocityX);
+        } else if (this.x < 0) {
+            this.velocityX = Math.abs(this.velocityX);
+        }
+        this.setPosition(this.x, this.y);
+        // Additional behavior like collision detection
+    }
+
+    // Add methods for AI decision-making, boosting, etc.
+}
+
 
 
 //start
@@ -185,7 +313,7 @@ if (true) {
         door.style.top = "428px";
         for (var i = 0; i < canvas.width; i++) {
     
-            deathMap[913] = [1, 533 - GLOBAL_OFFSET_Y];
+            deathMap[913] = [1, 523 - GLOBAL_OFFSET_Y];
             deathMap[914] = [728 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
     
             if (i < 762) {
@@ -1324,6 +1452,7 @@ function ResetBot(id, is_win=false) {
     console.log(avoid_points);
 
     if (id == clickedBotId) {
+        bot.classList.remove('highlighted');
         clickedBotId = -1;
     }
     
