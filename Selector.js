@@ -123,6 +123,7 @@
 
     // Show modal on button click
     submitButton.onclick = () => {
+        selectorDiv.classList.add("disabled");
         nameModal.style.display = 'block';
         playerNameInput.value = ''; // Clear previous input
         playerNameInput.focus();
@@ -139,6 +140,7 @@
                 alert('Name too long!');
             }
             else {
+                selectorDiv.classList.remove("disabled");
                 // Call your saveHighScore function or similar
                 // For example, you can use current progress info:
                 const levelsBeaten = parseInt(localStorage.getItem('levelsBeaten')) || 0;
@@ -157,6 +159,7 @@
 
     // Handle cancel
     cancelNameBtn.onclick = () => {
+        selectorDiv.classList.remove("disabled");
         nameModal.style.display = 'none';
     };
 
