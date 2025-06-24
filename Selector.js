@@ -458,7 +458,8 @@
     function changeScene() {
         document.getElementById('gameMenu').style.display = 'none'; // Hide the menu
         document.getElementById('levelSelector').style.display = 'flex'; // Show the level selector
-        const MINUTES = 3;
+        // const MINUTES = 3;
+        const MINUTES = 0.000016;
         setTimeout(() => {
             float_interval = setInterval(FloatRight, 1);
         }, MINUTES * 60 * 1000);
@@ -468,7 +469,8 @@
     function FloatRight() {
         float_rotation += 0.1;
 
-        playerImage.style.left = parseFloat(player.style.left) + 0.1 + 'px';
+        // playerImage.style.left = parseFloat(player.style.left) + 0.1 + 'px';
+        playerImage.style.left = parseFloat(player.style.left) + 2 + 'px';
         playerImage.style.transform = 'rotate(' + float_rotation + 'deg)';
 
         if (parseFloat(player.style.left) > window.innerWidth / 2 && !imposterTextAppeared) {
