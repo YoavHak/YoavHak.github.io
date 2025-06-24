@@ -136,7 +136,7 @@
             if (name.length < 4) {
                 alert('Name too short!');
             }
-            if (name.length > 18) {
+            else if (name.length > 18) {
                 alert('Name too long!');
             }
             else {
