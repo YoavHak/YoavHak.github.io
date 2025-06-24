@@ -23,6 +23,10 @@
         console.error("❌ WebSocket error:", err);
     };
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     // Send message to other clients via WebSocket
     function sendToServer(data) {
         ws.send(JSON.stringify(data));
@@ -40,6 +44,7 @@
         .then(res => res.json())
         .then(response => {
             console.log("💾 Score saved:", response);
+            location.reload();
         })
         .catch(err => {
             console.error("❌ Failed to save score:", err);
@@ -147,9 +152,9 @@
                 const secretsFound = JSON.parse(localStorage.getItem('secretsFound')) || [];
                 const totalScore = Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS));
                 saveHighScore(name, totalScore);
+                
                 // alert('High score submitted!');
                 nameModal.style.display = 'none';
-                location.reload();
             }
         }
         else {
