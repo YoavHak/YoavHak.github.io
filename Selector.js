@@ -400,7 +400,7 @@
 
 
             name_td.innerHTML = submission["player"];
-            score_td.innerHTML = submission["score"];
+            score_td.innerHTML = submission["score"] + "%";
 
 
             tr.appendChild(index_td);
@@ -440,9 +440,10 @@
     function changeScene() {
         document.getElementById('gameMenu').style.display = 'none'; // Hide the menu
         document.getElementById('levelSelector').style.display = 'flex'; // Show the level selector
+        const MINUTES = 3;
         setTimeout(() => {
             float_interval = setInterval(FloatRight, 1);
-        }, 60000);
+        }, MINUTES * 60 * 1000);
 
     }
 
