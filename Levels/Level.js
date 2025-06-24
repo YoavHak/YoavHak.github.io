@@ -811,6 +811,26 @@ if (true) {
             latex: 'y=',
         });
 
+        const WIDTH = 30;
+        for (var i = 15; i < map.length - 1; i+=WIDTH) {
+
+            if (map[i] == LOWER_BOUNDS - GLOBAL_OFFSET_Y && map[i + WIDTH / 2] == LOWER_BOUNDS - GLOBAL_OFFSET_Y) {//draw spikes
+
+                var spike = document.createElement("img");
+                spike.src = "../Images/spike.png";
+                spike.style.position = "fixed";
+
+                spike.style.width = WIDTH + "px";
+                spike.style.height = 2 * WIDTH + "px";
+                
+                spike.style.top = LOWER_BOUNDS - parseInt(spike.style.height) + "px";
+                spike.style.left = i + "px";
+
+                levelDiv.appendChild(spike);
+            }
+            
+        }
+
         if (AI_mode) {
             player.style.visibility = "hidden";
             initializeChroms(); console.log(chroms);
@@ -1095,25 +1115,7 @@ function DrawFunc() {
         var point2 = platform[1];
         drawLine(ctx, point1[0], point1[1] - GLOBAL_OFFSET_Y, point2[0], point2[1] - GLOBAL_OFFSET_Y, 'black', 3);
     }
-    const WIDTH = 30;
-    for (var i = 15; i < map.length - 1; i+=WIDTH) {
 
-        if (map[i] == LOWER_BOUNDS - GLOBAL_OFFSET_Y && map[i + WIDTH / 2] == LOWER_BOUNDS - GLOBAL_OFFSET_Y) {//draw spikes
-
-            var spike = document.createElement("img");
-            spike.src = "../Images/spike.png";
-            spike.style.position = "fixed";
-
-            spike.style.width = WIDTH + "px";
-            spike.style.height = 2 * WIDTH + "px";
-            
-            spike.style.top = LOWER_BOUNDS - parseInt(spike.style.height) + "px";
-            spike.style.left = i + "px";
-
-            levelDiv.appendChild(spike);
-        }
-        
-    }
 
 
     var DeathText = document.getElementById("Deaths");
