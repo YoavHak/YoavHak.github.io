@@ -132,15 +132,25 @@
     submitNameBtn.onclick = () => {
         const name = playerNameInput.value.trim();
         if (name) {
-            // Call your saveHighScore function or similar
-            // For example, you can use current progress info:
-            const levelsBeaten = parseInt(localStorage.getItem('levelsBeaten')) || 0;
-            const secretsFound = JSON.parse(localStorage.getItem('secretsFound')) || [];
-            const totalScore = Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS));
-            saveHighScore(name, totalScore);
-            // alert('High score submitted!');
-            nameModal.style.display = 'none';
-        } else {
+            if (name.length < 4) {
+                alert('Name too short!');
+            }
+            if (name.length > 18) {
+                alert('Name too long!');
+            }
+            else {
+                // Call your saveHighScore function or similar
+                // For example, you can use current progress info:
+                const levelsBeaten = parseInt(localStorage.getItem('levelsBeaten')) || 0;
+                const secretsFound = JSON.parse(localStorage.getItem('secretsFound')) || [];
+                const totalScore = Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS));
+                saveHighScore(name, totalScore);
+                // alert('High score submitted!');
+                nameModal.style.display = 'none';
+                location.reload();
+            }
+        }
+        else {
             alert('Please enter a name.');
         }
     };
