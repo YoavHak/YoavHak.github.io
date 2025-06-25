@@ -609,7 +609,10 @@ if (true) {
             if (i < 462) {
                 map[i] = 562 - GLOBAL_OFFSET_Y;
             }
-            else if (i > 1362) {
+            else if (i > 1362 && i < 1812) {
+                map[i] = 412 - GLOBAL_OFFSET_Y;
+            }
+            else if (i > 1962) {
                 map[i] = 412 - GLOBAL_OFFSET_Y;
             }
         }
@@ -617,7 +620,7 @@ if (true) {
     
         platforms.push([
             [462, 562],
-            [927, 740]
+            [927, 740],
         ]);
     
         for (var i = 0; i < 5; i++) {
@@ -629,6 +632,7 @@ if (true) {
                 ];
     
                 turners_indexes = [
+                    2,
                     6,
                 ]
                 if (turners_indexes.includes((i * 4 + j))) {
@@ -676,7 +680,7 @@ if (true) {
             deathMap[912] = [1, 328 - GLOBAL_OFFSET_Y];
             deathMap[913] = [488 - GLOBAL_OFFSET_Y, 582 - GLOBAL_OFFSET_Y];
             deathMap[914] = [645 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
-            deathMap[1178] = [1, 440 - GLOBAL_OFFSET_Y];
+            deathMap[1178] = [1, 430 - GLOBAL_OFFSET_Y];
             deathMap[1179] = [482 - GLOBAL_OFFSET_Y, 560 - GLOBAL_OFFSET_Y];
             deathMap[1180] = [645 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
     
@@ -2246,7 +2250,7 @@ function Play() {
                                 botVel = 0;
                     
                     
-                                bot.style.transform = 'rotate(' + (botRight / Math.abs(botRight)) * Math.atan(platIncline) * 180 / Math.PI + 'deg)';
+                                bot.style.transform = 'rotate(' + Math.atan(platIncline) * 180 / Math.PI + 'deg)';
                             
                             }
                         }
@@ -2277,7 +2281,7 @@ function Play() {
                             upperBounds = Math.min(150 * funcIncline / botRight, 0);
                             bot.setAttribute("upperBounds", upperBounds);
                 
-                            bot.style.transform = 'rotate(' + (botRight / Math.abs(botRight)) * Math.atan(funcIncline / botRight) * 180 / Math.PI + 'deg)';
+                            bot.style.transform = 'rotate(' + Math.atan(funcIncline / botRight) * 180 / Math.PI + 'deg)';
                         }
                         else if (inRange(points[0][1], map[points[0][0]]) || inRange(points[2][1], map[points[2][0]])) {
                             //walk on base
@@ -2287,7 +2291,7 @@ function Play() {
                             moveY += baseIncline - botVel;
                             botVel = 0;
                 
-                            bot.style.transform = 'rotate(' + (botRight / Math.abs(botRight)) * Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
+                            bot.style.transform = 'rotate(' + Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
                 
                         }
                         else if (legsHeight < funcY_atBotX && legsHeight + vel > funcY_atBotX) {
@@ -2450,26 +2454,59 @@ function Play() {
                 funcIncline = 0;
             }
     
-    
-            if (false) {
-    
-                ctx.fillStyle = "white";
-                ctx.fillRect(playerCenterX - 1, legsHeight, 6, 6);
-    
-                ctx.fillStyle = "orange";
-                ctx.fillRect(playerCenterX, legsHeight, 6, 6);
-    
-                ctx.fillStyle = "black";
-            }// movement dot
-    
-    
             const printActions = false;
-            if (IsBoosted) {
+            if (playerCenterX < 50) {
+                //start of map
+                if (printActions) {console.log("start");
+                }
+                moveY = playerStartY - legsHeight - RANGE / 2;
+                vel = 0;
+            }
+            else if (IsBoosted) {
                 if (printActions) {console.log("boost");
                 }
                 IsBoosted = false;
                 vel = -8;
                 moveY += vel;
+            }
+            else if (IsOnPlatform() >= 0) {
+                if (inRange(legsHeight, funcMap[playerCenterX])) {
+                    //switch between function and platform
+                    if (printActions) {console.log("switch func-plat");
+                    }
+        
+                    moveY += Math.min(funcIncline, platIncline) - vel;
+                    if (platIncline >= funcIncline && inRange(legsHeight - 1, funcMap[playerCenterX])) {
+                        moveY -= 1;
+                    }
+                    vel = 0;
+        
+                    player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(funcIncline, baseIncline) / right) * 180 / Math.PI + 'deg)';
+                }
+                else if (inRange(legsHeight, map[playerCenterX])) {
+                    //switch between function and platform
+                    if (printActions) {console.log("switch base-plat");
+                    }
+        
+                    moveY += Math.min(baseIncline, platIncline) - vel;
+                    if (platIncline >= baseIncline && inRange(legsHeight - 1, map[playerCenterX])) {
+                        moveY -= 1;
+                    }
+                    vel = 0;
+        
+                    player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(platIncline, baseIncline) / right) * 180 / Math.PI + 'deg)';
+                }
+                else {
+                    //walk on platform
+                    if (printActions) {console.log("walk platform");
+                    }
+        
+                    moveY += platIncline - vel;
+                    vel = 0;
+        
+        
+                    player.style.transform = 'rotate(' + Math.atan(platIncline) * 180 / Math.PI + 'deg)';
+                }
             }
             else if (inRange(funcMap[playerCenterX], map[playerCenterX]) && inRange(legsHeight, map[playerCenterX])) {
                 //switch between function and base
@@ -2483,32 +2520,6 @@ function Play() {
     
                 player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(funcIncline, baseIncline) / right) * 180 / Math.PI + 'deg)';
             }
-            else if (inRange(legsHeight, funcMap[playerCenterX]) && IsOnPlatform() >= 0) {
-                //switch between function and platform
-                if (printActions) {console.log("switch func-plat");
-                }
-    
-                moveY += Math.min(funcIncline, platIncline) - vel;
-                if (platIncline >= funcIncline && inRange(legsHeight - 1, funcMap[playerCenterX])) {
-                    moveY -= 1;
-                }
-                vel = 0;
-    
-                player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(funcIncline, baseIncline) / right) * 180 / Math.PI + 'deg)';
-            }
-            else if (inRange(legsHeight, map[playerCenterX]) && IsOnPlatform() >= 0) {
-                //switch between function and platform
-                if (printActions) {console.log("switch base-plat");
-                }
-    
-                moveY += Math.min(baseIncline, platIncline) - vel;
-                if (platIncline >= baseIncline && inRange(legsHeight - 1, map[playerCenterX])) {
-                    moveY -= 1;
-                }
-                vel = 0;
-    
-                player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(Math.min(platIncline, baseIncline) / right) * 180 / Math.PI + 'deg)';
-            }
             else if (inRange(legsHeight, funcMap[playerCenterX])) {
                 //walk on function
                 if (printActions) {console.log("walk func");
@@ -2518,7 +2529,7 @@ function Play() {
                 vel = 0;
                 upperBounds = Math.min(150 * funcIncline / right, 0);
     
-                player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(funcIncline / right) * 180 / Math.PI + 'deg)';
+                player.style.transform = 'rotate(' + Math.atan(funcIncline / right) * 180 / Math.PI + 'deg)';
             }
             else if (inRange(points[0][1], map[points[0][0]]) || inRange(points[2][1], map[points[2][0]])) {
                 //walk on base
@@ -2528,26 +2539,8 @@ function Play() {
                 moveY += baseIncline - vel;
                 vel = 0;
     
-                player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
+                player.style.transform = 'rotate(' + Math.atan(baseIncline) * 180 / Math.PI + 'deg)';
     
-            }
-            else if (IsOnPlatform() >= 0) {
-                //walk on platform
-                if (printActions) {console.log("walk platform");
-                }
-    
-                moveY += platIncline - vel;
-                vel = 0;
-    
-    
-                player.style.transform = 'rotate(' + (right / Math.abs(right)) * Math.atan(platIncline) * 180 / Math.PI + 'deg)';
-            }
-            else if (playerCenterX < 50) {
-                //start of map
-                if (printActions) {console.log("start");
-                }
-                moveY = playerStartY - legsHeight - RANGE / 2;
-                vel = 0;
             }
             else if (legsHeight < funcMap[playerCenterX] && legsHeight + vel > funcMap[playerCenterX]) {
                 //fall to function
