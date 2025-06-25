@@ -8,7 +8,7 @@
     // ✅ Connect to WebSockete(/^http/, 'ws')}ws`);
     const ws = new WebSocket(`${BACKEND_URL.replace(/^http(s?)/, 'ws$1')}/ws`);
 
-    alert('hey')
+
 
     ws.onopen = () => {
         console.log("✅ WebSocket connected to backend");
@@ -397,7 +397,7 @@
                 index_td.style.backgroundImage = "url('images/3rd place.png')";
             }
 
-            if (count <= 3) {
+            if (count <= 1) {
                 index_td.className = 'top-index-' + count;
                 // index_td.style.color = ['gold', 'silver', '#b87333'][count - 1];
                 index_td.style.color = 'white';
