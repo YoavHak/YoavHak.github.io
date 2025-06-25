@@ -8,7 +8,7 @@
     // ✅ Connect to WebSockete(/^http/, 'ws')}ws`);
     const ws = new WebSocket(`${BACKEND_URL.replace(/^http(s?)/, 'ws$1')}/ws`);
 
-
+    alert('hey')
 
     ws.onopen = () => {
         console.log("✅ WebSocket connected to backend");
