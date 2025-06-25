@@ -6,8 +6,9 @@
     const BACKEND_URL = "https://5484eccc-32b4-46d1-8a0b-68d8a9073837-00-1waszd38yd3rf.sisko.replit.dev:3001";
 
     // ✅ Connect to WebSockete(/^http/, 'ws')}ws`);
-    // const ws = new WebSocket(`${BACKEND_URL.replac
-    const ws = new WebSocket(`${BACKEND_URL.replace(/^http/, 'ws')}/ws`);
+    const ws = new WebSocket(`${BACKEND_URL.replace(/^http(s?)/, 'ws$1')}/ws`);
+
+
 
     ws.onopen = () => {
         console.log("✅ WebSocket connected to backend");
@@ -50,6 +51,7 @@
             console.error("❌ Failed to save score:", err);
         });
     }
+
 
     async function fetchHighScores() {
         return fetch(`${BACKEND_URL}/api/get_scores`)

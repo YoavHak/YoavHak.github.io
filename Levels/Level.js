@@ -864,6 +864,7 @@ if (true) {
                     this.classList.add('highlighted');
                     clickedBotId = parseInt(this.id.substring(3));
                     
+                    MQ.MathField(input, { spaceBehavesLikeTab: true }).latex(chrom_strings[clickedBotId]);
                     calculator.setExpression({
                         id: "botFunc",
                         color: "blue",
@@ -2047,14 +2048,15 @@ function Play() {
             }
         }
     });
+    const validPattern = /^[a-zA-Z0-9\s\-.,+*/=(){}[\]]*$/;
+    if (!validPattern.test(input.value)) {
+        console.error("Invalid characters detected")
+    }
 
 
     expr = FilterExpression(MQtoAM(String(enteredMath)));
     var expr2 = FilterExpression2(enteredMath);
 
-    // if (!AI_mode) {
-    //     input.style.width = Math.max(expr.length * 17, 200) + 'px';
-    // }
     input.style.width = Math.max(expr.length * 17, 200) + 'px';
 
     if ((expr != last || start) && !AI_mode) {
@@ -2414,7 +2416,7 @@ function Play() {
                     }
                 }
                 if (!pause && clickedBotId == -1) {
-                    // MQ.MathField(input, { spaceBehavesLikeTab: true }).latex(chrom_strings[max_bot_x_id]);
+                    MQ.MathField(input, { spaceBehavesLikeTab: true }).latex(chrom_strings[max_bot_x_id]);
                     // let simplified_max_func = FilterExpression(MQtoAM(String(chrom_strings[max_bot_x_id].length)));
                     // input.style.width = Math.max(simplified_max_func * 10, 200) + 'px';
                     calculator.setExpression({
