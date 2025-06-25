@@ -130,18 +130,22 @@
 
 
 
-    var USERNAME = localStorage.getItem('username');
-    if (!USERNAME) {
-        USERNAME = "";
-    }
-    else {
-        submitButton.classList.add("disabled");
-    }
-
     function IsNameTaken(name) {
         for (var i = 0; i < sorted_scores.length; i++) {
             if (sorted_scores[i]["player"] == name) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    function IsScoreUpgrade(name, score) {
+        for (var i = 0; i < sorted_scores.length; i++) {
+            if (sorted_scores[i]["player"] == name) {
+                if (score > sorted_scores[i]["score"]) {
+                    return true;
+                }
+                return false;
             }
         }
         return false;
@@ -404,7 +408,8 @@
         LeaderboardViewer.style.visibility = "hidden";
     }
     let Leaderboard = document.getElementById('Leaderboard');
-    let sorted_scores = [];
+    var sorted_scores = [];
+    var player_score = Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS));
     fetchHighScores().then(scores => {
         sorted_scores = scores.sort((a, b) => b.score - a.score);
         let count = 0;
@@ -463,17 +468,29 @@
             tr.appendChild(score_td);
             Leaderboard.appendChild(tr);
         }
+        
+        var USERNAME = localStorage.getItem('username');
+        if (!USERNAME) {
+            USERNAME = "";
+        }
+        else {
+            submitButton.classList.add("disabled");
+            if (!IsNameTaken(USERNAME)) {
+                localStorage.removeItem("username");
+            }
+        }
+        
+        if (USERNAME && IsScoreUpgrade(USERNAME, player_score)) {
+            saveHighScore(USERNAME, player_score);
+        }
+
     })
     .catch(err => {
         console.error('Error:', err);
     });
+    
 
 
-    var player_score = Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS));
-    if (USERNAME && !sorted_scores.includes({"player": USERNAME, "score": player_score})) {
-        // saveHighScore(USERNAME, player_score);
-        
-    }
 
     const headerRow = document.createElement("tr");
     const headerIndex = document.createElement("th");
