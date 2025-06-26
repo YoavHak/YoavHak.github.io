@@ -551,16 +551,31 @@
 
         /* Input style */
         #playerNameInput {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 2px solid #ff6a00;
-        border-radius: 8px;
-        background-color: #2b2b2b;
-        color: #fff;
-        outline: none;
-        box-sizing: border-box;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ff6a00;
+            border-radius: 8px;
+            background-color: #2b2b2b;
+            color: #fff;
+            outline: none;
+            box-sizing: border-box;
         }
+
+        /* Password input styled like name input */
+        #playerPasswordInput {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ff6a00;
+            border-radius: 8px;
+            background-color: #2b2b2b;
+            color: #fff;
+            outline: none;
+            box-sizing: border-box;
+            margin-top: 10px; /* Optional: spacing below name input */
+        }
+
 
         /* Buttons style (submit and cancel) */
         #submitName, #cancelName {
@@ -828,12 +843,20 @@
         </div>
 
     </div>
-
-    <!-- Enter Name Modal -->
+    <!-- Enter Name and Password Modal -->
     <div id="nameModal">
-        <h2 style="margin-top: 0; margin-bottom: 15px; font-family: 'Lato', sans-serif;">Enter Your Name</h2>
-        <input type="text" id="playerNameInput" placeholder="Your Name">
-        <div style="margin-top: 15px; display: flex; justify-content: center;">
+        <h2 style="margin-top: 0; margin-bottom: 15px; font-family: 'Lato', sans-serif;">Enter Your Details</h2>
+        
+        <!-- Name input -->
+        <input type="text" id="playerNameInput" placeholder="Your Name" style="display: block; margin-bottom: 10px; width: 100%;">
+
+        <!-- Password input -->
+        <!-- <input type="password" id="playerPasswordInput" placeholder="Password"> --> 
+
+
+
+        <!-- Buttons -->
+        <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px;">
             <button id="submitName">Submit</button>
             <button id="cancelName">Cancel</button>
         </div>
@@ -858,4 +881,3 @@
     <script src="Selector.js"></script>
 </body>
 </html>
-

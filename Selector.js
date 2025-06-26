@@ -2,11 +2,11 @@
 
 (function() {
 
-    // ✅ BACKEND URL hosted on Replit
-    const BACKEND_URL = "https://5484eccc-32b4-46d1-8a0b-68d8a9073837-00-1waszd38yd3rf.sisko.replit.dev:3001";
+    // Use your actual Replit URL — WITHOUT any port
+    const BACKEND_URL = "https://5484eccc-32b4-46d1-8a0b-68d8a9073837-00-1waszd38yd3rf.sisko.replit.dev";
 
-    // ✅ Connect to WebSockete(/^http/, 'ws')}ws`);
-    const ws = new WebSocket(`${BACKEND_URL.replace(/^http(s?)/, 'ws$1')}/ws`);
+    // WebSocket connection using the correct protocol (wss)
+    const ws = new WebSocket(`${BACKEND_URL.replace(/^http/, 'ws')}/ws`);
 
 
 
@@ -113,20 +113,44 @@
 
     var MAX_EGGS = 4;
 
-    var AI_MODE = localStorage.getItem('AI_mode');
-
     let soundIsMuted = false;
 
     let musicIsMuted = false;
 
     var imposterTextAppeared = false;
 
+
     // Select buttons and modal elements
     const submitButton = document.getElementById('submitButton');
     const nameModal = document.getElementById('nameModal');
     const playerNameInput = document.getElementById('playerNameInput');
+    const playerPasswordInput = document.getElementById('playerPasswordInput');
     const submitNameBtn = document.getElementById('submitName');
     const cancelNameBtn = document.getElementById('cancelName');
+
+
+
+    function IsNameTaken(name) {
+        for (var i = 0; i < sorted_scores.length; i++) {
+            if (sorted_scores[i]["player"] == name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function IsScoreUpgrade(name, score) {
+        for (var i = 0; i < sorted_scores.length; i++) {
+            if (sorted_scores[i]["player"] == name) {
+                if (score > sorted_scores[i]["score"]) {
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
 
     // Show modal on button click
     submitButton.onclick = () => {
@@ -134,6 +158,10 @@
         nameModal.style.display = 'block';
         playerNameInput.value = ''; // Clear previous input
         playerNameInput.focus();
+        if (playerPasswordInput) {
+            playerPasswordInput.value = '';
+            playerPasswordInput.focus();
+        }
     };
 
     // Handle submit
@@ -146,7 +174,13 @@
             else if (name.length > 18) {
                 alert('Name too long!');
             }
+            else if (IsNameTaken(name)) {
+                alert('Name Is Already Taken!');
+            }
             else {
+                USERNAME = name;
+                localStorage.setItem('username', USERNAME);
+
                 selectorDiv.classList.remove("disabled");
                 // Call your saveHighScore function or similar
                 // For example, you can use current progress info:
@@ -193,16 +227,9 @@
     AIModeButton.addEventListener('click', () => {
         change_AI_Mode_State();
     });
-
-    var comingSoonText = document.getElementById("comingSoonText");
-    comingSoonText.innerHTML = "LEVEL " + (LEVEL_NUM + 1) + " COMING SOON...";
-
-
-    if (!levelsBeaten) {
-        levelsBeaten = 0;
-        localStorage.setItem("levelsBeaten", levelsBeaten);
-    }
-
+    
+    var AI_MODE = localStorage.getItem('AI_mode');
+    
     if (AI_MODE) {
         AI_MODE = JSON.parse(AI_MODE);
         if (AI_MODE) {
@@ -216,6 +243,17 @@
         AI_MODE = false;
         localStorage.setItem('AI_mode', JSON.stringify(AI_MODE));
     }
+
+
+    var comingSoonText = document.getElementById("comingSoonText");
+    comingSoonText.innerHTML = "LEVEL " + (LEVEL_NUM + 1) + " COMING SOON...";
+
+
+    if (!levelsBeaten) {
+        levelsBeaten = 0;
+        localStorage.setItem("levelsBeaten", levelsBeaten);
+    }
+
 
     if (levelsBeaten > 0) {
 
@@ -370,8 +408,10 @@
         LeaderboardViewer.style.visibility = "hidden";
     }
     let Leaderboard = document.getElementById('Leaderboard');
+    var sorted_scores = [];
+    var player_score = Math.floor(100 * (levelsBeaten + secretsFound.length) / (LEVEL_NUM + MAX_EGGS));
     fetchHighScores().then(scores => {
-        let sorted_scores = scores.sort((a, b) => b.score - a.score);
+        sorted_scores = scores.sort((a, b) => b.score - a.score);
         let count = 0;
         for (let submission of sorted_scores) {
             count++;
@@ -397,7 +437,7 @@
                 index_td.style.backgroundImage = "url('images/3rd place.png')";
             }
 
-            if (count <= 3) {
+            if (count <= 1) {
                 index_td.className = 'top-index-' + count;
                 // index_td.style.color = ['gold', 'silver', '#b87333'][count - 1];
                 index_td.style.color = 'white';
@@ -428,10 +468,29 @@
             tr.appendChild(score_td);
             Leaderboard.appendChild(tr);
         }
+        
+        var USERNAME = localStorage.getItem('username');
+        if (!USERNAME) {
+            USERNAME = "";
+        }
+        else {
+            submitButton.classList.add("disabled");
+            if (!IsNameTaken(USERNAME)) {
+                localStorage.removeItem("username");
+            }
+        }
+        
+        if (USERNAME && IsScoreUpgrade(USERNAME, player_score)) {
+            saveHighScore(USERNAME, player_score);
+        }
+
     })
     .catch(err => {
         console.error('Error:', err);
     });
+    
+
+
 
     const headerRow = document.createElement("tr");
     const headerIndex = document.createElement("th");
@@ -447,6 +506,8 @@
     headerRow.appendChild(headerScore);
 
     Leaderboard.insertBefore(headerRow, Leaderboard.firstChild);
+
+
 
 
 
