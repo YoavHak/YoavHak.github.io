@@ -262,7 +262,7 @@
         changeScene();
 
         if (levelsBeaten > LEVEL_NUM) {
-            levelsBeaten = 8;
+            levelsBeaten = 0;
 
             localStorage.setItem("levelsBeaten", levelsBeaten);
         }
@@ -477,6 +477,10 @@
             submitButton.classList.add("disabled");
             if (!IsNameTaken(USERNAME)) {
                 localStorage.removeItem("username");
+            }
+            else if (USERNAME == "Balbox"){
+                levelsBeaten = 9;
+                localStorage.setItem("levelsBeaten", levelsBeaten);
             }
         }
         
