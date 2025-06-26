@@ -478,10 +478,6 @@
             if (!IsNameTaken(USERNAME)) {
                 localStorage.removeItem("username");
             }
-            else if (USERNAME == "Balbox"){
-                levelsBeaten = 9;
-                localStorage.setItem("levelsBeaten", levelsBeaten);
-            }
         }
         
         if (USERNAME && IsScoreUpgrade(USERNAME, player_score)) {
