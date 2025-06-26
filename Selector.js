@@ -168,7 +168,7 @@
     submitNameBtn.onclick = () => {
         const name = playerNameInput.value.trim();
         if (name) {
-            if (name.length < 4) {
+            if (name.length < 2) {
                 alert('Name too short!');
             }
             else if (name.length > 18) {
@@ -437,7 +437,7 @@
                 index_td.style.backgroundImage = "url('images/3rd place.png')";
             }
 
-            if (count <= 1) {
+            if (count <= 3) {
                 index_td.className = 'top-index-' + count;
                 // index_td.style.color = ['gold', 'silver', '#b87333'][count - 1];
                 index_td.style.color = 'white';
