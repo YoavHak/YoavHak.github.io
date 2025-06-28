@@ -603,16 +603,20 @@ if (true) {
         door.style.top = "160px";
         for (var i = 0; i < canvas.width; i++) {
             deathMap[762] = [1, 82 - GLOBAL_OFFSET_Y];
-            deathMap[1062] = [442 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+            deathMap[1061] = [1, 360 - GLOBAL_OFFSET_Y];
+            deathMap[1062] = [412 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
             deathMap[1752] = [1, 82 - GLOBAL_OFFSET_Y];
     
             if (i < 462) {
                 map[i] = 562 - GLOBAL_OFFSET_Y;
             }
-            else if (i > 1362 && i < 1812) {
-                map[i] = 412 - GLOBAL_OFFSET_Y;
-            }
-            else if (i > 1962) {
+            // else if (i > 1362 && i < 1812) {
+            //     map[i] = 412 - GLOBAL_OFFSET_Y;
+            // }
+            // else if (i > 1962) {
+            //     map[i] = 412 - GLOBAL_OFFSET_Y;
+            // }
+            else if (i > 1362) {
                 map[i] = 412 - GLOBAL_OFFSET_Y;
             }
         }
