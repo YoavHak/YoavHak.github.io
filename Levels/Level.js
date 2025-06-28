@@ -383,14 +383,14 @@ if (true) {
         door.style.top = "150px";
         for (var i = 0; i < canvas.width; i++) {
     
-            deathMap[852] = [606 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+            deathMap[852] = [610 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
             deathMap[912] = [1, 410 - GLOBAL_OFFSET_Y];
-            deathMap[972] = [1, 499 - GLOBAL_OFFSET_Y];
+            deathMap[972] = [1, 489 - GLOBAL_OFFSET_Y];
             deathMap[1061] = [717 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
             deathMap[1062] = [1, 550 - GLOBAL_OFFSET_Y];
-            deathMap[1152] = [1, 499 - GLOBAL_OFFSET_Y];
+            deathMap[1152] = [1, 489 - GLOBAL_OFFSET_Y];
             deathMap[1212] = [1, 410 - GLOBAL_OFFSET_Y];
-            deathMap[1272] = [606 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
+            deathMap[1272] = [610 - GLOBAL_OFFSET_Y, LOWER_BOUNDS - GLOBAL_OFFSET_Y];
     
             if (i < 725 || i > 1397) {
                 map[i] = 410 - GLOBAL_OFFSET_Y;
